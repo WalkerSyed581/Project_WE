@@ -24,7 +24,7 @@
                     <p>Description: {{supportGroup.description}}</p>
                 </div>
                 <div class="actionable">
-                    <a href="{% url 'patient:joinGroup' patient_id supportGroup.id %}" class="btn btn-danger">Join Support Group</a>
+                    <a href="{% url 'patient:joinGroup' patient.id supportGroup.id %}" class="btn btn-danger">Join Support Group</a>
                 </div>
             </div>
             
