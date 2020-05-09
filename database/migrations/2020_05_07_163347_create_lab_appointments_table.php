@@ -15,6 +15,10 @@ class CreateLabAppointmentsTable extends Migration
     {
         Schema::create('lab_appointments', function (Blueprint $table) {
 			$table->id();
+			$table->unsignedInteger('patient_id');
+			$table->unsignedInteger('helping_staff_id');
+			$table->unsignedInteger('prescription_id');
+			$table->unsignedInteger('lab_test_id');
 			$table->string('notes',200)->nullable(true);
 			$table->boolean('cancelled');
 			$table->time('time',0);

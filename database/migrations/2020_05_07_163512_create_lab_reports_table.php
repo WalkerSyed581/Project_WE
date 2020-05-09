@@ -15,6 +15,7 @@ class CreateLabReportsTable extends Migration
     {
         Schema::create('lab_reports', function (Blueprint $table) {
 			$table->id();
+			$table->unsignedInteger('lab_appointment_id');
 			$table->text('report_text');
             $table->timestamps();
         });

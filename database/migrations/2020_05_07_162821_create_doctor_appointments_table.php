@@ -15,6 +15,8 @@ class CreateDoctorAppointmentsTable extends Migration
     {
         Schema::create('doctor_appointments', function (Blueprint $table) {
 			$table->id();
+			$table->unsignedInteger('patient_id');
+			$table->unsignedInteger('doctor_id');
 			$table->string('notes',200)->nullable(true);
 			$table->boolean('cancelled');
 			$table->time('time',0);

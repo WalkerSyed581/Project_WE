@@ -14,7 +14,11 @@ class CreateBillsTable extends Migration
     public function up()
     {
         Schema::create('bills', function (Blueprint $table) {
-            $table->id();
+			$table->id();
+			$table->unsignedInteger('patient_id');
+			$table->unsignedInteger('doctor_appointment_id');
+			$table->unsignedInteger('lab_appointment_id');
+			$table->unsignedInteger('admission_id');
             $table->timestamps();
         });
     }
