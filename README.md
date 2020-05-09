@@ -1,4 +1,4 @@
 # Healthcare Management System
-## Semester Project for CS220 Database Systems
+## Semester Project for CS-344 Web En
 
-Site built in django
+Site built in Laravel

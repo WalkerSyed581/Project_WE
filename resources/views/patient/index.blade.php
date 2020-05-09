@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block style %} <link rel="stylesheet" href="{% static 'css/docPatient.css' %}"> {% endblock %}
+
+
+{% block content %}
+{% include 'partials/_header.html' %}
+
+<div class="patientPage">
+<div class="patientHeader">
+    <h1>Mr. {{patient.first_name}}  {{patient.last_name}}'s Dashboard</h1>
+</div>
+
+<div class="mainContent patientContent">
+    <article>
+        <a  href=" {% url 'patient:bill' patient.id %}" class="btn btn-danger">Show Bill</a>
+
+        <h2>Upcoming Doctor's Appointments</h2>
+        <section class="cards upcoming-appointments">
+            {% with slug='doctor' %}
+            {% if docAppointments1 %}
+                {% for docAppointment in docAppointments1%}
+                <div class="card appointment">
+                    {% for doctor in doctors1 %}
+                        {% if docAppointment.doctor.id == doctor.id %}
+                            <h3>Doctor's Name: {{doctor.first_name}} {{doctor.last_name}}</h3>
+                            <div class="appointment-content">
+                                <div class="appointment-text">
+                                    <p>Doctor's Experise: {{doctor.specialization}}</p>
+                                    <p>Ailment Notes: {{docAppointment.notes}}</p>
+                                    <span>Time and Date: {{docAppointment.time}}</span>
+                                </div>
+                                <div class="actionable">
+                                    <a class="btn btn-danger" href="{% url 'patient:cancelAppointment' patient.id docAppointment.id slug %}">Cancel</a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No Upcoming Appointments</p>
+            {% endif %}
+            {% endwith %}
+            <a href="{% url 'patient:getAppointment' patient.id %}" class="btn btn-danger addAppointment">Add Appointment</a>
+        </section>
+
+        <h2>Upcoming Lab's Appointments</h2>
+        <section class="cards upcoming-appointments">
+            {% with slug='lab' %}
+            {% if labAppointments1 %}
+                {% for labAppointment in labAppointments1%}
+                <div class="card appointment">
+                    {% for conductor in conductors1 %}
+                        {% if labAppointment.conducted_by.id == conductor.id %}
+                            <h3>Conductor's Name: {{conductor.first_name}} {{conductor.last_name}}</h3>
+                            <div class="appointment-content">
+                                <div class="appointment-text">
+                                    <span>Time and Date: {{labAppointment.time}}</span>
+                                </div>
+                                <div class="actionable">
+                                    <a class="btn btn-danger" href="{% url 'patient:cancelAppointment' patient.id labAppointment.id slug %}">Cancel</a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No Upcoming Lab Appointments</p>
+            {% endif %}
+            {% endwith %}
+        </section>
+
+        <h2>Support Groups</h2>
+        <section class="cards upcoming-appointments">
+            {% with slug='support' %}
+            {% if supportGroups %}
+                {% for supportGroup in supportGroups%}
+                <div class="card appointment">
+                    {% for supportGroupConductor in supportGroupConductors %}
+                        {% if supportGroup.conducted_by.id == supportGroupConductor.id %}
+                            <h3>Support Group: {{supportGroup.name}}</h3>
+                            <div class="appointment-content">
+                                <div class="appointment-text">
+                                    <p>Conductor's Name: {{supportGroupConductor.first_name}} {{supportGroupConductor.last_name}}</p>
+                                    <p>Day: {{supportGroup.day}}</p>
+                                    <span>Time and Date: {{supportGroup.timing}}</span>
+                                    <p>Day: {{supportGroup.description}}</p>
+                                </div>
+                                <div class="actionable">
+                                    <a class="btn btn-danger" href="{% url 'patient:cancelAppointment' patient.id supportGroup.id slug %}">Cancel</a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                {% endfor %}
+
+            {% else %}
+                <p>You have not enrolled in any Support Group</p>
+            {% endif %}
+            {% endwith %}
+            <a href="{% url 'patient:showSupportGroups' patient.id %}" class="btn btn-danger addAppointment">Join Support Group</a>
+        </section>
+            
+        <h2>Current Prescriptions</h2>
+        <section class="cards upcoming-appointments">
+            {% if prescriptions %}
+                {% for prescription in prescriptions %}
+                <div class="card appointment">
+                    {% for docAppointment in docAppointments %}
+                        {% if docAppointment.id == prescription.appointment.id %}
+                            {% for doctor in doctors %}
+                                {% if doctor.id == docAppointment.doctor.id %}
+                                    <h3>Doctor's Name: {{doctor.first_name}}  {{doctor.last_name}}</h3>
+
+                                    <div class="appointment-content">
+                                        <div class="appointment-text">
+                                            <p>Condition: {{prescription.conditions}}</p>
+                                            {% for drug in drugs %}
+                                                <div class="drugs">
+                                                    <p>Drug Name: {{drug.name}}</p>
+                                                    <p>Dose: {{drug.dose}}</p>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No Prescription Found</p>
+
+            {% endif %}
+        </section>
+    
+        <h2>Medical History</h2>
+        <section class="cards upcoming-appointments">
+            {% if docAppointments %}
+
+                {% for docAppointment in docAppointments%}
+                <div class="card appointment">
+                    {% for doctor in doctors %}
+                        {% if docAppointment.doctor.id == doctor.id %}
+                            <h3>Doctor's Name: {{doctor.first_name}}  {{doctor.last_name}}</h3>
+                            <div class="appointment-content">
+                                <div class="appointment-text">
+                                    <p>Doctor's Experise: {{doctor.specialization}}</p>
+                                    <p>Ailment Notes: {{docAppointment.notes}}</p>
+                                    <span>Time and Date: {{docAppointment.time}}</span>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            {% else %}
+                
+                <p>No Doctor Appointments</p>
+            {% endif %}
+        </section>
+        
+        <h2>Lab History</h2>
+        <section class="cards upcoming-appointments">
+            {% if labAppointments %}
+                {% for labAppointment in labAppointments%}
+                <div class="card appointment">
+                    {% for conductor in conductors %}
+                        {% if labAppointment.conducted_by == conductor.pk %}
+                            <h3>Conductor's Name: {{conductor.first_name}}  {{conductor.last_name}}</h3>
+                            <div class="appointment-content">
+                                <div class="appointment-text">
+                                    <span>Time and Date: {{labAppointment.time}}</span>
+                                </div>
+                                <div class="actionable">
+                                    <a href="{% url 'patient:labReport' patient.id labAppointment.id %}" class="btn btn-danger">Show Report</a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No Lab Appointments</p>
+            {% endif %}
+         </section>
+    </article>
+</div>
+</div>
+<script>
+    window.onload = function(){
+        $('.patientHeader').addClass('roundCorners');
+    }
+
+</script>
+
+{% endblock %}
