@@ -21,3 +21,4 @@ Route::get('/register','PagesController@register');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+

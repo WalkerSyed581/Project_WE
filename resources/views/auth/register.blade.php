@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+                <div class="card-header">{{ __('Register New Patient') }}</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
@@ -59,7 +59,58 @@
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                             </div>
-                        </div>
+						</div>
+						
+						<div class="form-group row">
+                            <label for="address" class="col-md-4 col-form-label text-md-right">{{ __('Address') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="address" type="text" class="form-control" name="address" autocomplete="address">
+                            </div>
+						</div>
+						
+						<div class="form-group row">
+                            <label for="gender" class="col-md-4 col-form-label text-md-right">{{ __('Gender') }}</label>
+
+                            <div class="col-md-6">
+                                <select id="gender" type="text" class="form-control" name="gender">
+									<option value="m" selected>Male</option>
+									<option value="f">Female</option>
+                                </select>
+                            </div>
+						</div>
+						
+						<div class="form-group row">
+                            <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('Phone Number') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="phone" type="text" class="form-control" name="phone" autocomplete="phone">
+                            </div>
+						</div>
+
+						<div class="form-group row">
+                            <label for="cnic" class="col-md-4 col-form-label text-md-right">{{ __('CNIC (with hypehns)') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="cnic" type="text" class="form-control" name="cnic" autocomplete="cnic">
+                            </div>
+						</div>
+
+						<div class="form-group row">
+                            <label for="age" class="col-md-4 col-form-label text-md-right">{{ __('Age') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="age" type="text" class="form-control" name="age" required autocomplete="age">
+                            </div>
+						</div>
+
+						<div class="form-group row">
+                            <label for="emergencey" class="col-md-4 col-form-label text-md-right">{{ __('Emergencey Contact') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="emergencey" type="text" class="form-control" name="emergencey_contact" autocomplete="emergencey-contact">
+                            </div>
+						</div>
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">

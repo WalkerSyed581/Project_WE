@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\User;
+use App\Patient;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -51,8 +52,14 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:patients'],
+			'password' => ['required', 'string', 'min:8', 'confirmed'],
+			'address' => ['string','min:10'],
+			'gender' => ['required'],
+			'phone' => ['string','digits:11'],
+			'cnic' => ['string','regex:/[0-9]{5}-[0-9]{7}-[0-9]{1}/'],
+			'age' => ['digits:3','required'],
+			'emergencey_contact' => ['string','digits:11'],
         ]);
     }
 
@@ -67,7 +74,13 @@ class RegisterController extends Controller
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+			'password' => Hash::make($data['password']),
+			'address' => $data['address'],
+			'gender' => $data['gender'],
+			'phone' => $data['phone'],
+			'cnic' => $data['cnic'],
+			'age' => $data['age'],
+		]);
+		
     }
 }
