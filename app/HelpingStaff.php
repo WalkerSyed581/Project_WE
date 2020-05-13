@@ -15,4 +15,8 @@ class HelpingStaff extends Authenticatable
     {
         return $this->hasMany('App\Admission');
 	}
+	public function user()
+    {
+        return $this->hasOne('App\User');
+    }
 }

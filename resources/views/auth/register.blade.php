@@ -104,6 +104,8 @@
                             </div>
 						</div>
 
+						<input id="role" type="hidden" name="role" value='p'>
+
 						<div class="form-group row">
                             <label for="emergencey" class="col-md-4 col-form-label text-md-right">{{ __('Emergencey Contact') }}</label>
 

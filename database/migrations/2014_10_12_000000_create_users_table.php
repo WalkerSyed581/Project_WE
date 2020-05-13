@@ -23,7 +23,8 @@ class CreateUsersTable extends Migration
 			$table->string('address',100)->nullable(true);
 			$table->string('phone',11)->nullable(true);
 			$table->string('cnic',15)->nullable(true);
-			$table->unsignedInteger('age')->default(0);
+			$table->string('age');
+			$table->enum('role',['p','d','hs','sgc','n','a'])->default('n');
 			$table->rememberToken();
             $table->timestamps();
         });

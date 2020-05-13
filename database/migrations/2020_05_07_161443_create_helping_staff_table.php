@@ -15,15 +15,7 @@ class CreateHelpingStaffTable extends Migration
     {
         Schema::create('helping_staff', function (Blueprint $table) {
 			$table->id();
-			$table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-			$table->string('password');
-			$table->enum('gender', ['m', 'f','n'])->default('n');
-			$table->string('address',100)->nullable(true);
-			$table->string('phone',11)->nullable(true);
-			$table->string('cnic',15)->nullable(true);
-			$table->unsignedInteger('age')->default(0);
+			$table->unsignedInteger('user_id')->unique();
 			$table->dateTime('joining_date', 0);
 			$table->unsignedInteger('salary');
 			/*
@@ -33,7 +25,6 @@ class CreateHelpingStaffTable extends Migration
 				NONE = 'n'
 			*/
 			$table->enum('role', ['ws', 'ls','rc','n'])->default('n'); 
-			$table->rememberToken();
             $table->timestamps();
         });
     }

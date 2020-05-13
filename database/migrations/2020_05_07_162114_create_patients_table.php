@@ -15,17 +15,8 @@ class CreatePatientsTable extends Migration
     {
         Schema::create('patients', function (Blueprint $table) {
 			$table->id();
-			$table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-			$table->string('password');
-			$table->enum('gender', ['m', 'f','n'])->default('n');
-			$table->string('address',100)->nullable(true);
-			$table->string('phone',11)->nullable(true);
-			$table->string('cnic',15)->nullable(true);
-			$table->unsignedInteger('age')->default(0);
+			$table->unsignedInteger('user_id')->unique();
 			$table->string('emergencey_contact',11)->nullable(true);
-			$table->rememberToken();
             $table->timestamps();
         });
     }

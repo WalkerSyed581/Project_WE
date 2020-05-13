@@ -18,6 +18,26 @@ Route::get('/login','PagesController@login');
 Route::get('/about','PagesController@about');
 Route::get('/register','PagesController@register');
 
+Route::middleware(['auth','role:p'])->group(function () {
+	Route::get('/patient','PatientController@index');
+});
+
+Route::middleware(['auth','role:d'])->group(function () {
+	Route::get('/doctor','DoctorController@index');
+});
+
+Route::middleware(['auth','role:hs'])->group(function () {
+
+});
+
+Route::middleware(['auth','role:sgc'])->group(function () {
+	
+});
+
+Route::middleware(['auth','role:a'])->group(function () {
+	
+});
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

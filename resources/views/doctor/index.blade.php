@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{{-- {% extends 'base.html' %}
 
 {% load static %}
 
@@ -48,4 +48,5 @@
         
     </article>
 </div>
-{% endblock %}
+{% endblock %} --}}
+AKlsdjlaksjdklajs

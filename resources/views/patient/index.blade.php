@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{{-- {% extends 'base.html' %}
 
 {% load static %}
 
@@ -200,4 +200,10 @@
 
 </script>
 
-{% endblock %}
+{% endblock %} --}}
+@extends('layouts.app')
+
+@section('content')
+HELLOw
+@endsection
+
