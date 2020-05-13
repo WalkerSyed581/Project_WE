@@ -1,8 +1,9 @@
-{% extends 'base.html' %}
+@extends('layouts.app') 
 
-{% block content %}
-
-{% include 'partials/_mid-cover.html' %}
+<!--{% block content %}-->
+@section('content')
+@extends('inc/_mid-cover.html') 
+{<!--% include 'partials/_mid-cover.html' %}-->
 
 <article class="content helping-staff-content">
     <section class="duties">
@@ -54,5 +55,5 @@
         </div>
     </section>
 </article>
-
-{% endblock %}
+<!--{% endblock %}-->
+@endsection
