@@ -1,25 +1,28 @@
-{% extends 'base.html' %}
+{{--% extends 'base.html' %--}}
+@extends('layouts.app')
+{{--% load static %--}}
 
-{% load static %}
-
-
-{% block content %}
+@section('content')
+{{--% block content %--}}
 <main class="loginPage">
-  {% include 'partials/_header.html' %}
+  {{--% include 'partials/_header.html' %--}}
+  @extends('inc/_header.html')
   <form action="" method="POST" id="login-form">
-      {% csrf_token %}
-      {% for field in form%}
+      {{--% csrf_token %}
+      {{--% for field in form%--}}
+      @foreach ($field as form)
+          
         <div class="form-group">
             
-          <label>{{field.label}}</label>
+          <label>{{field->label}}</label>
 
           {{field}}
 
         </div>
-
-      {% endfor %}
+        @endforeach
+      {{--% endfor %--}}
         <button type="submit" class="btn btn-primary submitButton">Submit</button>
   </form>
 </main>
-
-{% endblock %}
+@endsection
+{{--% endblock %--}}
