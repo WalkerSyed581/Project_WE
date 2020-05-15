@@ -65,7 +65,7 @@
                             <label for="address" class="col-md-4 col-form-label text-md-right">{{ __('Address') }}</label>
 
                             <div class="col-md-6">
-                                <input id="address" type="text" class="form-control" name="address" autocomplete="address">
+                                <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" autocomplete="address">
                             </div>
 						</div>
 						
@@ -84,7 +84,7 @@
                             <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('Phone Number') }}</label>
 
                             <div class="col-md-6">
-                                <input id="phone" type="text" class="form-control" name="phone" autocomplete="phone">
+                                <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" autocomplete="phone">
                             </div>
 						</div>
 
@@ -92,7 +92,7 @@
                             <label for="cnic" class="col-md-4 col-form-label text-md-right">{{ __('CNIC (with hypehns)') }}</label>
 
                             <div class="col-md-6">
-                                <input id="cnic" type="text" class="form-control" name="cnic" autocomplete="cnic">
+                                <input id="cnic" type="text" class="form-control  @error('phone') is-invalid @enderror" name="cnic" autocomplete="cnic">
                             </div>
 						</div>
 
