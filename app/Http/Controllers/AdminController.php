@@ -1,23 +1,20 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\User;
-use App\Patient;
-use Carbon\Carbon;
 
 use Illuminate\Http\Request;
 
-class PatientController extends Controller
+class AdminController extends Controller
 {
-    // /**
-    //  * Display a listing of the resource.
-    //  *
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function index()
-    // {
-    //     //
-    // }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        return view('admin.index');
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -37,19 +34,7 @@ class PatientController extends Controller
      */
     public function store(Request $request)
     {
-        $rules = [
-			'emergencey_contact' => ['string','digits:11'],
-			'user_id' => ['required'],
-        ];
-
-		$this->validate($request, $rules);
-
-        $patient = Patient::create([
-			'emergencey_contact' => $request->input('emergencey_contact'),
-			'user_id' => $request->input('user_id'),
-		]);
-		
-		return redirect()->action('AdminController@index');
+        //
     }
 
     /**
@@ -97,26 +82,37 @@ class PatientController extends Controller
         //
 	}
 	
-	public function index(){
-		// $patient = Patient::where('user_id',\Auth::user()->id)->first();
-		// $docAppointments = $patient->doctorAppointments()->where([
-		// 	['cancelled','=',false],
-		// 	['time','>=',Carbon::now()->toTimeString()],
-		// ])->get();
-		// 
-		// dd($docAppointments);
-        return view('patient.index');
+	//Register any user
+	// public function showRegisterForm($id){
+    //     return view('admin.register')->with('id',$id);
+	// }
+
+	public function showRegisterForm(){
+		return view('admin.register');
 	}
-	public function getAppointment($id){
-        return view('patient.getAppointment');
+	
+
+	//Add data specific to the role
+	public function showRoleForm($user_id,$role){
+		return view('admin.addRoleData',[
+			'user_id'=>$user_id,
+			'role'=>$role,
+		]);
 	}
-	public function showBill($id){
-        return view('patient.bill');
-	}
-	public function joinSupportGroup($id){
-        return view('patient.joinSupportGroup');
-	}
-	public function showLabReport(){
-        return view('patient.labReport');
+	
+	public function registerRoleData(Request $request){
+		$role = $request->post()['role'];
+
+		if($role=='p'){
+			return redirect()->action('DoctorController@store');
+		}elseif($role=='d'){
+			return redirect()->action('DoctorController@store');
+		} elseif($role=='hs'){
+			// return redirect()->action('DoctorController@store');
+		}elseif($role=='sgc'){
+
+		}elseif($role=='a'){
+			
+		} 
 	}
 }

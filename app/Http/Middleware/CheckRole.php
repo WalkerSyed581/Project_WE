@@ -15,8 +15,9 @@ class CheckRole
      */
     public function handle($request, Closure $next,$role)
     {
-		if ($request->user()->value('role') != $role) {
-			switch($request->user()->value('role')){
+
+		if (\Auth::user()->role != $role) {
+			switch(\Auth::user()->role){
 				case 'p':
 					return redirect()->action('PatientController@index');
 					break;

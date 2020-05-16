@@ -7,6 +7,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class HelpingStaff extends Authenticatable
 {
+	protected $fillable = [
+        'salary','user_id','joining_date','role',
+	];
+	
     public function labAppointments()
     {
         return $this->hasMany('App\LabAppointment');

@@ -8,6 +8,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class SupportGroupConductor extends Authenticatable
 {
+	protected $fillable = [
+        'salary','user_id','joining_date',
+	];
     public function supportGroups(){
 		return $this->hasMany('App\SupportGroup');
 	}

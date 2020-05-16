@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Register New Patient') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
+                    <form method="POST" action="/admin/registerUser">
                         @csrf
 
                         <div class="form-group row">
@@ -123,23 +123,25 @@
 							</div>
 						</div>
 
-						<input id="role" type="hidden" name="role" value='p'>
-
 						<div class="form-group row">
-                            <label for="emergencey" class="col-md-4 col-form-label text-md-right">{{ __('Emergencey Contact') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="emergencey" type="text" class="form-control @error('emergencey_contact') is-invalid @enderror" name="emergencey_contact" autocomplete="emergencey-contact">
-								@error('emergencey_contact')
-									<span class="alert alert-danger">{{ $message }}</span>
-								@enderror
+							<label for="role" class="col-md-4 col-form-label text-md-right">{{ __('Role') }}</label>
+						
+							<div class="col-md-6">
+								<select id="role" type="text" class="form-control" name="role">
+									<option value="p" selected>Patient</option>
+									<option value="d">Doctor</option>
+									<option value="sgc" selected>Support Group Conductor</option>
+									<option value="hs" selected>Helping Staff</option>
+									<option value="a" selected>Admin</option>
+								</select>
 							</div>
 						</div>
+						
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
+                                    {{ __('Next') }}
                                 </button>
                             </div>
                         </div>
@@ -150,3 +152,4 @@
     </div>
 </div>
 @endsection
+

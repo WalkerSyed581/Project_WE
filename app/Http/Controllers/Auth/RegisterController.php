@@ -69,7 +69,8 @@ class RegisterController extends Controller
 			'age' => ['string','digits_between:1,3','required'],
 			'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
-    }
+	}
+	
 
     /**
      * Create a new user instance after a valid registration.

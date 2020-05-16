@@ -49,7 +49,7 @@ class LoginController extends Controller
 		}elseif(\Auth::user()->role=='sgc'){
 			return '/supportGroupConductor';
 		}elseif(\Auth::user()->role=='a'){
-			return '/admin';
+			return '/admin/registerUser';
 		} 
 	}
 }
