@@ -20,27 +20,24 @@ Route::get('/register','PagesController@register');
 
 Route::middleware(['auth','role:p'])->group(function () {
 	Route::get('/patient','PatientController@index');
-
-	Route::get('/patient/{id}/appointmentArchive','PatientController@appoinmentArchive');
-	Route::get('/patient/{id}/{appointment_id}/prescription','PatientController@showPrescription');
-
-	Route::get('/patient/{id}/labReport/{labAppointment_id}','LabAppointmentController@showLabReport');
-
 	Route::get('/patient/{id}/appointmentForm','PatientController@showAppointmentForm');
 	Route::post('/patient/addAppointment','DoctorAppointmentController@store');
 	Route::get('/patient/removeDoctorAppointment/{id}','DoctorAppointmentController@destroy');
-
-	Route::get('/patient/removeLabAppointment/{id}','LabAppointmentController@destroy');
-
-	Route::get('/patient/{id}/currentAdmission','PatientController@showCurrentAdmission');
-	Route::get('/patient/{id}/allAdmissions','PatientController@showAllAdmissions');
-
-
-	Route::get('/patient/{id}/bill','PatientController@showBill'); //To Be Done
-
+	Route::get('/patient/removeLabAppointment/{id}','LabAppointmentController@destroy'); //To be done i.e. does not work
 	Route::get('/patient/{id}/supportGroupList','PatientController@showSupportGroups');
 	Route::get('/patient/{id}/joinSupportGroup/{supportGroup_id}','PatientController@joinSupportGroup');
 	Route::get('/patient/{id}/leaveSupportGroup/{supportGroup_id}','PatientController@leaveSupportGroup');	
+
+	//Links to be added to the sidebar according to site design
+	Route::get('/patient/{id}/labReport/{labAppointment_id}','LabAppointmentController@showLabReport');
+	Route::get('/patient/{id}/{appointment_id}/prescription','PatientController@showPrescription');
+	Route::get('/patient/{id}/appointmentArchive','PatientController@appoinmentArchive');
+	Route::get('/patient/{id}/currentAdmission','PatientController@showCurrentAdmission');
+	Route::get('/patient/{id}/allAdmissions','PatientController@showAllAdmissions');
+	Route::get('/patient/{id}/bill','PatientController@showBill'); //To Be Done
+
+
+	
 });
 
 Route::middleware(['auth','role:d'])->group(function () {
