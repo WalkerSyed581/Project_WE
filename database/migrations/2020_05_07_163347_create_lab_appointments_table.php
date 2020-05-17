@@ -20,8 +20,9 @@ class CreateLabAppointmentsTable extends Migration
 			$table->unsignedInteger('prescription_id');
 			$table->unsignedInteger('lab_test_id');
 			$table->string('notes',200)->nullable(true);
-			$table->boolean('cancelled');
-			$table->time('time',0);
+			$table->boolean('cancelled')->default(false);
+			$table->boolean('approved')->default(false);
+			$table->dateTime('time',0);
             $table->timestamps();
         });
     }

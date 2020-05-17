@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\LabReport;
+use App\LabAppointment;
 
-class AdminController extends Controller
+class LabAppointmentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +15,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return view('admin.index');
+        //
     }
 
     /**
@@ -82,43 +84,11 @@ class AdminController extends Controller
         //
 	}
 	
-	//Register any user
-	// public function showRegisterForm($id){
-    //     return view('admin.register')->with('id',$id);
-	// }
-
-	public function showRegisterForm(){
-		return view('admin.register');
-	}
-	
-
-	//Add data specific to the role
-	public function showRoleForm($user_id,$role){
-		return view('admin.addRoleData',[
-			'user_id'=>$user_id,
-			'role'=>$role,
-		]);
-	}
-
-	public function addSupportGroup(){
-		
-	}
-
-	
-	
-	public function registerRoleData(Request $request){
-		$role = $request->post()['role'];
-
-		if($role=='p'){
-			return redirect()->action('DoctorController@store');
-		}elseif($role=='d'){
-			return redirect()->action('DoctorController@store');
-		} elseif($role=='hs'){
-			// return redirect()->action('DoctorController@store');
-		}elseif($role=='sgc'){
-
-		}elseif($role=='a'){
-			
-		} 
+	public function showLabReport($id,$labAppointment_id){
+		$labAppointment = LabAppointment::where('id',$labAppointment_id)->first();
+		$labReport = $labAppointment->labReport;
+		return view('patient.labReport',
+			['labReport'=>$labReport]
+		);
 	}
 }

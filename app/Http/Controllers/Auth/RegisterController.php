@@ -109,12 +109,6 @@ class RegisterController extends Controller
 					'emergencey_contact' => $request->post()['emergencey_contact'], 
 				]);
 				break;
-			case 'd':
-				Patient::create([
-					'user_id' => $id,
-					'emergencey_contact' => $request->post()['emergencey_contact'], 
-				]);
-				break;
 		}
 
         $this->guard()->login($user);

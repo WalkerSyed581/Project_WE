@@ -18,8 +18,9 @@ class CreateDoctorAppointmentsTable extends Migration
 			$table->unsignedInteger('patient_id');
 			$table->unsignedInteger('doctor_id');
 			$table->string('notes',200)->nullable(true);
-			$table->boolean('cancelled');
-			$table->time('time',0);
+			$table->boolean('cancelled')->default(false);
+			$table->boolean('approved')->default(false);
+			$table->dateTime('time',0);
             $table->timestamps();
         });
     }

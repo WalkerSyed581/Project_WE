@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Patient;
 use Carbon\Carbon;
-
+use App\Drug;
+use App\Doctor;
+use App\Prescription;
+use App\SupportGroup;
+use App\DoctorAppointment;
 use Illuminate\Http\Request;
 
 class PatientController extends Controller
@@ -98,25 +102,114 @@ class PatientController extends Controller
 	}
 	
 	public function index(){
-		// $patient = Patient::where('user_id',\Auth::user()->id)->first();
-		// $docAppointments = $patient->doctorAppointments()->where([
-		// 	['cancelled','=',false],
-		// 	['time','>=',Carbon::now()->toTimeString()],
-		// ])->get();
-		// 
-		// dd($docAppointments);
-        return view('patient.index');
+		$patient = Patient::where('user_id',\Auth::user()->id)->first();
+		$currentTime = Carbon::now()->toDateTimeString();
+
+		$docAppointments = $patient->doctorAppointments()->where([
+			['cancelled','=',false],
+			['approved','=',true],
+			['time','>=',$currentTime],
+		])->get();
+
+		$labAppointments = $patient->labAppointments()->where([
+			['cancelled','=',false],
+			['approved','=',true],
+			['time','>=',$currentTime],
+		])->get();
+		$supportGroups = $patient->supportGroups()->get();
+
+		
+        return view('patient.index',[
+			'docAppointments' => $docAppointments,
+			'labAppointments' => $labAppointments,
+			'supportGroups' => $supportGroups,
+		]);
 	}
-	public function getAppointment($id){
-        return view('patient.getAppointment');
+	public function appoinmentArchive($id){
+		$patient = Patient::where('user_id',$id)->first();
+		$currentTime = Carbon::now()->toDateTimeString();
+
+		$docAppointments = $patient->doctorAppointments()->where([
+			['time','<',$currentTime],
+		])->orWhere([
+			['cancelled','=',true],
+		])->get();
+
+		$labAppointments = $patient->labAppointments()->where([
+			['time','<',$currentTime],
+		])->get();
+
+        return view('patient.allAppointments',[
+			'docAppointments' => $docAppointments,
+			'labAppointments' => $labAppointments,
+		]);
+	}
+	public function showPrescription($id,$appointment_id){
+		$prescription = Prescription::where('doctor_appointment_id',$appointment_id)->first();
+		$drugs = $prescription->drugs;
+		$doctorAppointment = DoctorAppointment::find($appointment_id);
+		$doctorName = $doctorAppointment->doctor->user->name;
+		return view('patient.prescription',[
+			'prescription' => $prescription,
+			'drugs' => $drugs,
+			'doctorName' => $doctorName,
+		]);
+	}
+
+	public function showAppointmentForm($id){
+		$doctors = Doctor::all();
+		return view('patient.getAppointment',
+			[
+				'doctors' => $doctors,
+			]
+		);
 	}
 	public function showBill($id){
         return view('patient.bill');
 	}
-	public function joinSupportGroup($id){
-        return view('patient.joinSupportGroup');
+	public function showSupportGroups($id){
+		$supportGroups = SupportGroup::all();
+		return view('patient.joinSupportGroup',[
+			'supportGroups' => $supportGroups,
+		]);
 	}
-	public function showLabReport(){
-        return view('patient.labReport');
+	public function joinSupportGroup($id,$supportGroup_id){
+		$patient = Patient::where('user_id',$id)->first();
+
+		if($patient->supportGroups->where('id',$supportGroup_id)->first()){
+			return redirect()->action('PatientController@index');
+		}
+
+		$supportGroup = SupportGroup::where('id',$supportGroup_id)->first();
+
+		$patient->supportGroups()->attach($supportGroup_id);
+
+		return redirect()->action('PatientController@index');
+	}
+
+	public function leaveSupportGroup($id,$supportGroup_id){
+		$patient = Patient::where('user_id',$id)->first();
+
+		$patient->supportGroups()->detach($supportGroup_id);
+
+		return redirect()->action('PatientController@index');
+	}
+	
+	public function showCurrentAdmission($id){
+		$patient = Patient::where('id',$id)->first();
+		$admissions = $patient->admissions()->where('discharged',false)->get();
+		return view('patient.admission',[
+			'admissions' => $admissions,
+		]);
+	}
+
+	public function showAllAdmissions($id){
+		$patient = Patient::where('id',$id)->first();
+		$admissions = $patient->admissions;
+		dd($admissions);
+
+		return view('patient.admission',[
+			'admissions' => $admissions,
+		]);
 	}
 }

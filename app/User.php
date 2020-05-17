@@ -39,19 +39,19 @@ class User extends Authenticatable
 	
 	public function doctor()
     {
-        return $this->belongsTo('App\Doctor');
+        return $this->hasOne('App\Doctor');
 	}
 	public function patient()
     {
-        return $this->belongsTo('App\Patient');
+        return $this->hasOne('App\Patient');
 	}
 	public function supportGroupConductor()
     {
-        return $this->belongsTo('App\SupportGroupConductor');
+        return $this->hasOne('App\SupportGroupConductor');
 	}
 	public function helpingStaff()
     {
-        return $this->belongsTo('App\HelpingStaff');
+        return $this->hasOne('App\HelpingStaff');
     }
 }
 

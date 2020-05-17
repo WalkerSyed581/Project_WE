@@ -20,4 +20,7 @@ class LabAppointment extends Model
 	public function labTest(){
 		return $this->belongsTo('App\LabTest');
 	}
+	public function labReport(){
+		return $this->hasOne('App\LabReport');
+	}
 }

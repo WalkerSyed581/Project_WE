@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 
-class AdminController extends Controller
+use Illuminate\Http\Request;
+use App\DoctorAppointment;
+use Carbon\Carbon;
+
+class DoctorAppointmentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +16,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return view('admin.index');
+        //
     }
 
     /**
@@ -34,7 +37,28 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        //
+		$rules = [
+			'appointmentTime' => ['date_format:H:i'],
+			'appointmentDate' => ['date_format:Y-m-d'],
+			'notes' => ['string','nullable'],
+			'doctor_id' => ['required','integer'],
+			'cancelled' => ['boolean','required'],
+        ];
+		$this->validate($request, $rules);
+
+
+		$fomratted_start_date = Carbon::parse($request->input('appointmentDate') . $request->input('appointmentTime'));
+		
+        $appointment = DoctorAppointment::create([
+			'patient_id' => \Auth::user()->patient->id,
+			'doctor_id' => (int) $request->input('doctor_id'),
+			'time' => $fomratted_start_date->toDateTimeString(),
+			'notes' => $request->input('notes'),
+			'cancelled' => (int) $request->input('cancelled'),
+			'approved' => 0,
+		]);
+		
+		return redirect()->action('PatientController@index');
     }
 
     /**
@@ -79,46 +103,10 @@ class AdminController extends Controller
      */
     public function destroy($id)
     {
-        //
-	}
-	
-	//Register any user
-	// public function showRegisterForm($id){
-    //     return view('admin.register')->with('id',$id);
-	// }
+		$appointment = DoctorAppointment::where('id',$id)->first();
+		$appointment->cancelled = true;
+		$appointment->save();
 
-	public function showRegisterForm(){
-		return view('admin.register');
-	}
-	
-
-	//Add data specific to the role
-	public function showRoleForm($user_id,$role){
-		return view('admin.addRoleData',[
-			'user_id'=>$user_id,
-			'role'=>$role,
-		]);
-	}
-
-	public function addSupportGroup(){
-		
-	}
-
-	
-	
-	public function registerRoleData(Request $request){
-		$role = $request->post()['role'];
-
-		if($role=='p'){
-			return redirect()->action('DoctorController@store');
-		}elseif($role=='d'){
-			return redirect()->action('DoctorController@store');
-		} elseif($role=='hs'){
-			// return redirect()->action('DoctorController@store');
-		}elseif($role=='sgc'){
-
-		}elseif($role=='a'){
-			
-		} 
-	}
+		return redirect()->action('DoctorController@index');
+    }
 }

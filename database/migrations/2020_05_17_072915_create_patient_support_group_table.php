@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSupportGroupPatientTable extends Migration
+class CreatePatientSupportGroupTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateSupportGroupPatientTable extends Migration
      */
     public function up()
     {
-        Schema::create('support_group_patient', function (Blueprint $table) {
+        Schema::create('patient_support_group', function (Blueprint $table) {
 			$table->id();
 			$table->unsignedBigInteger('support_group_id');
 			$table->unsignedBigInteger('patient_id');
@@ -28,6 +28,6 @@ class CreateSupportGroupPatientTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('support_group_patient');
+        Schema::dropIfExists('patient_support_group');
     }
 }
