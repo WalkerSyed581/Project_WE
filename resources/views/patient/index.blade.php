@@ -7,7 +7,7 @@
 
 <div class="mainContent patientContent">
     <article>
-        <a  href=" {{action('PatientController@showBill',['id'=>Auth::user()->id])}}" class="btn btn-danger">Show Bill</a>
+        <a  href=" {{action('PatientController@showBill',['id'=>Auth::user()->patient->id])}}" class="btn btn-danger">Show Bill</a>
 
         <h2>Upcoming Doctor's Appointments</h2>
         <section class="cards upcoming-appointments">

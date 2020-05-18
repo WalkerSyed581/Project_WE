@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\DoctorAppointment;
+use App\Bill;
 use Carbon\Carbon;
 
 class DoctorAppointmentController extends Controller
@@ -41,24 +42,45 @@ class DoctorAppointmentController extends Controller
 			'appointmentTime' => ['date_format:H:i'],
 			'appointmentDate' => ['date_format:Y-m-d'],
 			'notes' => ['string','nullable'],
-			'doctor_id' => ['required','integer'],
-			'cancelled' => ['boolean','required'],
         ];
 		$this->validate($request, $rules);
 
 
 		$fomratted_start_date = Carbon::parse($request->input('appointmentDate') . $request->input('appointmentTime'));
-		
-        $appointment = DoctorAppointment::create([
+		if($request->input('patient_id')){
+			$patient_id = (int) $request->input('patient_id');
+			$data = [
+				'patient_id' => (int) $request->input('patient_id'),
+				'doctor_id' => \Auth::user()->doctor->id,
+				'cancelled' => 0,
+				'approved' => (int) $request->input('approved'),
+				'time' => $fomratted_start_date->toDateTimeString(),
+				'notes' => $request->input('notes')
+			];
+		} 
+		$patient_id =  \Auth::user()->patient->id;
+		$data = [
 			'patient_id' => \Auth::user()->patient->id,
 			'doctor_id' => (int) $request->input('doctor_id'),
-			'time' => $fomratted_start_date->toDateTimeString(),
-			'notes' => $request->input('notes'),
-			'cancelled' => (int) $request->input('cancelled'),
+			'cancelled' => 0,
 			'approved' => 0,
+			'time' => $fomratted_start_date->toDateTimeString(),
+			'notes' => $request->input('notes')
+		];
+		
+		
+        $appointment = DoctorAppointment::create($data);
+		
+		$bill = Bill::create([
+			'patient_id' => $patient_id,
+			'doctor_appointment_id' => $appointment->id,
 		]);
 		
-		return redirect()->action('PatientController@index');
+		if($request->input('patient_id')){
+			return redirect()->action('DoctorController@index');
+		} else{
+			return redirect()->action('PatientController@index');
+		}
     }
 
     /**
@@ -107,6 +129,18 @@ class DoctorAppointmentController extends Controller
 		$appointment->cancelled = true;
 		$appointment->save();
 
+		return redirect()->action('PatientController@index');
+	}
+	public function approveAppointment($id,$appointment_id){
+		$appointment = DoctorAppointment::where('id',$id)->first();
+		
+		if($appointment->approved){
+			$appointment->approved = false;
+		}else{
+			$appointment->approved = true;
+		}
+		$appointment->save();
+
 		return redirect()->action('DoctorController@index');
-    }
+	}
 }

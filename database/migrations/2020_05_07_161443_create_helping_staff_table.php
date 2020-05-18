@@ -15,7 +15,6 @@ class CreateHelpingStaffTable extends Migration
     {
         Schema::create('helping_staff', function (Blueprint $table) {
 			$table->id();
-			$table->unsignedInteger('user_id')->unique();
 			$table->dateTime('joining_date', 0);
 			$table->unsignedInteger('salary');
 			/*
@@ -25,7 +24,8 @@ class CreateHelpingStaffTable extends Migration
 				NONE = 'n'
 			*/
 			$table->enum('role', ['ws', 'ls','rc','n'])->default('n'); 
-            $table->timestamps();
+			$table->timestamps();
+			$table->foreignId('user_id')->constrained()->onDelete('cascade')->unique();
         });
     }
 

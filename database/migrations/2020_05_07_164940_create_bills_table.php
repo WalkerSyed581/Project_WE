@@ -15,10 +15,10 @@ class CreateBillsTable extends Migration
     {
         Schema::create('bills', function (Blueprint $table) {
 			$table->id();
-			$table->unsignedInteger('patient_id');
-			$table->unsignedInteger('doctor_appointment_id');
-			$table->unsignedInteger('lab_appointment_id');
-			$table->unsignedInteger('admission_id');
+			$table->foreignId('patient_id')->constrained()->onDelete('cascade');
+			$table->foreignId('doctor_appointment_id')->constrained()->onDelete('cascade')->nullable(true)->unique();
+			$table->foreignId('lab_appointment_id')->constrained()->onDelete('cascade')->nullable(true)->unique();
+			$table->foreignId('admission_id')->constrained()->onDelete('cascade')->nullable(true)->unique();
             $table->timestamps();
         });
     }

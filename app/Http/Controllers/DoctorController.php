@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Doctor;
 use App\User;
+use App\LabTest;
+use App\HelpingStaff;
+use App\Prescription;
 use Carbon\Carbon;
 
 class DoctorController extends Controller
@@ -16,7 +19,32 @@ class DoctorController extends Controller
      */
     public function index()
     {
-		return view('doctor.index');
+		$doctor = Doctor::where('user_id',\Auth::user()->id)->first();
+		$currentTime = Carbon::now()->toDateTimeString();
+
+		$docAppointments = $doctor->doctorAppointments->where([
+			['cancelled','=',false],
+			['time','>=',$currentTime],
+		])->get();
+
+		$labAppointments = $doctor->doctorAppointments->prescription->labAppointment->where([
+			['cancelled','=',false],
+			['approved','=',true],
+			['time','>=',$currentTime],
+		])->get();
+
+		$prevDocAppointments = $doctor->doctorAppointments->where([
+			['cancelled','=',false],
+			['approved','=',true],
+			['time','<=',$currentTime],
+		])->get();
+
+		
+        return view('doctor.index',[
+			'docAppointments' => $docAppointments,
+			'labAppointments' => $labAppointments,
+			'prevDocAppointments' => $prevDocAppointments,
+		]);
     }
 
     /**
@@ -123,7 +151,126 @@ class DoctorController extends Controller
 	}
 	
 
-	
+
+	public function viewPrescription($id,$appointment_id){
+		$prescription = Prescription::where('doctor_appointment_id',$appointment_id)->first();
+		$drugs = $prescription->drugs;
+		$doctorAppointment = DoctorAppointment::find($appointment_id);
+		$patient = $doctorAppointment->patient;
+		return view('doctor.prescription',[
+			'prescription' => $prescription,
+			'drugs' => $drugs,
+			'patient' => $patient,
+			'appointment_id' => $appointment_id,
+		]);
+	}
+
+	public function addPrescription(Request $request){
+		$rules = [
+			'condition' => ['date_format:H:i','required'],
+			'notes' => ['string','nullable'],
+			'noOfDrugs' => ['integer','required'],
+        ];
+		
+		$this->validate($request, $rules);
+
+        $prescription = Prescription::create([
+			'doctor_appointment_id' => (int) $request->input('appointment_id'),
+			'condition' => $request->input('condition'),
+			'notes' => $request->input('notes'),
+		]);
+		
+		$request->session()->flash('noOfDrugs',$request->input('noOfDrugs'));
+		
+		return redirect()->action('DoctorController@showDrugsForm',['id'=>\Auth::user()->doctor->id,'prescription_id'=>$prescription->id]);
+	}
+
+	public function updatePrescription(Request $request){
+		$rules = [
+			'condition' => ['date_format:H:i','required'],
+			'notes' => ['string','nullable'],
+			'drugName' => ['string','required'],
+			'dose' => ['string','required'],
+        ];
+		
+		$this->validate($request, $rules);
+
+        $prescription = Prescription::find($request->input('prescription_id'));
+		$prescription->notes = $request->input('notes');
+		$prescription->condition = $request->input('condition');
+		$prescription->save();
+
+		dd($request->input('drugName'));
+		
+		return redirect()->action('DoctorController@showDrugsForm',['id'=>\Auth::user()->doctor->id,'prescription_id'=>$prescription->id]);
+	}
+
+	public function showDrugsForm(Request $request,$id,$prescription_id){
+		$noOfDrugs = $request->session()->get('noOfDrugs');
+		return view('doctor.addDrugs',[
+			'prescription_id' => $prescription_id,
+			'noOfDrugs' => $noOfDrugs,
+		]);
+	}
+	public function addDrugs(Request $request){
+		dd($request->all());
+	}
+
+	public function showLabAppointmentForm($id,$appointment_id){
+		$prescription_id = Prescription::where('doctor_appointment_id',$appointment_id)->first()->id;
+		$doctorAppointment = DoctorAppointment::find($appointment_id);
+		$patient_id = $doctorAppointment->patient->id;
+		$tests = LabTest::all();
+		$helpingStaffs = HelpingStaff::where('role','ls')->get();
+
+		return view('doctor.labAppointmentForm',[
+			'prescription_id' => $prescription_id,
+			'tests' => $tests,
+			'patient_id' => $patient_id,
+			'appointment_id' => $appointment_id,
+			'helpingStaffs' => $helpingStaffs,
+			'doctor_id' => $id,
+		]);
+	}
+
+	public function addAppointment($id){
+		$patient = Patient::all();
+		return view('doctor.appointment',
+			[
+				'patient' => $patients,
+			]
+		);
+	}
+	public function showAppointment($id,$appointment_id){
+		$patient = Patient::all();
+		$appointment = DoctorAppointment::find($appointment_id);
+		return view('doctor.appointment',
+			[
+				'patient' => $patients,
+				'docAppointment' => $appointment
+			]
+		);
+	}
+
+	public function updateAppointment(Request $request){
+		$rules = [
+			'appointmentTime' => ['date_format:H:i'],
+			'appointmentDate' => ['date_format:Y-m-d'],
+			'notes' => ['string','nullable'],
+		];
+		
+		$this->validate($request, $rules);
+
+		$fomratted_start_date = Carbon::parse($request->input('appointmentDate') . $request->input('appointmentTime'));
+
+		$appointment = DoctorAppointment::find($request->input('appointment_id'));
+		$appointment->time = $fomratted_start_date;
+		$appointment->notes = $request->input('notes');
+		$appointment->save();
+
+		return redirect()->action('DoctorController@index');
+	}
+
 	public function patientInfo(){
 		return view('doctor.patientInfo');
 	}

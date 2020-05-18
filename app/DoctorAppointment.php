@@ -17,4 +17,7 @@ class DoctorAppointment extends Model
     {
         return $this->belongsTo('App\Doctor');
 	}
+	public function bill(){
+		return $this->hasOne('App\Bill');
+	}
 }

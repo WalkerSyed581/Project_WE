@@ -15,9 +15,9 @@ class CreatePatientsTable extends Migration
     {
         Schema::create('patients', function (Blueprint $table) {
 			$table->id();
-			$table->unsignedInteger('user_id')->unique();
 			$table->string('emergencey_contact',11)->nullable(true);
-            $table->timestamps();
+			$table->timestamps();
+			$table->foreignId('user_id')->constrained()->onDelete('cascade')->unique();
         });
     }
 

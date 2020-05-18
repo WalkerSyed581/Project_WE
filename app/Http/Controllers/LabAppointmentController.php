@@ -36,7 +36,35 @@ class LabAppointmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rules = [
+			'appointmentTime' => ['date_format:H:i'],
+			'appointmentDate' => ['date_format:Y-m-d'],
+			'notes' => ['string','nullable'],
+			'helping_staff_id' => ['required','integer'],
+			'lab_test_id' => ['required','integer'],
+        ];
+		$this->validate($request, $rules);
+
+
+		$fomratted_start_date = Carbon::parse($request->input('appointmentDate') . $request->input('appointmentTime'));
+		
+        $appointment = DoctorAppointment::create([
+			'patient_id' =>(int) $request->input('patient_id'),
+			'prescription_id' =>(int) $request->input('prescription_id'),
+			'helping_staff_id' => (int) $request->input('helping_staff_id'),
+			'lab_test_id' => (int) $request->input('lab_test_id'),
+			'time' => $fomratted_start_date->toDateTimeString(),
+			'notes' => $request->input('notes'),
+			'cancelled' => 0,
+			'approved' => 0,
+		]);
+		
+		$bill = Bill::create([
+			'patient_id' => (int) $request->input('patient_id'),
+			'lab_appointment_id' => $appointment->id,
+		]);
+		
+		return redirect()->action('DoctorController@viewPrescription',['id'=>(int) $request->input('doctor_id'),'prescription_id'=>(int) $request->input('prescription_id')]);
     }
 
     /**
@@ -81,7 +109,11 @@ class LabAppointmentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $appointment = LabAppointment::where('id',$id)->first();
+		$appointment->cancelled = true;
+		$appointment->save();
+
+		return redirect()->action('DoctorController@index');
 	}
 	
 	public function showLabReport($id,$labAppointment_id){

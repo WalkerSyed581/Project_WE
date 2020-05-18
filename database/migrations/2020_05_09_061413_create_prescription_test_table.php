@@ -15,8 +15,8 @@ class CreatePrescriptionTestTable extends Migration
     {
         Schema::create('prescription_test', function (Blueprint $table) {
 			$table->id();
-			$table->unsignedBigInteger('prescription_id');
-			$table->unsignedBigInteger('test_id');
+			$table->foreignId('prescription_id')->constrained()->onDelete('cascade');
+			$table->foreignId('test_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

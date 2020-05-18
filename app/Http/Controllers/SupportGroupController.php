@@ -13,7 +13,10 @@ class SupportGroupController extends Controller
      */
     public function index()
     {
-        //
+		$supportGroups = SupporGroup::where('support_group_conductor_id',\Auth::user()->supportGroupConductor->id)->get();
+		return view('sgc.index',[
+			'supportGroups' => $supportGroups,
+		]);
     }
 
     /**
@@ -84,5 +87,14 @@ class SupportGroupController extends Controller
 	
 	public function addUser($user_id){
 
+	}
+
+	public function members($conductor_id,$supportGroup_id){
+		$supportGroup = SupportGroup::find($supportGroup_id);
+		$patients = $supportGroup->patients;
+		return view('sgc.members',[
+			'patients' => $patients,
+			'supportGroup' =>$supportGroup,
+		]);
 	}
 }

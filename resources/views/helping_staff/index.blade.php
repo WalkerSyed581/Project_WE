@@ -1,59 +1,114 @@
-@extends('layouts.app') 
+@extends('layouts.app')
 
-<!--{% block content %}-->
 @section('content')
-@extends('inc/_mid-cover.html') 
-{<!--% include 'partials/_mid-cover.html' %}-->
+<div class="docHeader">
+    <h1>Mr. {{Auth::user()->name}}'s Dashboard</h1>
+</div>
+<div class="mainContent docContent">
+    <article>
+		@if($role == 'rc')
+        <h2>Upcoming Appointments</h2>
+        <section class="cards upcoming-appointments">
+			@if($docAppointments)
+                @foreach( $docAppointments as $docAppointment)
+                <div class="card appointment">
+						
+                            <h3>Patient's Name: {{$docAppointment->patient->user->name}}</h3>
+                            <div class="appointment-content">
+                                <div class="appointment-text">
+									<p>Patient's Age: {{$docAppointment->patient->user->age}}</p>
+									@if($docAppointment->notes)
+										<p>Ailment Notes: {{$docAppointment->notes}}</p>
+									@endif
+                                    <span>Time and Date: {{$docAppointment->time}}</span>
+                                </div>
+                                <div class="actionable">
+									<a class="btn btn-danger" href="{{action('DoctorController@showAppointment',['id'=>\Auth::user()->doctor->id,'appointment_id'=> $docAppointment->id])}}">
+										@if($docAppointment->approved)
+											Cancel
+										@else
+											Approve
+										@endif
+									</a>
+                                </div>
+                            </div>
+                </div>
+				@endforeach
+			@else
+                <p>No Upcoming Doctor Appointments</p>
+            @endif    
+		</section>
+		@elseif($role == 'ls')
+			<h2>Upcoming Lab's Appointments</h2>
+			<section class="cards upcoming-appointments">
+				@if($labAppointments)
+					@foreach($labAppointments as $labAppointment)
+					<div class="card appointment">
+						<div class="appointment-content">
+							<div class="appointment-text">
+								<p>Time and Date: {{$labAppointment->time}}</p>
+								<p>Test: {{$labAppointment->labTest->name}}</p>
+							</div>
+							<div class="actionable">
+								<a class="btn btn-danger" href="{{action('HelpingStaffController@showLabAppointment',['id'=>\Auth::user()->helpingStaff->id,'labAppointment_id'=>$labAppointment->id])}}">
+									@if($labAppointment->approved)
+										Cancel
+									@else
+										Approve
+									@endif
+								</a>
+							</div>
+						</div>
+					</div>
+					@endforeach
+				@else
+					<p>No Upcoming Lab Appointments</p>
+				@endif
+			</section>
+			<h2>Previous Lab Appointments</h2>
+			<section class="cards upcoming-appointments">
+				@if($prevLabAppointments)
+					@foreach($prevLabAppointments as $labAppointment)
+					<div class="card appointment">
+						<div class="appointment-content">
+							<div class="appointment-text">
+								<p>Time and Date: {{$labAppointment->time}}</p>
+								<p>Test: {{$labAppointment->labTest->name}}</p>
+							</div>
+							<div class="actionable">
+								<a class="btn btn-danger" href="{{action('HelpingStaffController@addLabReport',['id'=>\Auth::user()->helpingStaff->id,'labAppointment_id'=>$labAppointment->id])}}">Add Lab Report</a>
+							</div>
+						</div>
+					</div>
+					@endforeach
+				@else
+					<p>No Previous Lab Appointments</p>
+				@endif
+			</section>
+		@elseif($role == 'ws')
+			<h2>Current Ward Duties</h2>
+			<section class="cards upcoming-appointments">
+				@if($duties)
+					@foreach($duties as $duty)
+					<div class="card appointment">
+						<div class="appointment-content">
+							<div class="appointment-text">
+								<p>Patient: {{$duty->patient->user->name}}</p>
+								<p>Patient Age: {{$duty->patient->user->age}}</p>
+								<p>Start Date: {{$duty->from_date}}</p>
+								<p>Number of Days: {{$duty->number_of_days}}</p>
+								<p>Ward ID : {{$duty->ward->id}}</p>
+							</div>
+						</div>
+					</div>
+					@endforeach
+				@else
+					<p>No Upcoming Ward Duties</p>
+				@endif
+			</section>
+		@endif
 
-<article class="content helping-staff-content">
-    <section class="duties">
-        <!-- Insert all the duties along with a small check box to submit whether it has been fulfilled-->
-        <div class="duty card">
-            <h3>Duty at Room 32</h3>
-            <p>Doctor's Name (if any): John Doe</p>
-            <p>Patient's Name : John Smith</p>
-            <p>Patient's Prescription: Midazolam</p>
-            <p>Patient's Ailment: Dunno</p>
-            <form method="POST" action="">
-                <div class="form-group form-check">
-                    <!-- Enable this when the time has passed for this duty -->
-                    <input type="checkbox" class="form-check-input disabled" id="medicalHistoryBool">
-                    <label class="form-check-label" for="medicalHistoryBool">Duty Fulfilled</label>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-        </div>
-        <div class="duty card">
-            <h3>Duty at Room 32</h3>
-            <p>Doctor's Name (if any): John Doe</p>
-            <p>Patient's Name : John Smith</p>
-            <p>Patient's Prescription: Midazolam</p>
-            <p>Patient's Ailment: Dunno</p>
-            <form method="POST" action="">
-                <div class="form-group form-check">
-                    <!-- Enable this when the time has passed for this duty -->
-                    <input type="checkbox" class="form-check-input disabled" id="medicalHistoryBool">
-                    <label class="form-check-label" for="medicalHistoryBool">Duty Fulfilled</label>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-        </div>
-        <div class="duty card">
-            <h3>Duty at Room 32</h3>
-            <p>Doctor's Name (if any): John Doe</p>
-            <p>Patient's Name : John Smith</p>
-            <p>Patient's Prescription: Midazolam</p>
-            <p>Patient's Ailment: Dunno</p>
-            <form method="POST" action="">
-                <div class="form-group form-check">
-                    <!-- Enable this when the time has passed for this duty -->
-                    <input type="checkbox" class="form-check-input disabled" id="medicalHistoryBool">
-                    <label class="form-check-label" for="medicalHistoryBool">Duty Fulfilled</label>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-        </div>
-    </section>
-</article>
-<!--{% endblock %}-->
+    </article>
+</div>
 @endsection
+{{--% endblock %--}}

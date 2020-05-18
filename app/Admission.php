@@ -18,4 +18,7 @@ class Admission extends Model
     {
         return $this->belongsTo('App\HelpingStaff');
 	}
+	public function bill(){
+		return $this->hasOne('App\Bill');
+	}
 }

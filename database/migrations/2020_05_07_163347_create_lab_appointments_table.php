@@ -15,10 +15,10 @@ class CreateLabAppointmentsTable extends Migration
     {
         Schema::create('lab_appointments', function (Blueprint $table) {
 			$table->id();
-			$table->unsignedInteger('patient_id');
-			$table->unsignedInteger('helping_staff_id');
-			$table->unsignedInteger('prescription_id');
-			$table->unsignedInteger('lab_test_id');
+			$table->foreignId('patient_id')->constrained()->onDelete('cascade');
+			$table->foreignId('helping_staff_id')->constrained()->onDelete('cascade')->nullable(true);
+			$table->foreignId('prescription_id')->constrained()->onDelete('cascade')->nullable(true);
+			$table->foreignId('lab_test_id')->constrained()->onDelete('cascade')->nullable(true);
 			$table->string('notes',200)->nullable(true);
 			$table->boolean('cancelled')->default(false);
 			$table->boolean('approved')->default(false);

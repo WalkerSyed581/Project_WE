@@ -15,7 +15,7 @@ class CreateSupportGroupsTable extends Migration
     {
         Schema::create('support_groups', function (Blueprint $table) {
 			$table->id();
-			$table->unsignedInteger('support_group_conductor_id');
+			$table->foreignId('support_group_conductor_id')->constrained()->onDelete('SET NULL')->nullable(true);
 			$table->string('name',50)->default('Generic Support Group');
 			$table->time('timing');
 			$table->enum('day', ['Monday', 'Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']);

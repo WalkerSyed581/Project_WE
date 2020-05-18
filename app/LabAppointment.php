@@ -23,4 +23,7 @@ class LabAppointment extends Model
 	public function labReport(){
 		return $this->hasOne('App\LabReport');
 	}
+	public function bill(){
+		return $this->hasOne('App\Bill');
+	}
 }

@@ -5,6 +5,7 @@ use App\User;
 use App\Patient;
 use Carbon\Carbon;
 use App\Drug;
+use App\Bill;
 use App\Doctor;
 use App\Prescription;
 use App\SupportGroup;
@@ -164,9 +165,9 @@ class PatientController extends Controller
 			]
 		);
 	}
-	public function showBill($id){
-        return view('patient.bill');
-	}
+
+	
+
 	public function showSupportGroups($id){
 		$supportGroups = SupportGroup::all();
 		return view('patient.joinSupportGroup',[
@@ -210,6 +211,56 @@ class PatientController extends Controller
 
 		return view('patient.admission',[
 			'admissions' => $admissions,
+		]);
+	}
+
+	private function calculateBill($id){
+		$currentTime = Carbon::now()->toDateTimeString();
+		$bills = Bill::where('patient_id',$id)->get();
+		$patient = Patient::find($id);
+		$supportGroups = $patient->supportGroup->get();
+		$doctorFee = $wardFee = $totalSupportGroupFee = $totalFee=$totalLabFee= $testIndex = $supportGroupFee = 0;
+		$labFee = array();
+		
+		
+		
+
+		foreach($bills as $bill){
+			if($bill->doctorAppointment->id){
+				$doctorfee += $bill->doctorAppointment->doctor->fee;
+			}
+			elseif($bill->labAppointment->id){
+				$labFee[$testIndex]['name'] = $bill->labAppointment->labTest->name;
+				$labFee[$testIndex]['fee'] = $bill->labAppointment->labTest->fee;
+				$totalLabFee += $labFee[$testIndex]['fee'];
+				$testIndex++;
+			}
+			elseif($bill->admission->id){
+				$wardFee += $bill->admission->ward->capacity * $bill->admission->number_of_days;
+			}
+		}
+		
+		foreach($supportGroups as $supportGroup){
+			$totalSupportGroupFee += $supportGroup->fee;
+		}
+		dd($labFee);
+
+		$totalFee = $wardFee + $totalLabFee + $totalSupportGroupFee + $doctorFee;
+		return [
+			"doctorFee"=> $doctorFee,
+			"wardFee" => $wardFee,
+			"testFees"=>$labFee,
+			"totalTestFee"=>$totalLabFee,
+			"supportGroupFee"=>$totalSupportGroupFee,
+			"totalFee"=> $totalFee,
+		];
+		
+	}
+
+	public function showBill($id){
+		$fees = $this->calculateBill($id);
+		return view('patient.bill',[
+			'fees'=>$fees,
 		]);
 	}
 }

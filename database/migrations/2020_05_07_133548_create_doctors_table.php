@@ -15,13 +15,13 @@ class CreateDoctorsTable extends Migration
     {
         Schema::create('doctors', function (Blueprint $table) {
 			$table->id();
-			$table->unsignedInteger('user_id')->unique();
 			$table->dateTime('joining_date', 0);
 			$table->unsignedInteger('salary');
 			$table->string('specialization',100)->nullable(true);
 			$table->unsignedInteger('fee')->default(0);
 			$table->time('starting_time',0);
 			$table->time('end_time', 0);
+			$table->foreignId('user_id')->constrained()->onDelete('cascade')->unique();
 			$table->timestamps();
         });
     }

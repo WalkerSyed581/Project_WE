@@ -15,8 +15,8 @@ class CreatePatientSupportGroupTable extends Migration
     {
         Schema::create('patient_support_group', function (Blueprint $table) {
 			$table->id();
-			$table->unsignedBigInteger('support_group_id');
-			$table->unsignedBigInteger('patient_id');
+			$table->foreignId('support_group_id')->constrained()->onDelete('cascade');
+			$table->foreignId('patient_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

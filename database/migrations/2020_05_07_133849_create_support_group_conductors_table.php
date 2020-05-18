@@ -15,7 +15,7 @@ class CreateSupportGroupConductorsTable extends Migration
     {
         Schema::create('support_group_conductors', function (Blueprint $table) {
 			$table->id();
-			$table->unsignedInteger('user_id')->unique();
+			$table->foreignId('user_id')->constrained()->onDelete('cascade')->unique();
 			$table->dateTime('joining_date', 0);
 			$table->unsignedInteger('salary');
 			$table->rememberToken();

@@ -23,36 +23,65 @@ Route::middleware(['auth','role:p'])->group(function () {
 	Route::get('/patient/{id}/appointmentForm','PatientController@showAppointmentForm');
 	Route::post('/patient/addAppointment','DoctorAppointmentController@store');
 	Route::get('/patient/removeDoctorAppointment/{id}','DoctorAppointmentController@destroy');
-	Route::get('/patient/removeLabAppointment/{id}','LabAppointmentController@destroy'); //To be done i.e. does not work
+	Route::get('/patient/removeLabAppointment/{id}','LabAppointmentController@destroy');
 	Route::get('/patient/{id}/supportGroupList','PatientController@showSupportGroups');
 	Route::get('/patient/{id}/joinSupportGroup/{supportGroup_id}','PatientController@joinSupportGroup');
 	Route::get('/patient/{id}/leaveSupportGroup/{supportGroup_id}','PatientController@leaveSupportGroup');	
 
 	//Links to be added to the sidebar according to site design
 	Route::get('/patient/{id}/labReport/{labAppointment_id}','LabAppointmentController@showLabReport');
-	Route::get('/patient/{id}/{appointment_id}/prescription','PatientController@showPrescription');
+	Route::get('/patient/{id}/prescription/{appointment_id}','PatientController@showPrescription');
 	Route::get('/patient/{id}/appointmentArchive','PatientController@appoinmentArchive');
 	Route::get('/patient/{id}/currentAdmission','PatientController@showCurrentAdmission');
 	Route::get('/patient/{id}/allAdmissions','PatientController@showAllAdmissions');
-	Route::get('/patient/{id}/bill','PatientController@showBill'); //To Be Done
+	Route::get('/patient/{id}/bill','PatientController@showBill');
 
 
 	
 });
+
 
 Route::middleware(['auth','role:d'])->group(function () {
 	Route::get('/doctor','DoctorController@index');
-	// Route::get('/patient','DoctorController@getAppointment');
-	// Route::get('/patient','DoctorController@showBill');
+	Route::get('/doctor/{id}/approveAppointment/{appointment_id}','DoctorAppointmentController@approveAppointment');
+	
+	Route::get('/doctor/{id}/viewPrescription/{appointment_id}','DoctorController@viewPrescription');
+	Route::post('/doctor/addPrescription','DoctorController@addPrescription');
+	Route::post('/doctor/updatePrescription','DoctorController@updatePrescription');
+
+	Route::get('/doctor/{id}/addDrugs/{prescription_id}','DoctorController@showDrugsForm');
+	Route::post('/doctor/addDrugs','DoctorController@addDrugs');
+
+	Route::get('/doctor/{id}/addLabAppointment/{appointment_id}','DoctorController@showLabAppointmentForm');
+	Route::post('/doctor/addLabAppointment','LabAppointmentController@store');
+
+	Route::get('/doctor/{id}/doctorAppointment','DoctorController@addAppointment');
+	Route::get('/doctor/{id}/doctorAppointment/{appointment_id}','DoctorController@showAppointment');
+	Route::post('/doctor/addDoctorAppointment','DoctorAppointmentController@store');
+
+
+
+});
+Route::middleware(['auth','role:hs,d'])->group(function () {
+	Route::post('/doctor/updateDoctorAppointment','DoctorController@updateAppointment');
 });
 
-
 Route::middleware(['auth','role:hs'])->group(function () {
-	Route::get('/doctor','DoctorController@index');
+	Route::get('/helpingStaff','HelpingStaff@index');
+
+	Route::get('/helpingStaff/{id}/labReport/{labAppointment_id}','HelpingStaffController@addLabReport');
+	Route::post('/helpingStaff/updateLabReport','HelpingStaffController@updateLabReport');
+	Route::post('/helpingStaff/addLabReport','HelpingStaffController@storeLabReport');
+
+
+	Route::get('/helpingStaff/{id}/labAppointment/{labAppointment_id}','HelpingStaffController@showLabAppointment');
+	Route::post('/helpingStaff/labAppointment','HelpingStaffController@updateLabAppointment');
+	
 });
 
 Route::middleware(['auth','role:sgc'])->group(function () {
-	
+	Route::get('/sgc','SupportGroupController@index');
+	Route::get('/sgc/{conductor_id}/supportGroup/{supportGroup_id}/members','SupportGroupController@members');
 });
 
 Route::middleware(['auth','role:a'])->group(function () {

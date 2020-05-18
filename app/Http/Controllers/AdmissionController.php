@@ -34,7 +34,33 @@ class AdmissionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rules = [
+			'appointmentTime' => ['date_format:H:i'],
+			'appointmentDate' => ['date_format:Y-m-d'],
+			'notes' => ['string','nullable'],
+			'doctor_id' => ['required','integer'],
+			'cancelled' => ['boolean','required'],
+        ];
+		$this->validate($request, $rules);
+
+
+		$fomratted_start_date = Carbon::parse($request->input('appointmentDate') . $request->input('appointmentTime'));
+		
+        $admission = Admission::create([
+			'patient_id' => \Auth::user()->patient->id,
+			'doctor_id' => (int) $request->input('doctor_id'),
+			'time' => $fomratted_start_date->toDateTimeString(),
+			'notes' => $request->input('notes'),
+			'cancelled' => (int) $request->input('cancelled'),
+			'approved' => 0,
+		]);
+		
+		$bill = Bill::create([
+			'patient_id' => \Auth::user()->patient->id,
+			'admission_id' => $admission->id,
+		]);
+		
+		return redirect()->action('PatientController@index');
     }
 
     /**

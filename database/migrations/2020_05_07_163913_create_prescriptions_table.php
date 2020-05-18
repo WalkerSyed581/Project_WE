@@ -15,7 +15,7 @@ class CreatePrescriptionsTable extends Migration
     {
         Schema::create('prescriptions', function (Blueprint $table) {
 			$table->id();
-			$table->unsignedInteger('doctor_appointment_id');
+			$table->foreignId('doctor_appointment_id')->constrained()->onDelete('cascade');
 			$table->string('condition',200);
 			$table->string('notes',400)->nullable(true);
             $table->timestamps();

@@ -15,9 +15,9 @@ class CreateAdmissionsTable extends Migration
     {
         Schema::create('admissions', function (Blueprint $table) {
 			$table->id();
-			$table->unsignedInteger('ward_id');
-			$table->unsignedInteger('patient_id');
-			$table->unsignedInteger('helping_staff_id');
+			$table->foreignId('ward_id')->constrained()->onDelete('cascade');
+			$table->foreignId('patient_id')->constrained()->onDelete('cascade');
+			$table->foreignId('helping_staff_id')->constrained()->onDelete('cascade');
 			$table->dateTime('from_date', 0);
 			$table->unsignedInteger('number_of_days')->default(1);
 			$table->boolean('discharged')->default(false);

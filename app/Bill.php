@@ -10,12 +10,12 @@ class Bill extends Model
 		return $this->belongsTo('App\Patient');
 	}
 	public function doctorAppointment(){
-		return $this->hasOne('App\DoctorAppointment');
+		return $this->belongsTo('App\DoctorAppointment');
 	}
 	public function labAppointment(){
-		return $this->hasOne('App\LabAppointment');
+		return $this->belongsTo('App\LabAppointment');
 	}
 	public function admission(){
-		return $this->hasOne('App\Admission');
+		return $this->belongsTo('App\Admission');
 	}
 }

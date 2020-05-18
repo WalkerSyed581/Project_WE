@@ -15,13 +15,13 @@ class CreateDoctorAppointmentsTable extends Migration
     {
         Schema::create('doctor_appointments', function (Blueprint $table) {
 			$table->id();
-			$table->unsignedInteger('patient_id');
-			$table->unsignedInteger('doctor_id');
 			$table->string('notes',200)->nullable(true);
 			$table->boolean('cancelled')->default(false);
 			$table->boolean('approved')->default(false);
 			$table->dateTime('time',0);
-            $table->timestamps();
+			$table->timestamps();
+			$table->foreignId('patient_id')->constrained()->onDelete('cascade');
+			$table->foreignId('doctor_id')->constrained()->onDelete('cascade');
         });
     }
 
