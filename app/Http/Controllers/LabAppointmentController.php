@@ -113,7 +113,11 @@ class LabAppointmentController extends Controller
 		$appointment->cancelled = true;
 		$appointment->save();
 
-		return redirect()->action('PatientController@index');
+		if(\Auth::user()->role == 'p'){
+			return redirect()->action('PatientController@index');
+		} elseif (\Auth::user()->role == 'd'){
+			return redirect()->action('DoctorController@index');
+		}
 	}
 	
 	public function showLabReport($id,$labAppointment_id){

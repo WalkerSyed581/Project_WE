@@ -15,7 +15,8 @@ class CreateDrugsTable extends Migration
     {
         Schema::create('drugs', function (Blueprint $table) {
 			$table->id();
-			$table->foreignId('prescription_id')->constrained()->onDelete('cascade');
+			$table->unsignedInteger('prescription_id');
+			$table->foreign('prescription_id')->references('id')->on('prescriptions')->onDelete('cascade')->onUpdate('cascade');
 			$table->string('name',100);
 			$table->string('dose',100);
             $table->timestamps();

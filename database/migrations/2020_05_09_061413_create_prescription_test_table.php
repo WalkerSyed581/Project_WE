@@ -15,8 +15,12 @@ class CreatePrescriptionTestTable extends Migration
     {
         Schema::create('prescription_test', function (Blueprint $table) {
 			$table->id();
-			$table->foreignId('prescription_id')->constrained()->onDelete('cascade');
-			$table->foreignId('test_id')->constrained()->onDelete('cascade');
+			$table->unsignedInteger('prescription_id');
+			$table->foreign('prescription_id')->references('id')->on('prescriptions')->onDelete('cascade')->onUpdate('cascade');
+
+			$table->unsignedInteger('lab_test_id');
+			$table->foreign('lab_test_id')->references('id')->on('lab_tests')->onDelete('cascade')->onUpdate('cascade');
+
             $table->timestamps();
         });
     }

@@ -15,10 +15,14 @@ class CreateLabAppointmentsTable extends Migration
     {
         Schema::create('lab_appointments', function (Blueprint $table) {
 			$table->id();
-			$table->foreignId('patient_id')->constrained()->onDelete('cascade');
-			$table->foreignId('helping_staff_id')->constrained()->onDelete('cascade')->nullable(true);
-			$table->foreignId('prescription_id')->constrained()->onDelete('cascade')->nullable(true);
-			$table->foreignId('lab_test_id')->constrained()->onDelete('cascade')->nullable(true);
+			$table->unsignedInteger('patient_id');
+			$table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade')->onUpdate('cascade');
+			$table->unsignedInteger('helping_staff_id')->nullable(true);
+			$table->foreign('helping_staff_id')->references('id')->on('helping_staffs')->onDelete('SET NULL')->onUpdate('cascade');
+			$table->unsignedInteger('prescription_id')->nullable(true);
+			$table->foreign('prescription_id')->references('id')->on('prescriptions')->onDelete('cascade')->onUpdate('cascade');
+			$table->unsignedInteger('lab_test_id')->nullable(true);
+			$table->foreign('lab_test_id')->references('id')->on('lab_tests')->onDelete('SET NULL')->onUpdate('cascade');
 			$table->string('notes',200)->nullable(true);
 			$table->boolean('cancelled')->default(false);
 			$table->boolean('approved')->default(false);

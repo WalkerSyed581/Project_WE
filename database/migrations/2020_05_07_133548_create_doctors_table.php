@@ -21,7 +21,8 @@ class CreateDoctorsTable extends Migration
 			$table->unsignedInteger('fee')->default(0);
 			$table->time('starting_time',0);
 			$table->time('end_time', 0);
-			$table->foreignId('user_id')->constrained()->onDelete('cascade')->unique();
+			$table->unsignedInteger('user_id')->unique();
+			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 			$table->timestamps();
         });
     }

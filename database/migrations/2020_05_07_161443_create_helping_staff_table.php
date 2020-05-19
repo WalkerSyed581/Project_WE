@@ -25,8 +25,8 @@ class CreateHelpingStaffTable extends Migration
 			*/
 			$table->enum('role', ['ws', 'ls','rc','n'])->default('n'); 
 			$table->timestamps();
-			$table->foreignId('user_id')->constrained()->onDelete('cascade')->unique();
-        });
+			$table->unsignedInteger('user_id')->unique();
+			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');        });
     }
 
     /**

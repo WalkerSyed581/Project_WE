@@ -20,8 +20,11 @@ class CreateDoctorAppointmentsTable extends Migration
 			$table->boolean('approved')->default(false);
 			$table->dateTime('time',0);
 			$table->timestamps();
-			$table->foreignId('patient_id')->constrained()->onDelete('cascade');
-			$table->foreignId('doctor_id')->constrained()->onDelete('cascade');
+			$table->unsignedInteger('patient_id')->unique();
+			$table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade')->onUpdate('cascade');
+			$table->unsignedInteger('doctor_id')->unique();
+			$table->foreign('doctor_id')->references('id')->on('doctors')->onDelete('cascade')->onUpdate('cascade');
+			
         });
     }
 

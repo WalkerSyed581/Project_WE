@@ -17,8 +17,8 @@ class CreatePatientsTable extends Migration
 			$table->id();
 			$table->string('emergencey_contact',11)->nullable(true);
 			$table->timestamps();
-			$table->foreignId('user_id')->constrained()->onDelete('cascade')->unique();
-        });
+			$table->unsignedInteger('user_id')->unique();
+			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');        });
     }
 
     /**

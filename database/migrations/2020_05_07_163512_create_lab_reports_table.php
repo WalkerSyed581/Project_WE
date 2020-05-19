@@ -15,7 +15,8 @@ class CreateLabReportsTable extends Migration
     {
         Schema::create('lab_reports', function (Blueprint $table) {
 			$table->id();
-			$table->foreignId('lab_appointment_id')->constrained()->onDelete('cascade');
+			$table->unsignedInteger('lab_appointment_id')->unique();
+			$table->foreign('lab_appointment_id')->references('id')->on('lab_appointments')->onDelete('cascade')->onUpdate('cascade');
 			$table->text('report_text');
             $table->timestamps();
         });
