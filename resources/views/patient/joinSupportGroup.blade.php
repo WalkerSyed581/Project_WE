@@ -2,7 +2,7 @@
 
 @section('content')
 <main class="loginPage">
-    @if ($supportGroups)
+    @if(!$supportGroups->isEmpty())
         @foreach($supportGroups as $supportGroup)
         <div class="card appointment">
             <h3>Support Group Title: {{$supportGroup->name}}</h3>

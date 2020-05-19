@@ -9,7 +9,7 @@
 		@if($role == 'rc')
         <h2>Upcoming Appointments</h2>
         <section class="cards upcoming-appointments">
-			@if($docAppointments)
+			@if(!$docAppointments->isEmpty())
                 @foreach( $docAppointments as $docAppointment)
                 <div class="card appointment">
 						
@@ -41,7 +41,7 @@
 		@elseif($role == 'ls')
 			<h2>Upcoming Lab's Appointments</h2>
 			<section class="cards upcoming-appointments">
-				@if($labAppointments)
+				@if(!$labAppointments->isEmpty())
 					@foreach($labAppointments as $labAppointment)
 					<div class="card appointment">
 						<div class="appointment-content">
@@ -67,7 +67,7 @@
 			</section>
 			<h2>Previous Lab Appointments</h2>
 			<section class="cards upcoming-appointments">
-				@if($prevLabAppointments)
+				@if(!$prevLabAppointments->isEmpty())
 					@foreach($prevLabAppointments as $labAppointment)
 					<div class="card appointment">
 						<div class="appointment-content">
@@ -85,10 +85,32 @@
 					<p>No Previous Lab Appointments</p>
 				@endif
 			</section>
+			<h2>Lab Tests</h2>
+			<section class="cards upcoming-appointments">
+				@if(!$tests->isEmpty())
+					@foreach($tests as $test)
+					<div class="card appointment">
+						<div class="appointment-content">
+							<div class="appointment-text">
+								<p>Test Name: {{$test->name}}</p>
+								<p>Test Description: {{$test->descsription}}</p>
+								<p>Test Fee: {{$test->fee}}</p>
+							</div>
+							<div class="actionable">
+								<a class="btn btn-danger" href="{{action('HelpingStaffController@showTest',['id'=>\Auth::user()->helpingStaff->id,'test_id'=>$test->id])}}">Edit Test</a>
+							</div>
+						</div>
+					</div>
+					@endforeach
+				@else
+					<p>No Tests Found</p>
+				@endif
+				<a class="btn btn-danger" href="{{action('HelpingStaffController@showTestForm',['id'=>\Auth::user()->helpingStaff->id])}}">Add Test</a>
+			</section>
 		@elseif($role == 'ws')
 			<h2>Current Ward Duties</h2>
 			<section class="cards upcoming-appointments">
-				@if($duties)
+				@if(!$duties->isEmpty())
 					@foreach($duties as $duty)
 					<div class="card appointment">
 						<div class="appointment-content">
@@ -105,6 +127,27 @@
 				@else
 					<p>No Upcoming Ward Duties</p>
 				@endif
+			</section>
+			<h2>Wards</h2>
+			<section class="cards upcoming-appointments">
+				@if(!$wards->isEmpty())
+					@foreach($wards as $ward)
+					<div class="card appointment">
+						<div class="appointment-content">
+							<div class="appointment-text">
+								<p>Ward ID: {{$ward->id}}</p>
+								<p>Ward Capacity: {{$ward->capacity}}</p>
+							</div>
+							<div class="actionable">
+								<a class="btn btn-danger" href="{{action('HelpingStaffController@showWard',['id'=>\Auth::user()->helpingStaff->id,'ward_id'=>$ward->id])}}">Edit Ward</a>
+							</div>
+						</div>
+					</div>
+					@endforeach
+				@else
+					<p>No Wards Found</p>
+				@endif
+				<a class="btn btn-danger" href="{{action('HelpingStaffController@showWardForm',['id'=>\Auth::user()->helpingStaff->id])}}">Add Ward</a>
 			</section>
 		@endif
 

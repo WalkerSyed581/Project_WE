@@ -15,11 +15,16 @@ class CreateBillsTable extends Migration
     {
         Schema::create('bills', function (Blueprint $table) {
 			$table->id();
-			$table->foreignId('patient_id')->constrained()->onDelete('cascade');
-			$table->foreignId('doctor_appointment_id')->constrained()->onDelete('cascade')->nullable(true)->unique();
-			$table->foreignId('lab_appointment_id')->constrained()->onDelete('cascade')->nullable(true)->unique();
-			$table->foreignId('admission_id')->constrained()->onDelete('cascade')->nullable(true)->unique();
-            $table->timestamps();
+			$table->unsignedInteger('patient_id');
+			$table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade')->onUpdate('cascade');
+			$table->unsignedInteger('doctor_appointment_id')->nullable(true)->default(null)->unique();
+			$table->foreign('doctor_appointment_id')->references('id')->on('doctor_appointments')->onDelete('cascade')->onUpdate('cascade');
+			$table->unsignedInteger('lab_appointment_id')->nullable(true)->default(null)->unique();
+			$table->foreign('lab_appointment_id')->references('id')->on('lab_appointments')->onDelete('cascade')->onUpdate('cascade');
+			$table->unsignedInteger('admission_id')->nullable(true)->default(null)->unique();
+			$table->foreign('admission_id')->references('id')->on('admissions')->onDelete('cascade')->onUpdate('cascade');
+			
+			$table->timestamps();
         });
     }
 

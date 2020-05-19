@@ -35,11 +35,9 @@ class AdmissionController extends Controller
     public function store(Request $request)
     {
         $rules = [
-			'appointmentTime' => ['date_format:H:i'],
-			'appointmentDate' => ['date_format:Y-m-d'],
-			'notes' => ['string','nullable'],
-			'doctor_id' => ['required','integer'],
-			'cancelled' => ['boolean','required'],
+			'appointmentTime' => ['date_format:H:i','required'],
+			'appointmentDate' => ['date_format:Y-m-d','required'],
+			'number_of_days' => ['integer','required'],
         ];
 		$this->validate($request, $rules);
 
@@ -47,20 +45,20 @@ class AdmissionController extends Controller
 		$fomratted_start_date = Carbon::parse($request->input('appointmentDate') . $request->input('appointmentTime'));
 		
         $admission = Admission::create([
-			'patient_id' => \Auth::user()->patient->id,
-			'doctor_id' => (int) $request->input('doctor_id'),
-			'time' => $fomratted_start_date->toDateTimeString(),
-			'notes' => $request->input('notes'),
-			'cancelled' => (int) $request->input('cancelled'),
-			'approved' => 0,
+			'patient_id' => (int) $request->input('patient_id'),
+			'ward_id' => (int) $request->input('ward_id'),
+			'helping_staff_id' => (int) $request->input('helping_staff_id'),
+			'from_date' => $fomratted_start_date->toDateTimeString(),
+			'discharged' => (int) $request->input('discharged'),
+			'number_of_days' => (int) $request->input('number_of_days'),
 		]);
 		
 		$bill = Bill::create([
-			'patient_id' => \Auth::user()->patient->id,
+			'patient_id' => (int) $request->input('patient_id'),
 			'admission_id' => $admission->id,
 		]);
 		
-		return redirect()->action('PatientController@index');
+		return redirect()->action('DoctorController@index');
     }
 
     /**
@@ -94,7 +92,27 @@ class AdmissionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+		$rules = [
+			'appointmentTime' => ['date_format:H:i','required'],
+			'appointmentDate' => ['date_format:Y-m-d','required'],
+			'number_of_days' => ['integer','required'],
+        ];
+		$this->validate($request, $rules);
+
+
+		$fomratted_start_date = Carbon::parse($request->input('appointmentDate') . $request->input('appointmentTime'));
+		
+
+
+		$admission = Admission::find($id);
+		$admission->ward_id = (int) $request->input('ward_id');
+		$admission->patient_id = (int) $request->input('patient_id');
+		$admission->from_date = $fomratted_start_date->toDateTimeString();
+		$admission->number_of_days = (int) $request->input('number_of_days');
+		$admission->discharged =  (int) $request->input('discharged');
+		$admission->save();
+		
+		return redirect()->action('HelpingStaff@index');
     }
 
     /**

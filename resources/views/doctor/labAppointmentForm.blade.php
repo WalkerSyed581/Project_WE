@@ -18,8 +18,13 @@
 
                             <div class="col-md-6">
                                 <select id="helping_staff_id" type="text" class="form-control @error('helping_staff_id') is-invalid @enderror" name="helping_staff_id">
-									@foreach($helpingStaff as $helpingStaff)
-										<option value="{{$helpingStaff->id}}">Mr. {{$helpingStaff->user->name}}</option>
+									@foreach($helpingStaffs as $helpingStaff)
+										<option value="{{$helpingStaff->id}}">@if($helpingStaff->user->gender=='f')
+												Miss
+												@else
+												Mr.
+												@endif
+											{{$helpingStaff->user->name}}</option>
 									@endforeach
 								</select>
 								@error('helping_staff_id')

@@ -1,33 +1,33 @@
 @extends('layouts.app')
 @section('content')
 
-<h2>Current Prescriptions</h2>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="card">
-					<div class="card-header">{{ __('Edit/Add Prescription') }}</div>
+					<div class="card-header">{{ __('Add Drugs') }}</div>
 					<div class="card-body">
-						<h3>Patient's Name: {{$patient->user->name}}</h3>
 						<div class="appointment-content">
 							<div class="appointment-text">
 								<form method="POST" action="/doctor/addDrugs">
 									@csrf
 									<input id="prescription_id" name="prescription_id" type="hidden" value={{$prescription_id}}>
+									<input id="number_of_drugs" name="number_of_drugs" type="hidden" value={{$noOfDrugs}}>
+									<input id="doctor_id" name="doctor_id" type="hidden" value={{$doctor_id}}>
 
-									@for (; $noOfDrugs != 0;$noOfDrugs--)
+									@for($i=0; $i < $noOfDrugs;$i++)
 										<div class="form-row">
 											<div class="form-group col-md-6">
 												<label for="drugName">Drug Name</label>
-												<input type="text" class="form-control drugName" name="drugName">
-												@error('drugName')
+												<input type="text" class="form-control drugName" name="drugName{{$i}}">
+												@error('drugName{{$i}}')
 													<div class="alert alert-danger">{{ $message }}</div>
 												@enderror
 											</div>
 											<div class="form-group col-md-6">
 												<label for="dose">Dose</label>
-												<input type="text" class="form-control dose" name="dose">
-												@error('dose')
+												<input type="text" class="form-control dose" name="dose{{$i}}">
+												@error('dose{{$i}}')
 													<div class="alert alert-danger">{{ $message }}</div>
 												@enderror
 											</div>
@@ -45,13 +45,8 @@
 							</div>
 						</div>
 					</div>
-				@endif
 			</div>
 		</div>
-		@if($prescription)
-			<a class="btn btn-danger" href="{{action('DoctorController@addLabAppointment',['patient_id'=> $patient->id,'prescription_id'=> $prescription->id])}}">View Prescription</a>
-		@endif
 	</div>
 </div>
-<script src="{{ asset('js/addDrugs.js') }}" defer></script>
 @endsection

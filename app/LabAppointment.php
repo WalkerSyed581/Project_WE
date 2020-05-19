@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class LabAppointment extends Model
 {
+	protected $fillable = [
+        'patient_id', 'helping_staff_id','prescription_id','lab_test_id', 'time','notes','cancelled','approved',
+    ];
     public function user()
     {
         return $this->belongsTo('App\User');

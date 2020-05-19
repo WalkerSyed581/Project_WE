@@ -7,11 +7,11 @@
 
 <div class="mainContent patientContent">
     <article>
-        <a  href=" {{action('PatientController@showBill',['id'=>Auth::user()->id])}}" class="btn btn-danger">Show Bill</a>
+        <a  href=" {{action('PatientController@showBill',['id'=>Auth::user()->patient->id])}}" class="btn btn-danger">Show Bill</a>
 
-        <h2>Upcoming Doctor's Appointments</h2>
+        <h2>Previous Doctor's Appointments</h2>
         <section class="cards upcoming-appointments">
-            @if($docAppointments)
+            @if(!$docAppointments->isEmpty())
                 @foreach( $docAppointments as $docAppointment)
                 <div class="card appointment">
 						
@@ -25,21 +25,20 @@
                                     <span>Time and Date: {{$docAppointment->time}}</span>
                                 </div>
                                 <div class="actionable">
-                                    <a class="btn btn-danger" href="{{action('DoctorAppointmentController@destroy',['id'=>$docAppointment->id])}}">Cancel</a>
+                                    <a class="btn btn-danger" href="{{action('PatientController@showPrescription',['id'=>\Auth::user()->patient->id,'appointment_id'=>$docAppointment->id])}}">View Prescription</a>
                                 </div>
                             </div>
                 </div>
                 @endforeach
             @else
-                <p>No Upcoming Appointments</p>
+                <p>No Doctor Appointments Found</p>
                 
             @endif 
-            <a href="{{action('PatientController@showAppointmentForm',['id'=>Auth::user()->id])}}" class="btn btn-danger addAppointment">Add New Appointment</a>
         </section>
 
-        <h2>Upcoming Lab's Appointments</h2>
+        <h2>Previous Lab's Appointments</h2>
         <section class="cards upcoming-appointments">
-            @if($labAppointments)
+            @if(!$labAppointments->isEmpty())
                 @foreach($labAppointments as $labAppointment)
                 <div class="card appointment">
 					<h3>Conductor's Name: {{$labAppointment->helpingStaff->user->name}}</h3>
@@ -48,13 +47,13 @@
 							<span>Time and Date: {{$labAppointment->time}}</span>
 						</div>
 						<div class="actionable">
-							<a class="btn btn-danger" href="{{action('LabAppointmentController@destroy',['id'=>$docAppointment->id])}}">Cancel</a>
+							<a class="btn btn-danger" href="#">Show Lab Report</a>{{-- ADD Functionality--}}
 						</div>
 					</div>
                 </div>
                 @endforeach
             @else
-                <p>No Upcoming Lab Appointments</p>
+                <p>No Lab Appointments Found</p>
             @endif
         </section>      
     </article>

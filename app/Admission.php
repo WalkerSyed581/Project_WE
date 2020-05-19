@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Admission extends Model
 {
+	protected $fillable = [
+        'ward_id', 'patient_id', 'helping_staff_id','from_date','number_of_days','discharged',
+    ];
     public function ward()
     {
         return $this->belongsTo('App\Ward');

@@ -9,9 +9,9 @@ class DoctorAppointment extends Model
 	protected $fillable = [
         'patient_id', 'doctor_id', 'time','notes','cancelled','approved',
     ];
-	public function user()
+	public function patient()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\Patient');
 	}
 	public function doctor()
     {
@@ -20,4 +20,8 @@ class DoctorAppointment extends Model
 	public function bill(){
 		return $this->hasOne('App\Bill');
 	}
+	public function prescription()
+    {
+        return $this->hasOne('App\Prescription');
+    }
 }

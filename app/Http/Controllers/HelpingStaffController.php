@@ -8,6 +8,7 @@ use App\User;
 use App\DoctorAppointment;
 use App\Admission;
 use App\LabTest;
+use App\Ward;
 use App\LabAppointment;
 use App\LabReport;
 use Carbon\Carbon;
@@ -22,7 +23,7 @@ class HelpingStaffController extends Controller
     public function index()
     {
 		$helpingStaff = HelpingStaff::find(\Auth::user()->helpingStaff->id);
-		$labAppointments = $duties = $docAppointments = $prevLabAppointments = [];
+		$labAppointments = $duties = $docAppointments = $prevLabAppointments = $tests = $wards = [];
 		$currentTime = Carbon::now()->toDateTimeString();
 
 		if($helpingStaff->role == 'ls'){
@@ -38,12 +39,15 @@ class HelpingStaffController extends Controller
 				['time','<=',$currentTime],
 			])->get();
 
+			$tests = LabTest::all();
+
 		} elseif($helpingStaff->role =='ws') {
 
 			$duties = $helpingStaff->admissions()->where([
 				['discharged','=',false],
 			])->get();
 
+			$wards = Ward::all();
 			
 		} elseif($helpingStaff->role =='rc'){
 
@@ -54,10 +58,12 @@ class HelpingStaffController extends Controller
 
 		}
 
-		return view('helpingStaff.index',[
+		return view('helping_staff.index',[
 			'labAppointments' => $labAppointments,
 			'prevLabAppointments' => $prevLabAppointments,
 			'duties' => $duties,
+			'tests' => $tests,
+			'wards' => $wards,
 			'docAppointments' => $docAppointments,
 			'role' => \Auth::user()->helpingStaff->role,
 		]);
@@ -146,7 +152,7 @@ class HelpingStaffController extends Controller
 	
 	public function addLabReport($id,$labAppointment_id){
 		$labReport = LabReport::where('lab_appointment_id',$labAppointment_id)->first();
-		return view('helpingStaff.labReport',[
+		return view('helping_staff.labReport',[
 			'labReport' => $labReport,
 			'labAppointment_id' => $labAppointment_id,
 		]);
@@ -178,7 +184,7 @@ class HelpingStaffController extends Controller
 	public function showLabAppointment($id,$labAppointment_id){
 		$labAppointment = LabAppointment::find($labAppointment_id);
 		$tests = LabTest::all();
-		return view('helpingStaff.labAppointment',[
+		return view('helping_staff.labAppointment',[
 			'labAppointment' => $labAppointment,
 			'tests' => $tests,
 		]);
@@ -203,4 +209,105 @@ class HelpingStaffController extends Controller
 
 		return redirect()->action('HelpingStaff@index');
 	}
+
+	public function showAdmitForm($id,$admission_id){
+		$admission = Admission::find($admission_id);
+		if(!$admission){
+			return redirect()->action('HelpingStaff@index');
+		}
+		$patients = Patient::all();
+		$wards = Ward::all();
+		return view('doctor.admission',[
+			'admission' => $admission,
+			'patients' => $patients,
+			'wards' => $wards,
+		]);
+	}
+
+	public function showWardForm($id){
+		$ward = [];
+		return view('helping_staff.viewWard',[
+			'ward' => $ward,
+			'helping_staff_id' => $id,
+		]);
+	}
+	public function storeWard(Request $request){
+		$rules= [
+			'capacity' => ['integer','required'],
+		];
+		$this->validate($request,$rules);
+
+		$ward = Ward::create([
+			'capacity' => $request->input('capacity'),
+		]);
+
+		return redirect()->action('HelpingStaffController@index');
+	}
+	public function showWard($id,$ward_id){
+		$ward = Ward::find($ward_id);
+		return view('helping_staff.viewWard',[
+			'ward' => $ward,
+			'helping_staff_id' => $id,
+		]);
+	}
+	public function updateWard(Request $request){
+		$rules= [
+			'capacity' => ['integer','required'],
+		];
+		$this->validate($request,$rules);
+
+		$ward = Ward::find($request->input('ward_id'));
+		$ward->capacity =  $request->input('capacity');
+		$ward->save();
+
+		return redirect()->action('HelpingStaffController@index');
+	}
+
+	public function showTestForm($id){
+		$test = [];
+		return view('helping_staff.viewTest',[
+			'test' => $test,
+			'helping_staff_id' => $id,
+		]);
+	}
+	public function storeTest(Request $request){
+		$rules= [
+			'name' => ['string','required'],
+			'fee' => ['integer','required'],
+			'description' => ['string','required'],
+		];
+		$this->validate($request,$rules);
+
+		$test = LabTest::create([
+			'name' => $request->input('name'),
+			'fee' => $request->input('fee'),
+			'description' => $request->input('description'),
+		]);
+
+		return redirect()->action('HelpingStaffController@index');
+	}
+	public function showTest($id,$test_id){
+		$test = LabTest::find($test_id);
+		return view('helping_staff.viewTest',[
+			'test' => $test,
+			'helping_staff_id' => $id,
+		]);
+	}
+	public function updateTest(Request $request){
+		$rules= [
+			'name' => ['string','required'],
+			'fee' => ['integer','required'],
+			'description' => ['string','required'],
+		];
+		$this->validate($request,$rules);
+
+		$test = LabTest::find($request->input('test_id'));
+		$test->name =  $request->input('name');
+		$test->fee = $request->input('fee');
+		$test->description = $request->input('description');
+		$test->save();
+
+		return redirect()->action('HelpingStaffController@index');
+	}
 }
+

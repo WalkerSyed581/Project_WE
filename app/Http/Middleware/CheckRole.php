@@ -25,13 +25,13 @@ class CheckRole
 					return redirect()->action('DoctorController@index');
 					break;
 				case 'hs':
-
+					return redirect()->action('HelpingStaffController@index');
 					break;
 				case 'sgc':
-
+					return redirect()->action('SupportGroupController@index');
 					break;
 				case 'a':
-
+					return redirect()->action('AdminController@index');
 					break;
 				default:
 					return redirect()->action('PagesController@home');

@@ -119,7 +119,6 @@ class PatientController extends Controller
 		])->get();
 		$supportGroups = $patient->supportGroups()->get();
 
-		
         return view('patient.index',[
 			'docAppointments' => $docAppointments,
 			'labAppointments' => $labAppointments,
@@ -147,9 +146,12 @@ class PatientController extends Controller
 	}
 	public function showPrescription($id,$appointment_id){
 		$prescription = Prescription::where('doctor_appointment_id',$appointment_id)->first();
-		$drugs = $prescription->drugs;
-		$doctorAppointment = DoctorAppointment::find($appointment_id);
-		$doctorName = $doctorAppointment->doctor->user->name;
+		$drugs = $doctorName = [];
+		if($prescription){
+			$drugs = $prescription->drugs()->get();
+			$doctorAppointment = DoctorAppointment::find($appointment_id);
+			$doctorName = $doctorAppointment->doctor->user->name;
+		}
 		return view('patient.prescription',[
 			'prescription' => $prescription,
 			'drugs' => $drugs,
@@ -217,9 +219,21 @@ class PatientController extends Controller
 	private function calculateBill($id){
 		$currentTime = Carbon::now()->toDateTimeString();
 		$bills = Bill::where('patient_id',$id)->get();
+		if($bills->isEmpty()){
+			return false;
+		}
 		$patient = Patient::find($id);
-		$supportGroups = $patient->supportGroup->get();
-		$doctorFee = $wardFee = $totalSupportGroupFee = $totalFee=$totalLabFee= $testIndex = $supportGroupFee = 0;
+		$supportGroup = [];
+		if($patient->supportGroup){
+			$supportGroups = $patient->supportGroup->get();
+		}
+		$doctorFee = 0;
+		$wardFee = 0;
+		$totalSupportGroupFee =0;
+		$totalFee=0;
+		$totalLabFee=0; 
+		$testIndex = 0;
+		$supportGroupFee = 0;
 		$labFee = array();
 		
 		
@@ -243,7 +257,6 @@ class PatientController extends Controller
 		foreach($supportGroups as $supportGroup){
 			$totalSupportGroupFee += $supportGroup->fee;
 		}
-		dd($labFee);
 
 		$totalFee = $wardFee + $totalLabFee + $totalSupportGroupFee + $doctorFee;
 		return [
@@ -259,8 +272,12 @@ class PatientController extends Controller
 
 	public function showBill($id){
 		$fees = $this->calculateBill($id);
-		return view('patient.bill',[
-			'fees'=>$fees,
-		]);
+			return view('patient.bill',[
+				'fees'=>$fees,
+			]);
+		
+		
 	}
+
+	
 }

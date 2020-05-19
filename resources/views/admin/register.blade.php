@@ -18,9 +18,9 @@
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
 
                                 @error('name')
-                                    <span class="invalid-feedback" role="alert">
+                                    <div class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
-                                    </span>
+                                    </div>
                                 @enderror
                             </div>
                         </div>
@@ -32,9 +32,9 @@
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
 
                                 @error('email')
-                                    <span class="invalid-feedback" role="alert">
+                                    <div class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
-                                    </span>
+                                    </div>
                                 @enderror
                             </div>
                         </div>
@@ -46,9 +46,9 @@
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
 
                                 @error('password')
-                                    <span class="invalid-feedback" role="alert">
+                                    <div class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
-                                    </span>
+                                    </div>
                                 @enderror
                             </div>
                         </div>
@@ -65,12 +65,12 @@
                             <label for="address" class="col-md-4 col-form-label text-md-right">{{ __('Address') }}</label>
 
                             <div class="col-md-6">
-                                <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" autocomplete="address">
+                                <input value="{{ old('address') }}" id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" autocomplete="address">
 								{{-- <span class="text-danger">
 									<strong>{{ $errors->first('address') }}</strong>
 								</span> --}}
 								@error('address')
-									<span class="alert alert-danger">{{ $message }}</span>
+									<div class="alert alert-danger">{{ $message }}</div>
 								@enderror
 							</div>
 		
@@ -85,7 +85,7 @@
 									<option value="f">Female</option>
 								</select>
 								@error('gender')
-									<span class="alert alert-danger">{{ $message }}</span>
+									<div class="alert alert-danger">{{ $message }}</div>
 								@enderror
                             </div>
 						</div>
@@ -94,9 +94,9 @@
                             <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('Phone Number') }}</label>
 
                             <div class="col-md-6">
-                                <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" autocomplete="phone">
+                                <input value="{{ old('phone') }}" id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" autocomplete="phone">
 								@error('phone')
-									<span class="alert alert-danger">{{ $message }}</span>
+									<div class="alert alert-danger">{{ $message }}</div>
 								@enderror
 							</div>
 						</div>
@@ -105,9 +105,9 @@
                             <label for="cnic" class="col-md-4 col-form-label text-md-right">{{ __('CNIC (with hypehns)') }}</label>
 
                             <div class="col-md-6">
-                                <input id="cnic" type="text" class="form-control @error('cnic') is-invalid @enderror" name="cnic" autocomplete="cnic">
+                                <input value="{{ old('cnic') }}" id="cnic" type="text" class="form-control @error('cnic') is-invalid @enderror" name="cnic" autocomplete="cnic">
 								@error('cnic')
-									<span class="alert alert-danger">{{ $message }}</span>
+									<div class="alert alert-danger">{{ $message }}</div>
 								@enderror
 							</div>
 						</div>
@@ -116,9 +116,9 @@
                             <label for="age" class="col-md-4 col-form-label text-md-right">{{ __('Age') }}</label>
 
                             <div class="col-md-6">
-                                <input id="age" type="text" class="form-control @error('age') is-invalid @enderror" name="age" required autocomplete="age">
+                                <input value="{{ old('age') }}" id="age" type="text" class="form-control @error('age') is-invalid @enderror" name="age" required autocomplete="age">
 								@error('age')
-									<span class="alert alert-danger">{{ $message }}</span>
+									<div class="alert alert-danger">{{ $message }}</div>
 								@enderror
 							</div>
 						</div>
@@ -130,9 +130,9 @@
 								<select id="role" type="text" class="form-control" name="role">
 									<option value="p" selected>Patient</option>
 									<option value="d">Doctor</option>
-									<option value="sgc" selected>Support Group Conductor</option>
-									<option value="hs" selected>Helping Staff</option>
-									<option value="a" selected>Admin</option>
+									<option value="sgc">Support Group Conductor</option>
+									<option value="hs">Helping Staff</option>
+									<option value="a">Admin</option>
 								</select>
 							</div>
 						</div>

@@ -89,7 +89,7 @@ class SupportGroupController extends Controller
 
 	}
 
-	public function members($conductor_id,$supportGroup_id){
+	public function members($id,$supportGroup_id){
 		$supportGroup = SupportGroup::find($supportGroup_id);
 		$patients = $supportGroup->patients;
 		return view('sgc.members',[

@@ -87,20 +87,20 @@ class AdminController extends Controller
     //     return view('admin.register')->with('id',$id);
 	// }
 
-	public function showRegisterForm(){
+	public function showRegisterForm($id){
 		return view('admin.register');
 	}
 	
 
 	//Add data specific to the role
-	public function showRoleForm($user_id,$role){
+	public function showRoleForm($id,$user_id,$role){
 		return view('admin.addRoleData',[
 			'user_id'=>$user_id,
 			'role'=>$role,
 		]);
 	}
 
-	public function addSupportGroup(){
+	public function addSupportGroup($id){
 		
 	}
 

@@ -11,7 +11,7 @@
 
         <h2>Upcoming Doctor's Appointments</h2>
         <section class="cards upcoming-appointments">
-            @if($docAppointments)
+            @if(!$docAppointments->isEmpty())
                 @foreach( $docAppointments as $docAppointment)
                 <div class="card appointment">
 						
@@ -41,7 +41,7 @@
 
         <h2>Upcoming Lab's Appointments</h2>
         <section class="cards upcoming-appointments">
-            @if($labAppointments)
+            @if(!$labAppointments->isEmpty())
                 @foreach($labAppointments as $labAppointment)
                 <div class="card appointment">
 					<h3>Conductor's Name: {{$labAppointment->helpingStaff->user->name}}</h3>
@@ -65,7 +65,7 @@
 
         <h2>Support Groups</h2>
         <section class="cards upcoming-appointments">
-            @if($supportGroups)
+            @if(!$supportGroups->isEmpty())
             @foreach($supportGroups as $supportGroup)
                 <div class="card appointment">
                             <h3>Support Group: {{$supportGroup->name}}</h3>

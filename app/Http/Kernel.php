@@ -64,5 +64,6 @@ class Kernel extends HttpKernel
 		'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 		'patient' => \App\Http\Middleware\RedirectIfNotPatient::class,
 		'role' => \App\Http\Middleware\CheckRole::class,
+		'checkId' => \App\Http\Middleware\CheckId::class,
     ];
 }

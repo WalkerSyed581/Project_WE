@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Prescription extends Model
 {
+	protected $fillable = [
+		'doctor_appointment_id','notes','condition',
+    ];
     public function labAppointments()
     {
         return $this->hasMany('App\LabAppointment');
@@ -16,7 +19,7 @@ class Prescription extends Model
 	}
 	public function doctorAppointment()
     {
-        return $this->hasOne('App\DoctorAppointment');
+        return $this->belongsTo('App\DoctorAppointment');
     }
 	public function labTests()
 	{

@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Bill extends Model
 {
+	protected $fillable = [
+        'patient_id', 'doctor_appointment_id', 'lab_appointment_id','admission_id',
+    ];
     public function patient(){
 		return $this->belongsTo('App\Patient');
 	}
