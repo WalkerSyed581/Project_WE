@@ -7,7 +7,7 @@
 
 <div class="mainContent patientContent">
     <article>
-        <a  href=" {{action('PatientController@showBill',['id'=>Auth::user()->patient->id])}}" class="btn btn-danger">Show Bill</a>
+        <a  href=" {{action('PatientController@showBill',['id'=>\Auth::user()->patient->id])}}" class="btn btn-danger">Show Bill</a>
 
         <h2>Previous Doctor's Appointments</h2>
         <section class="cards upcoming-appointments">
@@ -47,7 +47,7 @@
 							<span>Time and Date: {{$labAppointment->time}}</span>
 						</div>
 						<div class="actionable">
-							<a class="btn btn-danger" href="#">Show Lab Report</a>{{-- ADD Functionality--}}
+						<a class="btn btn-danger" href="{{action('PatientController@showLabReport',['id'=>\Auth::user()->patient->id,'appointment_id'=>$labAppointment->id])}}">Show Lab Report</a>
 						</div>
 					</div>
                 </div>

@@ -10,23 +10,33 @@
             <table>
                 <tr>
                     <th>Name</th>
-                    <td>{{$patient->name}}</td>
+                    <td>{{$patient->user->name}}</td>
                 </tr>
                 <tr>
                     <th>Age</th>
-                    <td>{{$patient->age}}</td>
+                    <td>{{$patient->user->age}}</td>
                 </tr>
                 <tr>
-                    <th>Gender</th>
-                    <td>{{$patient->gender}}</td>
+					<th>Gender</th>
+					<td>
+						@if($patient->user->gender == 'f')
+						Female
+						@else
+						Male
+						@endif
+					</td>
                 </tr>
                 <tr>
                     <th>E-mail</th>
-                    <td>{{$patient->email}}</td>
+                    <td>{{$patient->user->email}}</td>
                 </tr>
                 <tr>
                     <th>Contact Number</th>
-                    <td>{{$patient->phone}}</td>
+                    <td>{{$patient->user->phone}}</td>
+				</tr>
+				<tr>
+                    <th>Emergencey Contact Number</th>
+                    <td>{{$patient->emergencey_contact}}</td>
                 </tr>
             </table>
         </section>
@@ -39,7 +49,15 @@
                         <div class="appointment-text">
                             <p>Ailment Notes: {{$docAppointment->notes}}</p>
 							<span>Time and Date: {{$docAppointment->time}}</span>
-							<p>Condition: {{$docAppointment->prescription->condition}}</p>
+							@if($docAppointment->prescription)
+								<p>Condition: {{$docAppointment->prescription->condition}}</p>
+								@foreach($docAppointment->prescription->drugs()->get() as $drug)
+								<div>
+									<p>Drug Name: {{$drug->name}}</p>
+									<p>Drug Dose: {{$drug->dose}}</p>
+								</div>
+								@endforeach
+							@endif
                         </div>
                     </div>
                 </div>

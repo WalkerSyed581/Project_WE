@@ -306,15 +306,34 @@ class DoctorController extends Controller
 		]);
 	}
 
+
 	public function patientInfo($patient_id){
 		$patient = Patient::find($patient_id);
-		$docAppointments = $patient->doctorAppointments()->get();
+		$docAppointments = $patient->doctorAppointments()->latest()->get();
+		
 		return view('doctor.patientInfo',[
 			'patient' => $patient,
 			'docAppointments' => $docAppointments,
 		]);
 	}
-	public function labReports(){
-		return view('doctor.labReports');
+	public function showLabReport($id,$prescription_id,$appointment_id){
+		$labAppointment = LabAppointment::find($appointment_id);
+		$labReport = LabReport::where('lab_appointment_id',$appointment_id)->first();
+		$patient = $labAppointment->patient;
+		$prescription = $labAppointment->prescription;
+		$drugs = $prescription->drugs()->get();
+		return view('doctor.labReport',[
+			'labReport' => $labReport,
+			'labAppointment' => $labAppointment,
+			'patient' => $patient,
+			'prescription' => $prescription,
+			'drugs' => $drugs,
+		]);
 	}
+
+	public function showLabAppointments($id,$prescription_id){
+		$labAppointments = LabAppointment::where('prescription_id',$prescription_id)->get();
+		return view('doctor.labAppointments',[
+			'labAppointments' => $labAppointments,
+		]);	}
 }

@@ -37,7 +37,31 @@ class SupportGroupController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rules = [
+			'name' => ['string','required'],
+			'appointmentTime' => ['date_format:H:i','required'],
+			'description' => ['string','nullable'],
+			'fee' => ['string','integer','required'],
+		];
+		
+		$this->validate($request,$rules);
+		$start_time = explode(':',$request->input('appointmentTime'));
+		$fomratted_start_time = Carbon::now();
+		$fomratted_start_time->hour = (int) $start_time[0];
+		$fomratted_start_time->minute = (int) $start_time[1];
+		$fomratted_start_time->second = 0;
+
+		$supportGroup = SupportGroup::create([
+			'name' => $request->input('name'),
+			'timing' => $fomratted_start_time->toTimeString(),
+			'fee' => $request->input('fee'),
+			'description' => $request->input('description'),
+			'support_group_conductor_id' => (int) $request->input('conductor_id'),
+			'day' => $request->input('day'),
+		]);
+		
+
+		return redirect()->action('AdminController@index');
     }
 
     /**
@@ -59,7 +83,22 @@ class SupportGroupController extends Controller
      */
     public function edit($id)
     {
-        //
+		$supportGroup = SupportGroup::find($id);
+		$supportGroupConductors = SupportGroupConductor::all();
+		$days = [
+			'Sunday',
+			'Monday',
+			'Tuesday',
+			'Wednesday',
+			'Thursday',
+			'Friday',
+			'Saturday',
+		];
+		return view('admin.addSupportGroup',[
+			'supportGroups' => $supportGroups,
+			'supportGroupConductors' => $supportGroupConductors,
+			'days' => $days,
+		]);
     }
 
     /**
@@ -71,7 +110,30 @@ class SupportGroupController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $rules = [
+			'name' => ['string','required'],
+			'appointmentTime' => ['date_format:H:i:s','required'],
+			'description' => ['string','nullable'],
+			'fee' => ['string','integer','required'],
+		];
+		
+		$this->validate($request,$rules);
+		$start_time = explode(':',$request->input('appointmentTime'));
+		$fomratted_start_time = Carbon::now();
+		$fomratted_start_time->hour = (int) $start_time[0];
+		$fomratted_start_time->minute = (int) $start_time[1];
+		$fomratted_start_time->second = (int) $start_time[2];
+
+		$supportGroup = SupportGroup::find($id);
+		$supportGroup->name = $request->input('name');
+		$supportGroup->timing = $fomratted_start_time->toTimeString();
+		$supportGroup->fee = $request->input('fee');
+		$supportGroup->description = $request->input('description');
+		$supportGroup->support_group_conductor_id = (int) $request->input('conductor_id');
+		$supportGroup->day = $request->input('day');
+		$supportGroup->save();
+
+		return redirect()->action('AdminController@index');
     }
 
     /**
@@ -82,7 +144,9 @@ class SupportGroupController extends Controller
      */
     public function destroy($id)
     {
-        //
+		SupportGroup::find($id)->delete();
+		
+		return redirect()->action('AdminController@showSupportGroups',['id',\Auth::user()->id]);
 	}
 	
 	public function addUser($user_id){

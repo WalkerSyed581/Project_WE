@@ -18,7 +18,7 @@
 					Total Fee of Support Groups: {{$fees['supportGroupFee']}}
 				</li>
 				<li class="dropright">
-					<a href="#" class= "dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Total Fee of Lab Tests: {{fees.totalTestFee}}</a>
+					<a href="#" class= "dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Total Fee of Lab Tests: {{$fees['totalTestFee']}}</a>
 					<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 						@foreach($fees['testFees'] as $testFee)
 							<li class="dropdown-item">{{$testFee['name']}} : {{$testFee['fee']}}</li>

@@ -16,14 +16,20 @@
                     <p>Description: {{$supportGroup->description}}</p>
                 </div>
                 <div class="actionable">
-                    <a href="{{action('PatientController@joinSupportGroup',['id'=>\Auth::user()->id,'supportGroup_id' => $supportGroup->id])}}" class="btn btn-danger">Join Support Group</a>
-                </div>
+					@if(\Auth::user()->role()=='p')
+                   		<a href="{{action('PatientController@joinSupportGroup',['id'=>\Auth::user()->patient->id,'supportGroup_id' => $supportGroup->id])}}" class="btn btn-danger">Join Support Group</a>
+					@elseif(\Auth::user()->role()=='a')
+						<a href="{{action('SupportGroupController@edit',['id'=>\Auth::user()->id,'supportGroup_id' => $supportGroup->id])}}" class="btn btn-danger">Edit Support Group</a>
+						<a href="{{action('SupportGroupController@destroy',['id'=>\Auth::user()->id,'supportGroup_id' => $supportGroup->id])}}" class="btn btn-danger">Remove Support Group</a>
+					@endif
+				</div>
             </div>
         </div>
         @endforeach
     @else
         <p>No Support Groups are currently on going</p>
     @endif
+	<a href="{{action('AdminController@showSupportGroupForm',['id'=>\Auth::user()->admin->id])}}" class="btn btn-danger">Add Support Group</a>
 
 </main>
 @endsection

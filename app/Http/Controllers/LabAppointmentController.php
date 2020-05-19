@@ -113,7 +113,7 @@ class LabAppointmentController extends Controller
 		$appointment->cancelled = true;
 		$appointment->save();
 
-		return redirect()->action('DoctorController@index');
+		return redirect()->action('PatientController@index');
 	}
 	
 	public function showLabReport($id,$labAppointment_id){

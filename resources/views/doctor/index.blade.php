@@ -28,6 +28,7 @@
 									Approve
 								@endif
 							</a>
+							<a class="btn btn-danger" href="{{action('DoctorController@patientInfo',['id'=> Auth::user()->id,'patient_id'=> $docAppointment->patient->id])}}">View Patient Profile</a>
 						</div>
 					</div>
                 </div>
@@ -58,7 +59,8 @@
                                 </div>
                                 <div class="actionable">
 									<a class="btn btn-danger" href="{{action('DoctorController@viewPrescription',['id'=> Auth::user()->doctor->id,'appointment_id'=> $docAppointment->id])}}">View Prescription</a>
-                                </div>
+									<a class="btn btn-danger" href="{{action('DoctorController@patientInfo',['id'=> Auth::user()->id,'patient_id'=> $docAppointment->patient->id])}}">View Patient Profile</a>
+								</div>
                             </div>
                 </div>
                 @endforeach

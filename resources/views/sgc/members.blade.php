@@ -23,6 +23,9 @@
 							<p>Age: {{$patient->user->age}}</p>
 							<p>Email: {{$patient->user->email}}</p>
 						</div>
+						<div class="actionable">
+							<a class="btn btn-danger" href="{{action('DoctorController@patientInfo',['id'=> Auth::user()->id,'patient_id'=> $docAppointment->patient->id])}}">View Patient Profile</a>
+						</div>
 					</div>
                 </div>
                 @endforeach

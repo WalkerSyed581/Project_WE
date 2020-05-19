@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\SupportGroup;
+use App\SupportGroupConductor;
 
 class AdminController extends Controller
 {
@@ -91,6 +93,31 @@ class AdminController extends Controller
 		return view('admin.register');
 	}
 	
+	public function showSupportGroups($id){
+		$supportGroups = SupportGroup::all();
+		return view('patient.joinSupportGroup',[
+			'supportGroups' => $supportGroups,
+		]);
+	}
+
+	public function showSupportGroupForm($id){
+		$supportGroups = [];
+		$supportGroupConductors = SupportGroupConductor::all();
+		$days = [
+			'Sunday',
+			'Monday',
+			'Tuesday',
+			'Wednesday',
+			'Thursday',
+			'Friday',
+			'Saturday',
+		];
+		return view('admin.addSupportGroup',[
+			'supportGroups' => $supportGroups,
+			'supportGroupConductors' => $supportGroupConductors,
+			'days' => $days,
+		]);
+	}
 
 	//Add data specific to the role
 	public function showRoleForm($id,$user_id,$role){
@@ -100,9 +127,7 @@ class AdminController extends Controller
 		]);
 	}
 
-	public function addSupportGroup($id){
-		
-	}
+
 
 	
 	

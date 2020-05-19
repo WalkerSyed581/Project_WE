@@ -28,8 +28,10 @@ Route::middleware(['auth','role:p','checkId'])->group(function () {
 	Route::get('/patient/{id}/joinSupportGroup/{supportGroup_id}','PatientController@joinSupportGroup');
 	Route::get('/patient/{id}/leaveSupportGroup/{supportGroup_id}','PatientController@leaveSupportGroup');	
 
+	Route::get('/patient/{id}/labReport/{labAppointment_id}','PatientController@showLabReport');
+	Route::get('/patient/{id}/{prescription_id}/labAppointments','PatientController@showPrescriptionAppointments');
+
 	//Sidebar Links
-	Route::get('/patient/{id}/labReport/{labAppointment_id}','LabAppointmentController@showLabReport');
 	Route::get('/patient/{id}/prescription/{appointment_id}','PatientController@showPrescription');
 	Route::get('/patient/{id}/appointmentArchive','PatientController@appoinmentArchive');
 	Route::get('/patient/{id}/currentAdmission','PatientController@showCurrentAdmission');
@@ -44,7 +46,10 @@ Route::middleware(['auth','role:p','checkId'])->group(function () {
 Route::middleware(['auth','role:d','checkId'])->group(function () {
 	Route::get('/doctor','DoctorController@index');
 	Route::get('/doctor/{id}/approveAppointment/{appointment_id}','DoctorAppointmentController@approveAppointment');
-	
+
+	Route::get('/doctor/{id}/{prescription_id}/labAppointments','DoctorController@showLabAppointments');
+	Route::get('/doctor/{id}/{prescription_id}/labAppointments/{appointment_id}/labReport','DoctorController@showLabReport');
+
 	Route::get('/doctor/{id}/viewPrescription/{appointment_id}','DoctorController@viewPrescription');
 	Route::post('/doctor/addPrescription','DoctorController@addPrescription');
 	Route::post('/doctor/updatePrescription','DoctorController@updatePrescription');
@@ -106,10 +111,15 @@ Route::middleware(['auth','role:a','checkId'])->group(function () {
 	Route::get('/admin/{id}/registerRole/{user_id}/{role}','AdminController@showRoleForm');
 
 	//To Be Done
-	Route::get('/admin/{id}/supportGroup/add','AdminController@addSupportGroup');
-	// Route::get('/admin/supportGroup/remove/{supportGroup_id}','SupportGroupController@destroy');
+	Route::get('/admin/{id}/supportGroups','AdminController@showSupportGroups');
+	Route::get('/admin/{id}/supportGroup/add','AdminController@showSupportGroupForm');
+	Route::get('/admin/{id}/supportGroup/remove/{supportGroup_id}','SupportGroupController@destroy');
+	Route::get('/admin/{id}/supportGroup/edit/{supportGroup_id}','SupportGroupController@edit');
 
 	//Post Links
+	Route::post('/admin/supportGroup/add','SupportGroupController@store');
+	Route::post('/admin/supportGroup/edit/{supportGroup_id}','SupportGroupController@update');
+
 	Route::post('/admin/registerRole','AdminController@registerRoleData');
 	Route::post('/admin/registerUser','UsersController@store');
 

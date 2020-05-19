@@ -57,6 +57,7 @@
 										Approve
 									@endif
 								</a>
+								<a class="btn btn-danger" href="{{action('DoctorController@patientInfo',['id'=> Auth::user()->id,'patient_id'=> $labAppointment->patient->id])}}">View Patient Profile</a>
 							</div>
 						</div>
 					</div>
@@ -77,6 +78,7 @@
 							</div>
 							<div class="actionable">
 								<a class="btn btn-danger" href="{{action('HelpingStaffController@addLabReport',['id'=>\Auth::user()->helpingStaff->id,'labAppointment_id'=>$labAppointment->id])}}">Add Lab Report</a>
+								<a class="btn btn-danger" href="{{action('DoctorController@patientInfo',['id'=> Auth::user()->id,'patient_id'=> $labAppointment->patient->id])}}">View Patient Profile</a>
 							</div>
 						</div>
 					</div>
@@ -120,6 +122,9 @@
 								<p>Start Date: {{$duty->from_date}}</p>
 								<p>Number of Days: {{$duty->number_of_days}}</p>
 								<p>Ward ID : {{$duty->ward->id}}</p>
+							</div>
+							<div class="actionable">
+								<a class="btn btn-danger" href="{{action('DoctorController@patientInfo',['id'=> Auth::user()->id,'patient_id'=> $duty->patient->id])}}">View Patient Profile</a>
 							</div>
 						</div>
 					</div>

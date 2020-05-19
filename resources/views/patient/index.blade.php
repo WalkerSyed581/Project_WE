@@ -52,7 +52,7 @@
 						</div>
 						<div class="actionable">
 							<a class="btn btn-danger" href="{{action('LabAppointmentController@destroy',['id'=>$labAppointment->id])}}">Cancel</a>
-							<a class="btn btn-danger" href="{{action('LabAppointmentController@showLabReport',['id'=>Auth::user()->id,'labAppointment_id'=>$labAppointment->id])}}">Show Lab Report</a>
+							<a class="btn btn-danger" href="{{action('PatientController@showLabReport',['id'=>Auth::user()->id,'labAppointment_id'=>$labAppointment->id])}}">Show Lab Report</a>
 
 						</div>
 					</div>

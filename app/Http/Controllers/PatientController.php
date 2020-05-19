@@ -5,6 +5,7 @@ use App\User;
 use App\Patient;
 use Carbon\Carbon;
 use App\Drug;
+use App\LabReport;
 use App\Bill;
 use App\Doctor;
 use App\Prescription;
@@ -223,13 +224,16 @@ class PatientController extends Controller
 			return false;
 		}
 		$patient = Patient::find($id);
+		$totalSupportGroupFee =0;
 		$supportGroup = [];
 		if($patient->supportGroup){
 			$supportGroups = $patient->supportGroup->get();
+			foreach($supportGroups as $supportGroup){
+				$totalSupportGroupFee = $totalSupportGroupFee + $supportGroup->fee;
+			}
 		}
-		$doctorFee = 0;
+		$doctorfee = 0;
 		$wardFee = 0;
-		$totalSupportGroupFee =0;
 		$totalFee=0;
 		$totalLabFee=0; 
 		$testIndex = 0;
@@ -241,26 +245,24 @@ class PatientController extends Controller
 
 		foreach($bills as $bill){
 			if($bill->doctorAppointment->id){
-				$doctorfee += $bill->doctorAppointment->doctor->fee;
+				$doctorfee = $doctorfee + $bill->doctorAppointment->doctor->fee;
 			}
 			elseif($bill->labAppointment->id){
 				$labFee[$testIndex]['name'] = $bill->labAppointment->labTest->name;
 				$labFee[$testIndex]['fee'] = $bill->labAppointment->labTest->fee;
-				$totalLabFee += $labFee[$testIndex]['fee'];
+				$totalLabFee = $totalLabFee + $labFee[$testIndex]['fee'];
 				$testIndex++;
 			}
 			elseif($bill->admission->id){
-				$wardFee += $bill->admission->ward->capacity * $bill->admission->number_of_days;
+				$wardFee = $wardFee +($bill->admission->ward->capacity * $bill->admission->number_of_days);
 			}
 		}
 		
-		foreach($supportGroups as $supportGroup){
-			$totalSupportGroupFee += $supportGroup->fee;
-		}
+		
 
-		$totalFee = $wardFee + $totalLabFee + $totalSupportGroupFee + $doctorFee;
+		$totalFee = $wardFee + $totalLabFee + $totalSupportGroupFee + $doctorfee;
 		return [
-			"doctorFee"=> $doctorFee,
+			"doctorFee"=> $doctorfee,
 			"wardFee" => $wardFee,
 			"testFees"=>$labFee,
 			"totalTestFee"=>$totalLabFee,
@@ -272,12 +274,33 @@ class PatientController extends Controller
 
 	public function showBill($id){
 		$fees = $this->calculateBill($id);
-			return view('patient.bill',[
-				'fees'=>$fees,
-			]);
-		
-		
+		return view('patient.bill',[
+			'fees'=>$fees,
+		]);
 	}
 
+	public function showLabReport($id,$appointment_id){
+		$labAppointment = LabAppointment::find($appointment_id);
+		$labReport = LabReport::where('lab_appointment_id',$appointment_id)->first();
+		$patient = $labAppointment->patient;
+		$prescription = $labAppointment->prescription;
+		$drugs = $prescription->drugs()->get();
+		return view('doctor.labReport',[
+			'labReport' => $labReport,
+			'labAppointment' => $labAppointment,
+			'patient' => $patient,
+			'prescription' => $prescription,
+			'drugs' => $drugs,
+		]);
+
+	}
+	public function showPrescriptionAppointments($id,$prescription_id){
+		$labAppointments = LabAppointment::where('prescription_id',$prescription_id)->get();
+		return view('doctor.labAppointments',[
+			'labAppointments' => $labAppointments,
+		]);
+	}
+
+	
 	
 }
