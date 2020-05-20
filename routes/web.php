@@ -22,8 +22,8 @@ Route::middleware(['auth','role:p','checkId'])->group(function () {
 	Route::get('/patient','PatientController@index');
 	Route::get('/patient/{id}/appointmentForm','PatientController@showAppointmentForm');
 	Route::post('/patient/addAppointment','DoctorAppointmentController@store');
-	Route::get('/patient/removeDoctorAppointment/{id}','DoctorAppointmentController@destroy');
-	Route::get('/patient/removeLabAppointment/{id}','LabAppointmentController@destroy');
+	Route::get('/patient/removeDoctorAppointment/{appointment_id}','DoctorAppointmentController@destroy');
+	Route::get('/patient/removeLabAppointment/{appointment_id}','LabAppointmentController@destroy');
 	Route::get('/patient/{id}/supportGroupList','PatientController@showSupportGroups');
 	Route::get('/patient/{id}/joinSupportGroup/{supportGroup_id}','PatientController@joinSupportGroup');
 	Route::get('/patient/{id}/leaveSupportGroup/{supportGroup_id}','PatientController@leaveSupportGroup');	
@@ -74,6 +74,8 @@ Route::middleware(['auth','role:d','checkId'])->group(function () {
 
 Route::middleware(['auth','role:hs','checkId'])->group(function () {
 	Route::get('/helpingStaff','HelpingStaffController@index');
+	Route::get('/doctor/{id}/doctorAppointment/{appointment_id}','DoctorController@showAppointment');
+	Route::post('/doctor/updateDoctorAppointment','DoctorController@updateAppointment');
 	Route::post('/helpingStaff/updateDoctorAppointment','DoctorController@updateAppointment');
 
 	Route::get('/helpingStaff/{id}/labReport/{labAppointment_id}','HelpingStaffController@addLabReport');
@@ -134,10 +136,10 @@ Route::middleware(['auth','role:a','checkId'])->group(function () {
 	Route::post('/supportGroupConductor/update/{sgc_id}','SupportGroupConductorController@update');
 	Route::post('/helpingStaff/update/{helpingStaff_id}','HelpingStaffController@update');
 
-	Route::post('/patient/{user_id}/delete/{patient_id}','PatientController@destroy');
-	Route::post('/doctor/{user_id}/delete/{doctor_id}','DoctorController@destroy');
-	Route::post('/supportGroupConductor/{user_id}/delete/{sgc_id}','SupportGroupConductorController@destroy');
-	Route::post('/helpingStaff/{user_id}/delete/{helpingStaff_id}','HelpingStaffController@destroy');
+	Route::get('/patient/{user_id}/delete/{patient_id}','PatientController@destroy');
+	Route::get('/doctor/{user_id}/delete/{doctor_id}','DoctorController@destroy');
+	Route::get('/supportGroupConductor/{user_id}/delete/{sgc_id}','SupportGroupConductorController@destroy');
+	Route::get('/helpingStaff/{user_id}/delete/{helpingStaff_id}','HelpingStaffController@destroy');
 
 
 

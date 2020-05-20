@@ -15,8 +15,12 @@
 					/doctor/addDoctorAppointment
 					@endif
 					">
-                        @csrf
-						<input id="doctor_id" name="doctor_id" type="hidden" value={{\Auth::user()->doctor->id}}>
+						@csrf
+						@if(\Auth::user()->role == 'd')
+							<input id="doctor_id" name="doctor_id" type="hidden" value={{\Auth::user()->doctor->id}}>
+						@else
+							<input id="doctor_id" name="doctor_id" type="hidden" value={{$docAppointment->doctor->id}}>
+						@endif
 						@if($docAppointment)
 							<input id="appointment_id" name="appointment_id" type="hidden" value={{$docAppointment->id}}>
 						@endif
@@ -90,7 +94,7 @@
 
 							<div class="col-md-6">
 								<input id="approved" type="checkbox" class="form-control @error('approved') is-invalid @enderror" name="approved" autocomplete="approved"
-								@if($docAppointment->approved)
+								@if($docAppointment && $docAppointment->approved)
 									checked
 								@endif
 								>

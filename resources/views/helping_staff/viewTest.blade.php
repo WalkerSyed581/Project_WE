@@ -1,11 +1,12 @@
 @extends('layouts.app')
 @section('content')
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
+<div class="container-fluid ">
+    <div class="row">
+    @include('inc.aside')
+        <div class="col-md-9">
             <div class="card">
-				<div class="card-header">{{ __('Edit/Add Ward') }}</div>
+				<div class="card-header">{{ __('Edit/Add Test') }}</div>
 				<div class="card-body">
 					<div class="appointment-content">
 						<div class="appointment-text">

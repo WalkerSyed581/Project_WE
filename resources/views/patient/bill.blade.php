@@ -1,9 +1,10 @@
 @extends('layouts.app')
 @section('content')
-<div class="patientPage billPage">
-    <div class="patientHeader">
-	<h1>Patient: {{\Auth::user()->name}}</h1>
-    </div>
+<div class="patientPage billPage container-fluid">
+	<div class="row">
+	@include('inc.aside')
+
+    <div class="col-md-9" >
     <article class="content billContent">
 		@if($fees)
 			<p>Payment Method : Cash</p>
@@ -33,5 +34,8 @@
 			<p>No Bill found
 		@endif
     </article>
+</div>
+</div>
+</div>
 </div>
 @endsection

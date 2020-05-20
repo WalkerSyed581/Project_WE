@@ -10882,3 +10882,9 @@ a.text-dark:focus {
   }
 }
 
+.graphContainer {
+  position: relative;
+  height: 40vh;
+  width: 33.33vw;
+}
+

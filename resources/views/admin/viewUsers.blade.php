@@ -1,25 +1,26 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
+<div class="container-fluid col-md-12">
+	<div class="row">
+		@include('inc.aside')
+        <div class="col-md-9">
             <div class="card">
-                <div class="card-header">{{ __('Register New Patient') }}</div>
+                <div class="card-header">{{ __('Edit Users') }}</div>
 
                 <div class="card-body">
-					<table>
+					<table class="table">
 						<tr>
-							<th>Name</th>
-							<th>Email</th>
-							<th>Gender</th>
-							<th>Phone</th>
-							<th>Cnic</th>
-							<th>Age</th>
-							<th>Role</th>
-							<th>Edit Role Data</th>
+							<th scope="col">Name</th>
+							<th scope="col">Email</th>
+							<th scope="col">Gender</th>
+							<th scope="col">Phone</th>
+							<th scope="col">Cnic</th>
+							<th scope="col">Age</th>
+							<th scope="col">Role</th>
+							<th scope="col">Edit Role Data</th>
 						</tr>
-						@foreach($users as users)
+						@foreach($users as $user)
 							<tr>
 								<td>{{$user->name}}</td>
 								<td>{{$user->email}}</td>

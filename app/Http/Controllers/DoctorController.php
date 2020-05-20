@@ -293,10 +293,12 @@ class DoctorController extends Controller
 	}
 
 	public function addAppointment($id){
-		$patient = Patient::all();
+		$patients = Patient::all();
+		$docAppointment = [];
 		return view('doctor.appointment',
 			[
-				'patient' => $patients,
+				'patients' => $patients,
+				'docAppointment' => $docAppointment,
 			]
 		);
 	}
@@ -306,7 +308,7 @@ class DoctorController extends Controller
 		return view('doctor.appointment',
 			[
 				'patients' => $patients,
-				'docAppointment' => $appointment
+				'docAppointment' => $appointment,
 			]
 		);
 	}
@@ -344,7 +346,7 @@ class DoctorController extends Controller
 	}
 
 
-	public function patientInfo($patient_id){
+	public function patientInfo($user_id,$patient_id){
 		$patient = Patient::find($patient_id);
 		$docAppointments = $patient->doctorAppointments()->latest()->get();
 		

@@ -1,12 +1,14 @@
 @extends('layouts.app')
 @section('content')
-<div class="docHeader">
-    <h1>{{\Auth::user()->name}}'s Dashboard</h1>
-</div>
-<div class="mainContent docContent">
+<div class="container-fluid col-md-12">
+    <div class="row">
+    @include('inc.aside')
+
+
+<div class="mainContent docContent col-md-9">
     <article class="content appointment-content">
         <section class="medical-report">
-            <table>
+            <table class="table">
                 <tr>
                     <th>Name</th>
                     <td>{{$patient->name}}</td>
@@ -52,7 +54,7 @@
             @endif
         </section>
     </article>
-
+</div>
+</div>
 </div>
 @endsection
-{{--% endblock %--}}

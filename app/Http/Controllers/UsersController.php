@@ -17,7 +17,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-		$users = User::oldest()->where(['role','!=','a'])->get();
+		$users = User::oldest()->where('role','!=','a')->get();
 		return view('admin.viewUsers',[
 			'users' => $users,
 		]);

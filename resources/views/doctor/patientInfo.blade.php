@@ -1,13 +1,15 @@
 @extends('layouts.app')
 @section('content')
-<div class="docHeader">
-    <h1>{{\Auth::user()->name}}'s Dashboard</h1>
-</div>
+<div class="container-fluid col-md-12">
+    <div class="row">
+	@include('inc.aside')
 
-<div class="mainContent docContent">
+
+<div class="mainContent docContent col-md-9">
     <article>
+		<h2>Patient's Profile</h2>
         <section class="patient-personal-info">
-            <table>
+            <table class= "table">
                 <tr>
                     <th>Name</th>
                     <td>{{$patient->user->name}}</td>
@@ -43,29 +45,44 @@
         <section class="medical-report">
 			<h2>Patient's Doctor Appointments</h2>
             @if($docAppointments != null)
-            @foreach ($docAppointment as docAppointments)
-                <div class="card appointment">
-                    <div class="appointment-content">
-                        <div class="appointment-text">
-                            <p>Ailment Notes: {{$docAppointment->notes}}</p>
-							<span>Time and Date: {{$docAppointment->time}}</span>
-							@if($docAppointment->prescription)
-								<p>Condition: {{$docAppointment->prescription->condition}}</p>
-								@foreach($docAppointment->prescription->drugs()->get() as $drug)
-								<div>
-									<p>Drug Name: {{$drug->name}}</p>
-									<p>Drug Dose: {{$drug->dose}}</p>
-								</div>
-								@endforeach
-							@endif
-                        </div>
-                    </div>
-                </div>
-                @endforeach
+            <table class= "table">
+                <tr>
+                    <th scope="col">Ailment Notes</th>
+                    <th scope="col">Time and Date</th>
+					<th scope="col">Condition</th>
+					<th scope="col">Drug Names</th>
+					<th scope="col">Drug Dose</td>
+                </tr>
+            @foreach ($docAppointments as $docAppointment)
+            <tr>
+                <td>{{$docAppointment->notes}}</td>
+                <td>{{$docAppointment->time}}</td>
+                @if($docAppointment->prescription)
+						<td><p>{{$docAppointment->prescription->condition}}</p></td>
+						<td>
+							<ul>
+							@foreach($docAppointment->prescription->drugs()->get() as $drug)
+								<li>{{$drug->name}}<li>
+							@endforeach
+							</ul>
+						</td>
+						<td>
+							<ul>
+							@foreach($docAppointment->prescription->drugs()->get() as $drug)
+								<li>{{$drug->dose}}<li>
+							@endforeach
+							</ul>
+						</td>
+					@endif
+            </tr>
+            </table>
+            @endforeach
             @else                    
                 <p>No Previous Appointments found for this patient</p>
             @endif
         </section>
     </article>
+</div>
+</div>
 </div>
 @endsection

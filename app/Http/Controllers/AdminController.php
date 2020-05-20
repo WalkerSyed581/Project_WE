@@ -8,6 +8,7 @@ use App\Patient;
 use App\Doctor;
 use App\DoctorAppointment;
 use App\LabAppointment;
+use App\HelpingStaff;
 use App\Admission;
 use Carbon\Carbon;
 use App\SupportGroupConductor;
@@ -179,7 +180,7 @@ class AdminController extends Controller
 	}
 
 	public function showSupportGroupForm($id){
-		$supportGroups = [];
+		$supportGroup = [];
 		$supportGroupConductors = SupportGroupConductor::all();
 		$days = [
 			'Sunday',
@@ -191,7 +192,7 @@ class AdminController extends Controller
 			'Saturday',
 		];
 		return view('admin.addSupportGroup',[
-			'supportGroups' => $supportGroups,
+			'supportGroup' => $supportGroup,
 			'supportGroupConductors' => $supportGroupConductors,
 			'days' => $days,
 		]);

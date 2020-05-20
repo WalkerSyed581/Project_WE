@@ -4,10 +4,8 @@
 <div class='container-fluid'>
 
 <div class='row'>
-<div class="col-md-3 bg-dark" >
-    <h1 class="text-center sticky-top" style="color:white">Mr. {{Auth::user()->name}}</h1>
-    @include('patient.aside')
-</div> 
+    @include('inc.aside')
+
 <div class="upcoming-appointments col-md-9">
     <h2>Current Prescriptions</h2>
     @if($prescription)

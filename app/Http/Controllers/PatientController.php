@@ -140,7 +140,7 @@ class PatientController extends Controller
 		]);
 	}
 	public function appoinmentArchive($id){
-		$patient = Patient::where('user_id',$id)->first();
+		$patient = Patient::find($id);
 		$currentTime = Carbon::now()->toDateTimeString();
 
 		$docAppointments = $patient->doctorAppointments()->where([
@@ -151,6 +151,8 @@ class PatientController extends Controller
 
 		$labAppointments = $patient->labAppointments()->where([
 			['time','<',$currentTime],
+		])->orWhere([
+			['cancelled','=',true],
 		])->get();
 
         return view('patient.allAppointments',[
@@ -217,16 +219,17 @@ class PatientController extends Controller
 		$admissions = $patient->admissions()->where('discharged',false)->get();
 		return view('patient.admission',[
 			'admissions' => $admissions,
+			'type' => 'cur',
 		]);
 	}
 
 	public function showAllAdmissions($id){
 		$patient = Patient::where('id',$id)->first();
 		$admissions = $patient->admissions;
-		dd($admissions);
 
 		return view('patient.admission',[
 			'admissions' => $admissions,
+			'type' => 'old',
 		]);
 	}
 

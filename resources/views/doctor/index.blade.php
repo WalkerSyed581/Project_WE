@@ -1,68 +1,72 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="docHeader">
-    <h1>Mr. {{Auth::user()->name}}'s Dashboard</h1>
-</div>
-<div class="mainContent docContent">
+<div class="container-fluid col-md-12 h-100">
+    <div class="row">
+    @include('inc.aside')
+
+<div class="mainContent docContent col-md-9">
     <article>
         <h2>Upcoming Appointments</h2>
         <section class="cards upcoming-appointments">
             @if(!$docAppointments->isEmpty())
+            <table class="table">
+                <tr>
+                    <th>Patient's Name</th>
+                    <th>Patient's Age</th>
+                    <th>Ailment Notes</th>
+                    <th>Time and Date</th>
+                    <th>Cancel/Approve</th>
+                    <th>Patient Profile</th>
+                </tr>
                 @foreach( $docAppointments as $docAppointment)
-                <div class="card appointment">
-					<h3>Patient's Name: {{$docAppointment->patient->user->name}}</h3>
-					<div class="appointment-content">
-						<div class="appointment-text">
-							<p>Patient's Age: {{$docAppointment->patient->user->age}}</p>
-							@if($docAppointment->notes)
-								<p>Ailment Notes: {{$docAppointment->notes}}</p>
-							@endif
-							<span>Time and Date: {{$docAppointment->time}}</span>
-						</div>
-						<div class="actionable">
-							<a class="btn btn-danger" href="{{action('DoctorController@showAppointment',['id'=>\Auth::user()->doctor->id,'appointment_id'=> $docAppointment->id])}}">
-								@if($docAppointment->approved)
-									Cancel
-								@else
-									Approve
-								@endif
-							</a>
-							<a class="btn btn-danger" href="{{action('DoctorController@patientInfo',['id'=> Auth::user()->id,'patient_id'=> $docAppointment->patient->id])}}">View Patient Profile</a>
-						</div>
-					</div>
-                </div>
-                @endforeach
+                <tr>
+                    <td> {{$docAppointment->patient->user->name}}</td>
+                    <td> {{$docAppointment->patient->user->age}}</td>
+                    <td>{{$docAppointment->notes}}</td>
+                    <td> {{$docAppointment->time}}</td>
+                    <td><a class="btn btn-primary" href="{{action('DoctorController@showAppointment',['id'=>\Auth::user()->doctor->id,'appointment_id'=> $docAppointment->id])}}">
+                        @if($docAppointment->approved)
+                            Cancel
+                        @else
+                            Approve
+                        @endif
+                    </a></td>
+                    <td><a class="btn btn-primary" href="{{action('DoctorController@patientInfo',['id'=> Auth::user()->id,'patient_id'=> $docAppointment->patient->id])}}">View Patient Profile</a></td>
+                </tr>
+            </table>
+                              @endforeach
             @else
                 <p>No Upcoming Appointments</p>
                 
             @endif 
-            <a href="{{action('DoctorController@addAppointment',['id'=>Auth::user()->doctor->id])}}" class="btn btn-danger addAppointment">Add New Appointment</a>
+            <a href="{{action('DoctorController@addAppointment',['id'=>Auth::user()->doctor->id])}}" class="btn btn-primary addAppointment">Add New Appointment</a>
 		</section>
 
-        
+        <hr>
 		
 		<h2>Previous Appointments</h2>
         <section class="cards upcoming-appointments">
             @if(!$prevDocAppointments->isEmpty())
+            <table>
+                <tr>
+                    <th>Patient's Name</th>
+                    <th>Patient's Age</th>
+                    <th>Ailment Notes</th>
+                    <th>Time and Date</th>
+                    <th>View Prescription</th>
+                    <th> Patient Profile</th>
+                </tr>
                 @foreach($prevDocAppointments as $docAppointment)
-                <div class="card appointment">
-						
-                            <h3>Patient's Name: {{$docAppointment->patient->user->name}}</h3>
-                            <div class="appointment-content">
-                                <div class="appointment-text">
-									<p>Patient's Age: {{$docAppointment->patient->user->age}}</p>
-									@if($docAppointment->notes)
-										<p>Ailment Notes: {{$docAppointment->notes}}</p>
-									@endif
-                                    <span>Time and Date: {{$docAppointment->time}}</span>
-                                </div>
-                                <div class="actionable">
-									<a class="btn btn-danger" href="{{action('DoctorController@viewPrescription',['id'=> Auth::user()->doctor->id,'appointment_id'=> $docAppointment->id])}}">View Prescription</a>
-									<a class="btn btn-danger" href="{{action('DoctorController@patientInfo',['id'=> Auth::user()->id,'patient_id'=> $docAppointment->patient->id])}}">View Patient Profile</a>
-								</div>
-                            </div>
-                </div>
+                <tr>
+                    <td> {{$docAppointment->patient->user->name}}</td>
+                    <td>{{$docAppointment->patient->user->age}}</td>
+                    <td> {{$docAppointment->notes}}</td>
+                    <td> {{$docAppointment->time}}</td>
+                    <td><a class="btn btn-primary" href="{{action('DoctorController@viewPrescription',['id'=> Auth::user()->doctor->id,'appointment_id'=> $docAppointment->id])}}">View Prescription</a></td>
+                    <td><a class="btn btn-primary" href="{{action('DoctorController@patientInfo',['id'=> Auth::user()->id,'patient_id'=> $docAppointment->patient->id])}}">View Patient Profile</a></td>
+                </tr>
+            </table>
                 @endforeach
             @else
                 <p>No Previous Appointments</p>
@@ -74,4 +78,4 @@
     </article>
 </div>
 @endsection
-{{--% endblock %--}}
+

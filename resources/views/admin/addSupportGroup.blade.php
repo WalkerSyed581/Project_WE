@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Add/Edit Appointment') }}</div>
+                <div class="card-header">{{ __('Add/Edit Support Group') }}</div>
 
                 <div class="card-body">
 					<form method="POST" action="
@@ -16,7 +16,7 @@
 					@endif
 					">
                         @csrf
-						<input id="admin_id" name="admin_id" type="hidden" value={{\Auth::user()->admin->id}}>
+						<input id="admin_id" name="admin_id" type="hidden" value={{\Auth::id()}}>
 						
 						<div class="form-group row">
 							<label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name:') }}</label>
@@ -46,7 +46,7 @@
 												@if($supportGroup && $supportGroupConductor->id === $supportGroup->supportGroupConductor->id)
 												selected
 												@endif
-												>{{$patient->user->name}}</option>
+												>{{$supportGroupConductor->user->name}}</option>
 										@endforeach
 								</select>
 								@error('conductor_id')

@@ -1,94 +1,137 @@
 @extends('layouts.app')
 @section('content')
-<div class="patientPage">
-<div class="patientHeader">
-    <h1>Mr. {{Auth::user()->name}}'s Dashboard</h1>
-</div>
 
-<div class="mainContent patientContent">
-    <article>
-        <a  href=" {{action('PatientController@showBill',['id'=>Auth::user()->patient->id])}}" class="btn btn-danger">Show Bill</a>
+<div class="patientPage container-fluid ">
+    <div class="patientHeader row">
+    @include('inc.aside')
 
-        <h2>Upcoming Doctor's Appointments</h2>
-        <section class="cards upcoming-appointments">
+    <div class="mainContent patientContent patientHeader col-md-9">
+   
+     
+       
+        <main>
+        <div  class='col-md-12'>
+        <a  href=" {{action('PatientController@showBill',['id'=>Auth::user()->patient->id])}}" class="btn btn-primary">Show Bill</a>
+        </div>
+
+        <hr>
+        
+        <div class='col-md-12'>
+        <h2 > Upcoming Doctor's Appointments</h2>
+        <section class="upcoming-appointments">
             @if(!$docAppointments->isEmpty())
+            <table class="table">
+                <tr>
+                <th scope="col">Doctor's Name:</th>
+                <th scope="col">Doctor's Experise</th>
+                <th scope="col">Ailment Notes</th>
+                <th scope="col">Time and Date</th>
+                <th scope="col">Edit</th>
+                </tr>
+            
                 @foreach( $docAppointments as $docAppointment)
-                <div class="card appointment">
-						
-                            <h3>Doctor's Name: {{$docAppointment->doctor->user->name}}</h3>
-                            <div class="appointment-content">
-                                <div class="appointment-text">
-									<p>Doctor's Experise: {{$docAppointment->doctor->specialization}}</p>
-									@if($docAppointment->notes)
-										<p>Ailment Notes: {{$docAppointment->notes}}</p>
-									@endif
-                                    <span>Time and Date: {{$docAppointment->time}}</span>
-                                </div>
-                                <div class="actionable">
-									<a class="btn btn-danger" href="{{action('DoctorAppointmentController@destroy',['id'=> $docAppointment->id])}}">Cancel</a>
-									<a class="btn btn-danger" href="{{action('PatientController@showPrescription',['id'=> Auth::user()->id,'appointment_id'=> $docAppointment->id])}}">View Prescription</a>
-                                </div>
-                            </div>
-                </div>
+                <tr>
+                    <td>{{$docAppointment->doctor->user->name}}</td>
+                    <td>{{$docAppointment->doctor->specialization}}</td>
+                    <td> {{$docAppointment->notes}}</td>
+                    <td>{{$docAppointment->time}}</td>
+                    <td><a class="btn btn-primary" href="{{action('DoctorAppointmentController@destroy',['appointment_id'=> $docAppointment->id])}}">Cancel</a></td>
+                </tr>  
+            </table>
+                
                 @endforeach
             @else
                 <p>No Upcoming Appointments</p>
                 
             @endif 
-            <a href="{{action('PatientController@showAppointmentForm',['id'=>Auth::user()->id])}}" class="btn btn-danger addAppointment">Add New Appointment</a>
-            <a href="{{action('PatientController@appoinmentArchive',['id'=>Auth::user()->id])}}" class="btn btn-danger appointmentArchive">Show Previous Appointments</a>
+            <hr>
+            <a class="btn btn-primary" href="{{action('PatientController@showAppointmentForm',['id'=>Auth::user()->patient->id])}}" class="btn btn-danger addAppointment">Add New Appointment</a>
+            <a class="btn btn-primary" href="{{action('PatientController@appoinmentArchive',['id'=>Auth::user()->patient->id])}}" class="btn btn-danger appointmentArchive">Show Previous Appointments</a>
 		</section>
+        </div>
+        
+        <hr>
 
-        <h2>Upcoming Lab's Appointments</h2>
-        <section class="cards upcoming-appointments">
+        <div class="col-md-12">
+        <h2> Upcoming Lab's Appointments</h2>
+        <section class=" upcoming-appointments">
             @if(!$labAppointments->isEmpty())
-                @foreach($labAppointments as $labAppointment)
-                <div class="card appointment">
-					<h3>Conductor's Name: {{$labAppointment->helpingStaff->user->name}}</h3>
-					<div class="appointment-content">
-						<div class="appointment-text">
-							<p>Time and Date: {{$labAppointment->time}}</p>
-							<p>Test: {{$labAppointment->labTest->name}}</p>
-						</div>
-						<div class="actionable">
-							<a class="btn btn-danger" href="{{action('LabAppointmentController@destroy',['id'=>$labAppointment->id])}}">Cancel</a>
-							<a class="btn btn-danger" href="{{action('PatientController@showLabReport',['id'=>Auth::user()->id,'labAppointment_id'=>$labAppointment->id])}}">Show Lab Report</a>
+            <table class="table">
+                <tr>
+                <th scope="col">Conductor's Name</th>
+                <th scope="col">Time and Date:</th>
+                <th scope="col">Test</th>
+                <th scope="col">Cancel</th>
+                </tr>    
+            @foreach($labAppointments as $labAppointment)
+            <tr>
+            <td> {{$labAppointment->helpingStaff->user->name}}</td>
+            <td>{{$labAppointment->time}}</td>
+            <td>{{$labAppointment->labTest->name}}</td>
+            <td><a class="btn btn-primary" href="{{action('LabAppointmentController@destroy',['appointment_id'=>$labAppointment->id])}}">Cancel</a></td>
 
 						</div>
 					</div>
-                </div>
+
+            </tr>
+        </table>
                 @endforeach
             @else
                 <p>No Upcoming Lab Appointments</p>
             @endif
         </section>
+        </div>
 
+        <hr>
+
+        <div class='col-md-12'>
         <h2>Support Groups</h2>
         <section class="cards upcoming-appointments">
             @if(!$supportGroups->isEmpty())
+            <table class="table">
+                <tr>
+                <th scope="col">Support Group</th>
+                <th scope="col">Conductor's Name</th>
+                <th scope="col">Day</th>
+                <th scope="col">Time and Date</th>
+                <th scope="col">Description</th>
+                <th scope="col">Leave</th>
+                </tr>    
             @foreach($supportGroups as $supportGroup)
-                <div class="card appointment">
-                            <h3>Support Group: {{$supportGroup->name}}</h3>
-                            <div class="appointment-content">
-                                <div class="appointment-text">
-									<p>Conductor's Name: {{$supportGroup->supportGroupConductor->user->name}}</p>
-									<p>Day: {{$supportGroup->day}}</p>
-                                    <span>Time and Date: {{$supportGroup->timing}}</span>
-                                    <p>Description: {{$supportGroup->description}}</p>
-                                </div>
-                                <div class="actionable">
-                                    <a class="btn btn-danger" href="{{action('PatientController@leaveSupportGroup',['supportGroup_id'=>$supportGroup->id,'id'=>\Auth::user()->patient->id])}}">Leave</a>
-                                </div>
-                            </div>
-                </div>
+            <tr>
+                <td> {{$supportGroup->name}}</td>
+                <td>{{$supportGroup->supportGroupConductor->user->name}}</td>
+                <td>{{$supportGroup->day}}</td>
+                <td>{{$supportGroup->timing}}</td>
+                <td>{{$supportGroup->description}}</td>
+                <td> <a class="btn btn-primary" href="{{action('PatientController@leaveSupportGroup',['supportGroup_id'=>$supportGroup->id,'id'=>\Auth::user()->patient->id])}}">Leave</a></td>
+                </tr>
+            </table>
                 @endforeach
             @else
                 <p>You have not enrolled in any Support Group</p>
             @endif
-            <a href="{{action('PatientController@showSupportGroups',['id'=>Auth::user()->id])}}" class="btn btn-danger addAppointment">Join Support Group</a>
+            <hr>
+            <a href="{{action('PatientController@showSupportGroups',['id'=>Auth::user()->patient->id])}}" class="btn btn-primary addAppointment">Join Support Group</a>
         </section>
-    </article>
-</div>
+        </div>
+    </main>
+
+
 </div>
 
+<hr>
+
+
+</div>
+
+</div>
+
+
 @endsection
+
+
+
+
+
+

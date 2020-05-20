@@ -3,8 +3,7 @@ window.Chart = require('chart.js');
 window.getChart = function(labels,count,label){
 	return {
 		type: 'bar',
-		responsive: true,
-		aspectRatio: 2,
+		maintainAspectRatio: false,
 		data: {
 			labels: labels,
 			datasets: [{

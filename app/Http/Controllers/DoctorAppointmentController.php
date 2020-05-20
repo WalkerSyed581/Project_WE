@@ -123,9 +123,9 @@ class DoctorAppointmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($appointment_id)
     {
-		$appointment = DoctorAppointment::where('id',$id)->first();
+		$appointment = DoctorAppointment::where('id',$appointment_id)->first();
 		$appointment->cancelled = true;
 		$appointment->save();
 

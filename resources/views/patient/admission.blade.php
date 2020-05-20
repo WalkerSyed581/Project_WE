@@ -1,14 +1,17 @@
 @extends('layouts.app')
 @section('content')
+<div class="patientPage container-fluid ">
 <div class="row">
-    <div class="col-md-3 bg-dark" >
-        <h1 class="text-center position-fixed" style="color:white">Mr. {{Auth::user()->name}}</h1>
-        @include('patient.aside')
-    </div> 
-    <div class="col-md-9 " >
-<h2>Current Admission</h2>
-<section class="cards upcoming-appointments col-md-12">
-    @if($admissions)
+	@include('inc.aside')
+
+    <div class="col-md-9 pr-0">
+	@if($type == 'cur')
+		<h2>Current Admission</h2>
+	@else
+		<h2>Previous Admissions</h2>
+	@endif
+<section class="col-md-12">
+    @if(!$admissions->isEmpty())
     <table class='table'>
         <tr>
             <th>Staff Member</th>
@@ -28,5 +31,6 @@
 		<p>No Admission Found</p>
 	@endif
 </section>
+</div>
 </div>
 @endsection

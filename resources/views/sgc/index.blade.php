@@ -1,29 +1,38 @@
 @extends('layouts.app')
 @section('content')
-<div class="docHeader">
-    <h1>Mr. {{Auth::user()->name}}'s Dashboard</h1>
-</div>
-<div class="mainContent docContent">
+<div class="docHeader container-fluid ">
+    <div class="row">
+    <div class="col-md-3" >
+        <h1 class="text-center " style="color:white">Mr. {{Auth::user()->name}}</h1>
+    </div>
+<div class="mainContent docContent col-md-9">
     <article>
 		<h2>Support Groups</h2>
-        <section class="cards upcoming-appointments">
-            @if($supportGroups)
+        <section class="upcoming-appointments">
+            @if(!$supportGroups->isEmpty())
+            <table class="table">
+                <tr>
+                    <th>Support Group</th>
+                    <th>Day</th>
+                    <th>ime and Date</th>
+                    <th>Description</th>
+                </tr>
             @foreach($supportGroups as $supportGroup)
-                <div class="card appointment">
-					<h3>Support Group: {{$supportGroup->name}}</h3>
-					<div class="appointment-content">
-						<div class="appointment-text">
-							<p>Day: {{$supportGroup->day}}</p>
-							<span>Time and Date: {{$supportGroup->timing}}</span>
-							<p>Description: {{$supportGroup->description}}</p>
-						</div>
-					</div>
-                </div>
+            <tr>
+                <td>{{$supportGroup->name}}</td>
+                <td>{{$supportGroup->day}}</td>
+                <td>{{$supportGroup->timing}}</td>
+                <td>{{$supportGroup->description}}</td>
+            </tr>
+        </table>
+                
                 @endforeach
             @else
                 <p>You have not conducting any Support Group</p>
             @endif
         </section>
     </article>
+</div>
+</div>
 </div>
 @endsection
