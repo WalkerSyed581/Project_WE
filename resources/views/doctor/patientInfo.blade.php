@@ -1,13 +1,34 @@
-@extends('layouts.app')
+    @extends('layouts.app')
 @section('content')
-<div class="docHeader">
-    <h1>{{\Auth::user()->name}}'s Dashboard</h1>
-</div>
+<div class="container-fluid col-md-12">
+    <div class="row">
+    <div class="docHeader col-md-3 bg-dark" >
+        <h1 class="text-center " style="color:white">{{Auth::user()->name}}</h1>
+        <aside class="col-md-3 p-0 flex-shrink-1 sticky-top" style="margin-top:30px">
+            <nav class="navbar navbar-expand navbar-dark  flex-md-column flex-row align-items-start py-2">
+                <div class="collapse navbar-collapse">
+                    <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-between ">
+                        
+                        <li class="nav-item">
+                            <a class="nav-link pl-0" href=" /Project_WE/public/doctor/addPrescription"><i class="fa fa-book fa-fw"></i> <span class="d-none d-md-inline">Add Prescription</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link pl-0" href=" /Project_WE/public/doctor/addDrugs"><i class="fa fa-cog fa-fw"></i> <span class="d-none d-md-inline">Add Drugs</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link pl-0" href=" /Project_WE/public/doctor/addLabAppointment"><i class="fa fa-heart codeply fa-fw"></i> <span class="d-none d-md-inline">Add Lab Appointment</span></a>
+                        </li>
+                                      
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+    </div> 
 
-<div class="mainContent docContent">
+<div class="mainContent docContent col-md-9">
     <article>
         <section class="patient-personal-info">
-            <table>
+            <table class= "table">
                 <tr>
                     <th>Name</th>
                     <td>{{$patient->user->name}}</td>
@@ -43,29 +64,34 @@
         <section class="medical-report">
 			<h2>Patient's Doctor Appointments</h2>
             @if($docAppointments != null)
+            <table class= "table">
+                <tr>
+                    <th>Ailment Notes</th>
+                    <th>Time and Date</th>
+                    <th>Condition</th>
+                    <th>Drug Name</th>
+                    <th>Drug Dose</th>
+                </tr>
             @foreach ($docAppointment as docAppointments)
-                <div class="card appointment">
-                    <div class="appointment-content">
-                        <div class="appointment-text">
-                            <p>Ailment Notes: {{$docAppointment->notes}}</p>
-							<span>Time and Date: {{$docAppointment->time}}</span>
-							@if($docAppointment->prescription)
-								<p>Condition: {{$docAppointment->prescription->condition}}</p>
-								@foreach($docAppointment->prescription->drugs()->get() as $drug)
-								<div>
-									<p>Drug Name: {{$drug->name}}</p>
-									<p>Drug Dose: {{$drug->dose}}</p>
-								</div>
-								@endforeach
-							@endif
-                        </div>
-                    </div>
-                </div>
+            <tr>
+                <td>{{$docAppointment->notes}}</td>
+                <td>{{$docAppointment->time}}</td>
+                <td>@if($docAppointment->prescription)
+                    <p>Condition: {{$docAppointment->prescription->condition}}</p></td>
+                @foreach($docAppointment->prescription->drugs()->get() as $drug)
+                <td>{{$drug->name}}</td>
+                <td>{{$drug->dose}}</td>
                 @endforeach
+            </tr>
+            
+                @endforeach
+                </table>
             @else                    
                 <p>No Previous Appointments found for this patient</p>
             @endif
         </section>
     </article>
+</div>
+</div>
 </div>
 @endsection

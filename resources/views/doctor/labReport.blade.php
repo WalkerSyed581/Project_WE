@@ -1,12 +1,34 @@
 @extends('layouts.app')
 @section('content')
-<div class="docHeader">
-    <h1>{{\Auth::user()->name}}'s Dashboard</h1>
-</div>
-<div class="mainContent docContent">
+<div class="container-fluid col-md-12">
+    <div class="row">
+    <div class="docHeader col-md-3 bg-dark" >
+        <h1 class="text-center " style="color:white">{{Auth::user()->name}}</h1>
+        <aside class="col-md-3 p-0 flex-shrink-1 sticky-top" style="margin-top:30px">
+            <nav class="navbar navbar-expand navbar-dark  flex-md-column flex-row align-items-start py-2">
+                <div class="collapse navbar-collapse">
+                    <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-between ">
+                        
+                        <li class="nav-item">
+                            <a class="nav-link pl-0" href=" /Project_WE/public/doctor/addPrescription"><i class="fa fa-book fa-fw"></i> <span class="d-none d-md-inline">Add Prescription</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link pl-0" href=" /Project_WE/public/doctor/addDrugs"><i class="fa fa-cog fa-fw"></i> <span class="d-none d-md-inline">Add Drugs</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link pl-0" href=" /Project_WE/public/doctor/addLabAppointment"><i class="fa fa-heart codeply fa-fw"></i> <span class="d-none d-md-inline">Add Lab Appointment</span></a>
+                        </li>
+                                      
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+    </div> 
+
+<div class="mainContent docContent col-md-9">
     <article class="content appointment-content">
         <section class="medical-report">
-            <table>
+            <table class="table">
                 <tr>
                     <th>Name</th>
                     <td>{{$patient->name}}</td>
@@ -52,7 +74,7 @@
             @endif
         </section>
     </article>
-
+</div>
+</div>
 </div>
 @endsection
-{{--% endblock %--}}
