@@ -19,7 +19,8 @@
         <div class='col-md-12'>
         <h2 > Upcoming Doctor's Appointments</h2>
         <section class="upcoming-appointments">
-            @if(!$docAppointments->isEmpty())
+			@if(!$docAppointments->isEmpty())
+			<div class="table-responsive">
             <table class="table">
                 <tr>
                 <th scope="col">Doctor's Name:</th>
@@ -36,10 +37,11 @@
                     <td> {{$docAppointment->notes}}</td>
                     <td>{{$docAppointment->time}}</td>
                     <td><a class="btn btn-primary" href="{{action('DoctorAppointmentController@destroy',['appointment_id'=> $docAppointment->id])}}">Cancel</a></td>
-                </tr>  
+				</tr>  
+				@endforeach
+
             </table>
-                
-                @endforeach
+			</div>
             @else
                 <p>No Upcoming Appointments</p>
                 
@@ -55,7 +57,8 @@
         <div class="col-md-12">
         <h2> Upcoming Lab's Appointments</h2>
         <section class=" upcoming-appointments">
-            @if(!$labAppointments->isEmpty())
+			@if(!$labAppointments->isEmpty())
+			<div class="table-responsive">
             <table class="table">
                 <tr>
                 <th scope="col">Conductor's Name</th>
@@ -70,12 +73,11 @@
             <td>{{$labAppointment->labTest->name}}</td>
             <td><a class="btn btn-primary" href="{{action('LabAppointmentController@destroy',['appointment_id'=>$labAppointment->id])}}">Cancel</a></td>
 
-						</div>
-					</div>
 
-            </tr>
-        </table>
-                @endforeach
+			</tr>
+			@endforeach
+		</table>
+			</div>
             @else
                 <p>No Upcoming Lab Appointments</p>
             @endif
@@ -87,27 +89,30 @@
         <div class='col-md-12'>
         <h2>Support Groups</h2>
         <section class="cards upcoming-appointments">
-            @if(!$supportGroups->isEmpty())
-            <table class="table">
-                <tr>
-                <th scope="col">Support Group</th>
-                <th scope="col">Conductor's Name</th>
-                <th scope="col">Day</th>
-                <th scope="col">Time and Date</th>
-                <th scope="col">Description</th>
-                <th scope="col">Leave</th>
-                </tr>    
-            @foreach($supportGroups as $supportGroup)
-            <tr>
-                <td> {{$supportGroup->name}}</td>
-                <td>{{$supportGroup->supportGroupConductor->user->name}}</td>
-                <td>{{$supportGroup->day}}</td>
-                <td>{{$supportGroup->timing}}</td>
-                <td>{{$supportGroup->description}}</td>
-                <td> <a class="btn btn-primary" href="{{action('PatientController@leaveSupportGroup',['supportGroup_id'=>$supportGroup->id,'id'=>\Auth::user()->patient->id])}}">Leave</a></td>
-                </tr>
-            </table>
-                @endforeach
+			@if(!$supportGroups->isEmpty())
+			<div class="table-responsive">
+				<table class="table">
+					<tr>
+					<th scope="col">Support Group</th>
+					<th scope="col">Conductor's Name</th>
+					<th scope="col">Day</th>
+					<th scope="col">Time and Date</th>
+					<th scope="col">Description</th>
+					<th scope="col">Leave</th>
+					</tr>    
+				@foreach($supportGroups as $supportGroup)
+				<tr>
+					<td> {{$supportGroup->name}}</td>
+					<td>{{$supportGroup->supportGroupConductor->user->name}}</td>
+					<td>{{$supportGroup->day}}</td>
+					<td>{{$supportGroup->timing}}</td>
+					<td>{{$supportGroup->description}}</td>
+					<td> <a class="btn btn-primary" href="{{action('PatientController@leaveSupportGroup',['supportGroup_id'=>$supportGroup->id,'id'=>\Auth::user()->patient->id])}}">Leave</a></td>
+					</tr>
+					@endforeach
+
+				</table>
+			</div>
             @else
                 <p>You have not enrolled in any Support Group</p>
             @endif

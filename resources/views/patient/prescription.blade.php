@@ -9,7 +9,7 @@
 <div class="upcoming-appointments col-md-9">
     <h2>Current Prescriptions</h2>
     @if($prescription)
-
+	<div class="table-responsive">
     <table class="table">
         <tr>
         <th scope="col">Doctor's Name</th>
@@ -30,7 +30,7 @@
         </tr>
      
     </table>       
-    
+	</div>
     @endif
 </div>
 </div>

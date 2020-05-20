@@ -17,7 +17,8 @@
 
         <div class="cards upcoming-appointments  col-md-12">
             <h2>Previous Doctor's Appointments</h2>
-            @if(!$docAppointments->isEmpty())
+			@if(!$docAppointments->isEmpty())
+			<div class="table-responsive">
             <table class="table">
                 <tr>
                     <th>Doctor's Name</th>
@@ -52,7 +53,7 @@
 				</tr>
 				@endforeach
             </table>
-               
+			</div>
             @else
 			<p>No Doctor Appointments Found</p>
                 
@@ -63,7 +64,8 @@
         
         <div class="cards upcoming-appointments col-md-12">
             <h2>Previous Lab's Appointments</h2>
-            @if(!$labAppointments->isEmpty())
+			@if(!$labAppointments->isEmpty())
+			<div class="table-responsive">
             <table class="table">
                 <tr>
                     <th>Conductor's Name</th>
@@ -78,10 +80,10 @@
                     <td>						<a class="btn btn-danger" href="{{action('PatientController@showLabReport',['id'=>\Auth::user()->patient->id,'appointment_id'=>$labAppointment->id])}}">Show Lab Report</a>
 					</td>
                
-                </tr>
+				</tr>
+				@endforeach
             </table>
-               
-                @endforeach
+			</div>
             @else
 			<p>No Lab Appointments Found</p>
             @endif

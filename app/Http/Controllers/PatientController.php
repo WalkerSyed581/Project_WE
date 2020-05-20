@@ -193,7 +193,7 @@ class PatientController extends Controller
 		]);
 	}
 	public function joinSupportGroup($id,$supportGroup_id){
-		$patient = Patient::where('user_id',$id)->first();
+		$patient = Patient::find($id);
 
 		if($patient->supportGroups->where('id',$supportGroup_id)->first()){
 			return redirect()->action('PatientController@index');

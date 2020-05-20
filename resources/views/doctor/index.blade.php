@@ -9,7 +9,8 @@
     <article>
         <h2>Upcoming Appointments</h2>
         <section class="cards upcoming-appointments">
-            @if(!$docAppointments->isEmpty())
+			@if(!$docAppointments->isEmpty())
+			<div class="table-responsive">
             <table class="table">
                 <tr>
                     <th>Patient's Name</th>
@@ -33,9 +34,10 @@
                         @endif
                     </a></td>
                     <td><a class="btn btn-primary" href="{{action('DoctorController@patientInfo',['id'=> Auth::user()->id,'patient_id'=> $docAppointment->patient->id])}}">View Patient Profile</a></td>
-                </tr>
-            </table>
-                              @endforeach
+				</tr>
+				@endforeach
+			</table>
+			</div>
             @else
                 <p>No Upcoming Appointments</p>
                 
@@ -47,8 +49,9 @@
 		
 		<h2>Previous Appointments</h2>
         <section class="cards upcoming-appointments">
-            @if(!$prevDocAppointments->isEmpty())
-            <table>
+			@if(!$prevDocAppointments->isEmpty())
+			<div class="table-responsive">
+            <table class="table">
                 <tr>
                     <th>Patient's Name</th>
                     <th>Patient's Age</th>
@@ -65,12 +68,12 @@
                     <td> {{$docAppointment->time}}</td>
                     <td><a class="btn btn-primary" href="{{action('DoctorController@viewPrescription',['id'=> Auth::user()->doctor->id,'appointment_id'=> $docAppointment->id])}}">View Prescription</a></td>
                     <td><a class="btn btn-primary" href="{{action('DoctorController@patientInfo',['id'=> Auth::user()->id,'patient_id'=> $docAppointment->patient->id])}}">View Patient Profile</a></td>
-                </tr>
-            </table>
-                @endforeach
+				</tr>
+				@endforeach
+			</table>
+			</div>
             @else
                 <p>No Previous Appointments</p>
-                
             @endif 
 		</section>
 

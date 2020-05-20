@@ -9,7 +9,8 @@
 
         <div class="col-md-9" >
             <h2>Support Groups</h2>
-    @if (!$supportGroups->isEmpty())
+	@if (!$supportGroups->isEmpty())
+	<div class="table-responsive">
     <table class='table'>
         <tr>
             <th scope="col">Support Group Title</th>
@@ -45,7 +46,8 @@
 
         
         @endforeach
-    </table>
+	</table>
+	</div>
     @else
         <p>No Support Groups are currently on going</p>
     @endif

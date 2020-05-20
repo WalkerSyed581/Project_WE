@@ -14,9 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/','PagesController@home');
-Route::get('/login','PagesController@login');
 Route::get('/about','PagesController@about');
-Route::get('/register','PagesController@register');
 
 Route::middleware(['auth','role:p','checkId'])->group(function () {
 	Route::get('/patient','PatientController@index');

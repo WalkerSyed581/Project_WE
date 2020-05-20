@@ -44,7 +44,8 @@
         </section>
         <section class="medical-report">
 			<h2>Patient's Doctor Appointments</h2>
-            @if($docAppointments != null)
+			@if($docAppointments != null)
+			<div class="table-reponsive">
             <table class= "table">
                 <tr>
                     <th scope="col">Ailment Notes</th>
@@ -74,9 +75,10 @@
 							</ul>
 						</td>
 					@endif
-            </tr>
-            </table>
-            @endforeach
+			</tr>
+			@endforeach
+			</table>
+			</div>
             @else                    
                 <p>No Previous Appointments found for this patient</p>
             @endif

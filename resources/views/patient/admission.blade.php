@@ -11,7 +11,9 @@
 		<h2>Previous Admissions</h2>
 	@endif
 <section class="col-md-12">
-    @if(!$admissions->isEmpty())
+	@if(!$admissions->isEmpty())
+	<div class="table-responsive">
+
     <table class='table'>
         <tr>
             <th>Staff Member</th>
@@ -27,6 +29,8 @@
 			
         @endforeach
         <table>
+		</div>
+		
 	@else
 		<p>No Admission Found</p>
 	@endif

@@ -10,7 +10,8 @@
 		@if($role == 'rc')
         <h2>Upcoming Appointments</h2>
         <section class="upcoming-appointments">
-            @if(!$docAppointments->isEmpty())
+			@if(!$docAppointments->isEmpty())
+			<div class="table-responsive">
             <table class='table'>
                 <tr>
                     <th>Patient's Name</th>
@@ -21,7 +22,6 @@
                 </tr>
                 @foreach( $docAppointments as $docAppointment)
                 
-                <div class="appointment">
                     <tr>
                         <td>{{$docAppointment->patient->user->name}}</td>
                         <td>{{$docAppointment->patient->user->age}}</td>
@@ -34,11 +34,10 @@
                                 Approve
                             @endif
                         </a></td>
-                    </tr>
-                    </table>
-                          
-                </div>
-                @endforeach
+					</tr>
+					@endforeach
+			</table>
+			</div>    
                 
 			@else
                 <p>No Upcoming Doctor Appointments</p>
@@ -48,7 +47,8 @@
 		@elseif($role == 'ls')
 			<h2>Upcoming Lab's Appointments</h2>
 			<section class="upcoming-appointments">
-                @if(!$labAppointments->isEmpty())
+				@if(!$labAppointments->isEmpty())
+				<div class="table-responsive">
                 <table class='table'>
                     <tr>
                         <th>Time and Date</th>
@@ -69,10 +69,11 @@
                                         @endif
                                     </a></td>
                                     <td><a class="btn btn-primary" href="{{action('DoctorController@patientInfo',['id'=> Auth::user()->id,'patient_id'=> $labAppointment->patient->id])}}">View Patient Profile</a></td>
-                                </tr>
-                            </table>
-						
-					@endforeach
+								</tr>
+								@endforeach
+
+				</table>
+				</div>
 				@else
 					<p>No Upcoming Lab Appointments</p>
                 @endif
@@ -80,7 +81,8 @@
 			</section>
 			<h2>Previous Lab Appointments</h2>
 			<section class="upcoming-appointments">
-                @if(!$prevLabAppointments->isEmpty())
+				@if(!$prevLabAppointments->isEmpty())
+				<div class="table-responsive">
                 <table class='table'>
                     <tr>
                         <th>Time and Date</th>
@@ -96,20 +98,23 @@
                                     <td>{{$labAppointment->labTest->name}}</td>
                                     <td><a class="btn btn-primary" href="{{action('HelpingStaffController@addLabReport',['id'=>\Auth::user()->helpingStaff->id,'labAppointment_id'=>$labAppointment->id])}}">Add Lab Report</a></td>
                                     <td><a class="btn btn-primary" href="{{action('DoctorController@patientInfo',['id'=> Auth::user()->id,'patient_id'=> $labAppointment->patient->id])}}">View Patient Profile</a></td>
-                                </tr>
-                            </table>
+								</tr>
+					@endforeach
+
+					</table>
+				</div>
 								
 						
 							
 					
-					@endforeach
 				@else
 					<p>No Previous Lab Appointments</p>
 				@endif
 			</section>
 			<h2>Lab Tests</h2>
 			<section class="upcoming-appointments">
-                @if(!$tests->isEmpty())
+				@if(!$tests->isEmpty())
+				<div class="table-responsive">
                 <table class="table">
                 <tr>
                     <th>Test Name</th>
@@ -124,10 +129,10 @@
                         <td>{{$test->description}}</td>
                         <td> {{$test->fee}}</td>
                         <td><a class="btn btn-primary" href="{{action('HelpingStaffController@showTest',['id'=>\Auth::user()->helpingStaff->id,'test_id'=>$test->id])}}">Edit Test</a></td>
-                    </tr>
-                </table>
-					
+					</tr>
 					@endforeach
+                </table>
+				</div>
 				@else
 					<p>No Tests Found</p>
 				@endif
@@ -136,7 +141,8 @@
 		@elseif($role == 'ws')
 			<h2>Current Ward Duties</h2>
 			<section class="upcoming-appointments">
-                @if(!$duties->isEmpty())
+				@if(!$duties->isEmpty())
+				<div class="table-responsive">
                 <table class= "table">
                     <tr>
                         <th>Patient</th>
@@ -155,13 +161,16 @@
                     </tr>
 					
 					@endforeach
+				</table>
+				</div>
 				@else
 					<p>No Upcoming Ward Duties</p>
 				@endif
 			</section>
 			<h2>Wards</h2>
 			<section class="upcoming-appointments">
-                @if(!$wards->isEmpty())
+				@if(!$wards->isEmpty())
+				<div class="table-responsive">
                 <table class="table">
                     <tr>
                         <th>Ward ID</th>
@@ -176,6 +185,8 @@
                     </tr>
 					
 					@endforeach
+				</table>
+				</div>
 				@else
 					<p>No Wards Found</p>
 				@endif

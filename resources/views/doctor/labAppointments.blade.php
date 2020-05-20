@@ -12,7 +12,8 @@
 		}
 		 <h2>Lab's Appointments for Prescription</h2>
         <section class="cards upcoming-appointments">
-            @if(!$labAppointments->isEmpty())
+			@if(!$labAppointments->isEmpty())
+			<div class="table-responsive">
             <table class="table">
                 <tr>
                     <th>Conductor's Name</th>
@@ -30,10 +31,10 @@
                     @elseif(\Auth::user()->doctor)
                         <a class="btn btn-primary" href="{{action('DoctorController@showLabReport',['id'=>\Auth::user()->doctor->id,'appointment_id'=>$labAppointment->id])}}">Show Lab Report</a>
                     @endif</td>
-                </tr>
+				</tr>
+				@endforeach
             </table>
-                
-                @endforeach
+			</div>
             @else
                 <p>No Lab Appointments Found for this Prescription</p>
             @endif

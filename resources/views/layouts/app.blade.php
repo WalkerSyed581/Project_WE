@@ -49,8 +49,14 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        @guest
+						<!-- Authentication Links -->
+						<li class="nav-item">
+							<a class="nav-link" href="{{url('/about') }}">{{ __('About') }}</a>
+						</li>
+						@guest
+							<li class="nav-item">
+								<a class="nav-link" href="{{url('/') }}">{{ __('Home') }}</a>
+							</li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                             </li>
@@ -59,7 +65,10 @@
                                     <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                                 </li>
                             @endif
-                        @else
+						@else
+							<li class="nav-item">
+								<a class="nav-link" href="{{url('/patient') }}">{{ __('Home') }}</a>
+							</li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
@@ -83,7 +92,7 @@
             </div>
         </nav>
 
-        <main class="py-4 vh-100">
+        <main class="py-4">
             @yield('content')
         </main>
 	</div>

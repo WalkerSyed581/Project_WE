@@ -3,33 +3,7 @@
 @section('content')
 <div class="container-fluid ">
     <div class="row">
-    <div class="col-md-3 bg-dark" >
-        <h1 class="text-center " style="color:white">{{Auth::user()->name}}</h1>
-       <aside class="col-md-3 p-0 flex-shrink-1 sticky-top" style="margin-top:30px">
-            <!--fixed-top/sticky-top-->
-            <nav class="navbar navbar-expand navbar-dark  flex-md-column flex-row align-items-start py-2">
-                <div class="collapse navbar-collapse">
-                    <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-between ">
-                        
-                        <li class="nav-item">
-                            <a class="nav-link pl-0" href=" /Project_WE/public/helpingStaff/addLabReport"><i class="fa fa-book fa-fw"></i> <span class="d-none d-md-inline"></span>Add Lab Report</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link pl-0" href="/Project_WE/public/helpingStaff/{id}/addTest"><i class="fa fa-cog fa-fw"></i> <span class="d-none d-md-inline">Add Lab Test</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link pl-0" href=" /Project_WE/public/helpingStaff/{id}/labAppointment/{labAppointment_id}"><i class="fa fa-heart codeply fa-fw"></i> <span class="d-none d-md-inline">Show Lab Appointment</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link pl-0" href=" /Project_WE/public/helpingStaff/{id}/addWard"><i class="fa fa-heart codeply fa-fw"></i> <span class="d-none d-md-inline">Add Ward</span></a>
-                        </li>
-                       
-                        
-                    </ul>
-                </div>
-            </nav>
-        </aside>
-    </div> 
+    @include('inc.aside')
     
     <div class="card col-md-9" >
     <div class="card-body">

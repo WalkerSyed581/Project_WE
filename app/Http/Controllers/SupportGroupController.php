@@ -16,7 +16,7 @@ class SupportGroupController extends Controller
      */
     public function index()
     {
-		$supportGroups = SupporGroup::where('support_group_conductor_id',\Auth::user()->supportGroupConductor->id)->get();
+		$supportGroups = SupportGroup::where('support_group_conductor_id',\Auth::user()->supportGroupConductor->id)->get();
 		return view('sgc.index',[
 			'supportGroups' => $supportGroups,
 		]);
