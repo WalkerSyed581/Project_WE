@@ -1,15 +1,27 @@
 @extends('layouts.app')
 
 @section('content')
-	<a href="{{action('AdminController@showRegisterForm',['id'=>\Auth::id()])}}">Register User</a>
-	
-	<div style="position: relative; width:50vw; height:50vh;">
+<div class="col-md-12">
+    <div>
+        <h1 class="text-center">{{Auth::user()->name}}</h1>
+    </div>
+    <hr>
+    <div style=" display: flex; justify-content: center;">
+	<a class="btn btn-primary" href="{{action('AdminController@showRegisterForm',['id'=>\Auth::id()])}}">Register User</a>
+    </div>
+</div>
+        <hr>
+<div >
+    <div class="row col-md-12">
+	<div class="col-md-6" style="position: static; width:50vw; height:50vh;">
 		<canvas id="patientChart"></canvas>
 	</div>
 	
-	<div style="position: relative; width:50vw; height:50vh;">
+	<div class="col-md-6" style="position: static; width:50vw; height:50vh;">
 		<canvas id="doctorChart"></canvas>
-	</div>
+    </div>
+
+</div>
 	@push('scripts')
 	<script>
 	window.onload = function(){
@@ -23,13 +35,19 @@
 			var myChart = new Chart(ctx,getChart({!! json_encode($admissionMonths) !!},{!! json_encode($admissionCount) !!},"No of Admissions"));
 	}
 	</script>
-	@endpush
-	<div style="position: relative; width:50vw; height:50vh;">
+    @endpush
+    
+        <div class="row col-md-12">
+        <div class="col-md-6" style="position: relative;  width:50vw; height:50vh;">
 		<canvas id="appointmentChart"></canvas>
-	</div>
+        </div>
 	
-	<div style="position: relative; width:50vw; height:50vh;">
+    <div class="col-md-6" style="position: relative;  width:50vw; height:50vh;">
 		<canvas id="admissionChart"></canvas>
-	</div>
+    </div>
+  
+</div>
+</div>
+</div>
 @endsection
 
