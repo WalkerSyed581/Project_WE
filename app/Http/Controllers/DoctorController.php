@@ -132,9 +132,43 @@ class DoctorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $doctor_id)
     {
-        //
+        $rules = [
+			'salary' => ['string','integer','required'],
+			'specialization' => ['string'],
+			'fee' => ['string','integer','required'],
+			'start_time' => ['required','date_format:H:i:s'],
+			'end_time' => ['required','date_format:H:i:s','after:start_time'],
+		];
+		
+		$this->validate($request, $rules);
+
+		$start_time = explode(':',$request->input('start_time'));
+		$fomratted_start_time = Carbon::now();
+		$fomratted_start_time->hour = (int) $start_time[0];
+		$fomratted_start_time->minute = (int) $start_time[1];
+		$fomratted_start_time->second = (int) $start_time[2];
+
+
+		$end_time = explode(':',$request->input('end_time'));
+		$fomratted_end_time = Carbon::now();
+		$fomratted_end_time->hour = (int) $end_time[0];
+		$fomratted_end_time->minute = (int) $end_time[1];
+		$fomratted_end_time->second = (int) $start_time[2];
+		
+
+
+		$doctor = Doctor::find($doctor_id);
+		
+		$doctor->salary = $request->input('salary');
+		$doctor->specialization = $request->input('specialization');
+		$doctor->fee = $request->input('fee');
+		$doctor->starting_time = $fomratted_start_time->format('H:i:s');
+		$doctor->end_time = $fomratted_end_time->format('H:i:s');
+		$doctor->save();		
+		
+		return redirect()->action('UsersController@index',['id'=>\Auth::id()]);
     }
 
     /**
@@ -143,9 +177,12 @@ class DoctorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($user_id,$doctor_id)
     {
-        //
+		Doctor::find($doctor_id)->delete();
+		User::find($user_id)->delete();
+
+		return redirect()->action('UsersController@index',['id'=>\Auth::id()]);		
 	}
 	
 

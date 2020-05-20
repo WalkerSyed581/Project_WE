@@ -199,9 +199,25 @@ class AdminController extends Controller
 
 	//Add data specific to the role
 	public function showRoleForm($id,$user_id,$role){
+		$roleData = [];
+		switch($role){
+			case 'p':
+				$roleData = Patient::where('user_id',$user_id)->first();
+				break;
+			case 'd':
+				$roleData = Doctor::where('user_id',$user_id)->first();
+				break;
+			case 'hs':
+				$roleData = HelpingStaff::where('user_id',$user_id)->first();
+				break;
+			case 'sgc':
+				$roleData = SupportGroupConductor::where('user_id',$user_id)->first();
+				break;
+		}
 		return view('admin.addRoleData',[
 			'user_id'=>$user_id,
 			'role'=>$role,
+			'roleData' => $roleData,
 		]);
 	}
 
@@ -224,4 +240,5 @@ class AdminController extends Controller
 			
 		} 
 	}
+
 }

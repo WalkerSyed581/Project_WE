@@ -113,7 +113,7 @@ class HelpingStaffController extends Controller
      */
     public function show($id)
     {
-        //
+       
     }
 
     /**
@@ -134,9 +134,21 @@ class HelpingStaffController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $helpingStaff_id)
     {
-        //
+		$rules = [
+			'salary' => ['string','integer','required'],
+			'role' => ['required'],
+        ];
+
+		$this->validate($request, $rules);
+
+        $helpingStaff = HelpingStaff::find($helpingStaff_id);
+		$helpingStaff->salary = $request->input('salary');
+		$helpingStaff->role = $request->input('role');
+		$helpingStaff->save();
+		
+		return redirect()->action('UsersController@index',['id'=>\Auth::id()]);
     }
 
     /**
@@ -145,9 +157,12 @@ class HelpingStaffController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($user_id,$helpingStaff_id)
     {
-        //
+		HelpingStaff::find($helpingStaff_id)->delete();
+		User::find($user_id)->delete();
+
+		return redirect()->action('UsersController@index',['id'=>\Auth::id()]);		
 	}
 	
 	public function addLabReport($id,$labAppointment_id){

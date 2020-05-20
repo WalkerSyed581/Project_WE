@@ -87,9 +87,19 @@ class PatientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $patient_id)
     {
-        //
+        $rules = [
+			'emergencey_contact' => ['string','digits:11'],
+        ];
+
+		$this->validate($request, $rules);
+
+        $patient = Patient::find($patient_id);
+		$patient->emergencey_contact = $request->input('emergencey_contact');
+		$patient->save();
+		
+		return redirect()->action('UsersController@index',['id'=>\Auth::id()]);
     }
 
     /**
@@ -98,9 +108,12 @@ class PatientController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($user_id,$patient_id)
     {
-        //
+		Patient::find($patient_id)->delete();
+		User::find($user_id)->delete();
+
+		return redirect()->action('UsersController@index',['id'=>\Auth::id()]);		
 	}
 	
 	public function index(){

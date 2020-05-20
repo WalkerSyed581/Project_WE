@@ -110,11 +110,12 @@ Route::middleware(['auth','role:a','checkId'])->group(function () {
 	Route::get('/admin/{id}/registerUser','AdminController@showRegisterForm');
 	Route::get('/admin/{id}/registerRole/{user_id}/{role}','AdminController@showRoleForm');
 
-	//To Be Done
 	Route::get('/admin/{id}/supportGroups','AdminController@showSupportGroups');
 	Route::get('/admin/{id}/supportGroup/add','AdminController@showSupportGroupForm');
 	Route::get('/admin/{id}/supportGroup/remove/{supportGroup_id}','SupportGroupController@destroy');
 	Route::get('/admin/{id}/supportGroup/edit/{supportGroup_id}','SupportGroupController@edit');
+
+	Route::get('/admin/{id}/showUsers','UsersController@index');
 
 	//Post Links
 	Route::post('/admin/supportGroup/add','SupportGroupController@store');
@@ -127,6 +128,19 @@ Route::middleware(['auth','role:a','checkId'])->group(function () {
 	Route::post('/doctor/store','DoctorController@store');
 	Route::post('/supportGroupConductor/store','SupportGroupConductorController@store');
 	Route::post('/helpingStaff/store','HelpingStaffController@store');
+
+	Route::post('/patient/update/{patient_id}','PatientController@update');
+	Route::post('/doctor/update/{doctor_id}','DoctorController@update');
+	Route::post('/supportGroupConductor/update/{sgc_id}','SupportGroupConductorController@update');
+	Route::post('/helpingStaff/update/{helpingStaff_id}','HelpingStaffController@update');
+
+	Route::post('/patient/{user_id}/delete/{patient_id}','PatientController@destroy');
+	Route::post('/doctor/{user_id}/delete/{doctor_id}','DoctorController@destroy');
+	Route::post('/supportGroupConductor/{user_id}/delete/{sgc_id}','SupportGroupConductorController@destroy');
+	Route::post('/helpingStaff/{user_id}/delete/{helpingStaff_id}','HelpingStaffController@destroy');
+
+
+
 });
 
 Route::middleware(['auth'])->group(function () {

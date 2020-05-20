@@ -83,9 +83,19 @@ class SupportGroupConductorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $sgc_id)
     {
-        //
+		$rules = [
+			'salary' => ['string','integer','required'],
+        ];
+
+		$this->validate($request, $rules);
+
+        $sgc = SupportGroupConductor::find($sgc_id);
+		$sgc->salary = $request->input('salary');
+		$sgc->save();
+		
+		return redirect()->action('UsersController@index',['id'=>\Auth::id()]);
     }
 
     /**
@@ -94,8 +104,11 @@ class SupportGroupConductorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($user_id,$sgc_id)
     {
-        //
-    }
+		SupportGroupConductor::find($sgc_id)->delete();
+		User::find($user_id)->delete();
+
+		return redirect()->action('UsersController@index',['id'=>\Auth::id()]);		
+	}
 }
