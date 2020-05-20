@@ -4,6 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\SupportGroup;
+use App\Patient;
+use App\Doctor;
+use App\DoctorAppointment;
+use App\LabAppointment;
+use App\Admission;
+use Carbon\Carbon;
 use App\SupportGroupConductor;
 
 class AdminController extends Controller
@@ -15,7 +21,79 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return view('admin.index');
+		$patients = Patient::oldest()->get();
+		$docAppointments = DoctorAppointment::oldest()->get();
+		$labAppointments = LabAppointment::oldest()->get();
+		$admissions = Admission::oldest()->get();
+		$doctors = Doctor::oldest()->get();
+		$patientMonths = $appointmentMonths = $admissionMonths = $doctorMonths = [];
+		if($patients){
+			foreach($patients as $patient){
+				$created_at = Carbon::parse($patient->created_at);
+				$created_at = $created_at->format('d F');
+				if(!in_array($created_at,$patientMonths)){
+					$patientMonths[$created_at] = 1;
+				} else {
+					$patientMonths[$created_at] = $patientMonths[$created_at] + 1;
+				}
+			}
+		}
+		if($doctors){
+			foreach($doctors as $doctor){
+				$created_at = Carbon::parse($doctor->created_at);
+				$created_at = $created_at->format('d F');
+				if(!in_array($created_at,$doctorMonths)){
+					$doctorMonths[$created_at] = 1;
+				} else {
+					$doctorMonths[$created_at] = $doctorMonths[$created_at] + 1;
+				}
+			}
+		}
+		if($docAppointments){
+			foreach($docAppointments as $docAppointment){
+				$created_at = Carbon::parse($docAppointment->created_at);
+				$created_at = $created_at->format('d F');
+				if(!in_array($created_at,$appointmentMonths)){
+					$appointmentMonths[$created_at] = 1;
+				} else {
+					$appointmentMonths[$created_at] = $appointmentMonths[$created_at] + 1;
+				}
+			}
+		}
+		if($labAppointments){
+			foreach($labAppointments as $labAppointment){
+				$created_at = Carbon::parse($labAppointment->created_at);
+				$created_at = $created_at->format('d F');
+				if(!in_array($created_at,$appointmentMonths)){
+					$appointmentMonths[$created_at] = 1;
+				} else {
+					$appointmentMonths[$created_at] = $appointmentMonths[$created_at] + 1;
+				}
+			}
+		}
+		if($admissions){
+			foreach($admissions as $admission){
+				$created_at = Carbon::parse($admission->created_at);
+				$created_at = $created_at->format('d F');
+				if(!in_array($created_at,$admissionMonths)){
+					$admissionMonths[$created_at] = 1;
+				} else {
+					$admissionMonths[$created_at] = $admissionMonths[$created_at] + 1;
+				}
+			}
+		}
+
+
+        return view('admin.index',[
+			'patientCount' => array_values($patientMonths),
+			'patientMonths' => array_keys($patientMonths),
+			'doctorCount' => array_values($doctorMonths),
+			'doctorMonths' => array_keys($doctorMonths),
+			'appointmentCount' => array_values($appointmentMonths),
+			'appointmentMonths' => array_keys($appointmentMonths),
+			'admissionCount' => array_values($admissionMonths),
+			'admissionMonths' => array_keys($admissionMonths),
+		]);
     }
 
     /**

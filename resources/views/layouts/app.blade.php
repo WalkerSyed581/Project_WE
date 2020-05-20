@@ -10,7 +10,12 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+	<script src="{{ asset('js/app.js') }}" defer></script>
+
+	@if(\Auth::user() && \Auth::user()->role == 'a')
+	<script src="{{ asset('js/adminGraphs.js') }}" defer></script>
+		@stack('scripts')
+	@endif
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -75,6 +80,9 @@
         <main class="py-4">
             @yield('content')
         </main>
-    </div>
+	</div>
+	@if(\Auth::user() && \Auth::user()->role == 'a')
+		@stack('scripts')
+	@endif
 </body>
 </html>
