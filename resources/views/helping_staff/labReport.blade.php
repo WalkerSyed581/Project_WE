@@ -28,11 +28,7 @@
 							<label for="labReport" class="col-md-4 col-form-label text-md-right">{{ __('Lab Report:') }}</label>
 
 							<div class="col-md-6">
-								<textarea id="labReport" col="25" row="10" class="form-control @error('labReport') is-invalid @enderror" name="labReport" autocomplete="appointmentTime">
-									@if($labReport)
-										{{$labReport->text}}
-									@endif
-								</textarea>
+								<textarea id="labReport" col="25" row="10" class="form-control @error('labReport') is-invalid @enderror" name="labReport" autocomplete="appointmentTime">@if($labReport){{$labReport->report_text}}@endif</textarea>
 								@error('labReport')
 								<div class="alert alert-danger">{{ $message }}</div>
 								@enderror

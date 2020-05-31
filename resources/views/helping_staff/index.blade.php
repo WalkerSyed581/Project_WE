@@ -53,7 +53,7 @@
                     <tr>
                         <th>Time and Date</th>
                         <th>Test</th>
-                        <th>Add Lab Report</th>
+                        <th>Cancel</th>
                         <th>Patient Profile</th>
                     </tr>
 					@foreach($labAppointments as $labAppointment)
@@ -86,19 +86,23 @@
                 <table class='table'>
                     <tr>
                         <th>Time and Date</th>
-                        <th>Test</th>
-                        <th>Add Lab Report</th>
+						<th>Test</th>
+						<th>Add/Edit Lab Report</th>
                         <th>Patient Profile</th>
                     </tr>
 					@foreach($prevLabAppointments as $labAppointment)
-					
-							
-                                <tr>
-                                    <td>{{$labAppointment->time}}</td>
-                                    <td>{{$labAppointment->labTest->name}}</td>
-                                    <td><a class="btn btn-primary" href="{{action('HelpingStaffController@addLabReport',['id'=>\Auth::user()->helpingStaff->id,'labAppointment_id'=>$labAppointment->id])}}">Add Lab Report</a></td>
-                                    <td><a class="btn btn-primary" href="{{action('DoctorController@patientInfo',['id'=> Auth::user()->id,'patient_id'=> $labAppointment->patient->id])}}">View Patient Profile</a></td>
-								</tr>
+						<tr>
+							<td>{{$labAppointment->time}}</td>
+							<td>{{$labAppointment->labTest->name}}</td>
+							<td><a class="btn btn-primary" href="{{action('HelpingStaffController@addLabReport',['id'=>\Auth::user()->helpingStaff->id,'labAppointment_id'=>$labAppointment->id])}}">
+								@if($labAppointment->labReport())
+								Edit 
+								@else
+								Add
+								@endif
+								Lab Report</a></td>
+							<td><a class="btn btn-primary" href="{{action('DoctorController@patientInfo',['id'=> Auth::user()->id,'patient_id'=> $labAppointment->patient->id])}}">View Patient Profile</a></td>
+						</tr>
 					@endforeach
 
 					</table>

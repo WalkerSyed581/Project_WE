@@ -10,7 +10,11 @@
                 <div class="card-body">
 					<form method="POST" action="
 					@if($docAppointment)
-					/doctor/updateDoctorAppointment
+						@if(\Auth::user()->role == 'hs')
+							/helpingStaff/updateDoctorAppointment
+						@else
+							/doctor/updateDoctorAppointment
+						@endif
 					@else
 					/doctor/addDoctorAppointment
 					@endif
@@ -34,7 +38,7 @@
 												@if($docAppointment && $patient->id === $docAppointment->patient->id)
 												selected
 												@endif
-												>Mr. {{$patient->user->name}}</option>
+												>{{$patient->user->name}}</option>
 										@endforeach
 								</select>
 								@error('patient_id')
@@ -78,11 +82,7 @@
 							<label for="notes" class="col-md-4 col-form-label text-md-right">{{ __('Pre Appointment Notes (if any):') }}</label>
 
 							<div class="col-md-6">
-								<textarea id="notes" col="20" row="5" class="form-control @error('notes') is-invalid @enderror" name="notes" autocomplete="appointmentTime">
-									@if($docAppointment)
-										{{$docAppointment->notes}}
-									@endif
-								</textarea>
+								<textarea id="notes" col="20" row="5" class="form-control @error('notes') is-invalid @enderror" name="notes" autocomplete="appointmentTime">@if($docAppointment){{$docAppointment->notes}}@endif</textarea>
 								@error('notes')
 								<div class="alert alert-danger">{{ $message }}</div>
 								@enderror

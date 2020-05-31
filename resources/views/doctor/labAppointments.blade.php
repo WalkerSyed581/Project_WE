@@ -7,9 +7,9 @@
 
 <div class="mainContent patientContent col-md-9">
     <article>
-		@if(\Auth::user()->patient){
-			<a  href=" {{action('PatientController@showBill',['id'=>\Auth::user()->patient->id])}}" class="btn btn-danger">Show Bill</a>
-		}
+		@if(\Auth::user()->patient)
+			<a  href="{{action('PatientController@showBill',['id'=>\Auth::user()->patient->id])}}" class="btn btn-danger">Show Bill</a>
+		@endif
 		 <h2>Lab's Appointments for Prescription</h2>
         <section class="cards upcoming-appointments">
 			@if(!$labAppointments->isEmpty())
@@ -25,12 +25,14 @@
                 <tr>
                     <td>{{$labAppointment->helpingStaff->user->name}}</td>
                     <td>{{$labAppointment->time}}</td>
-                    <td>{{$labAppointment->test->name}}</td>
-                    <td>@if(\Auth::user()->patient)
+                    <td>{{$labAppointment->labTest->name}}</td>
+                    <td>
+					@if(\Auth::user()->patient)
                         <a class="btn btn-primary" href="{{action('PatientController@showLabReport',['id'=>\Auth::user()->patient->id,'appointment_id'=>$labAppointment->id])}}">Show Lab Report</a>
                     @elseif(\Auth::user()->doctor)
-                        <a class="btn btn-primary" href="{{action('DoctorController@showLabReport',['id'=>\Auth::user()->doctor->id,'appointment_id'=>$labAppointment->id])}}">Show Lab Report</a>
-                    @endif</td>
+                        <a class="btn btn-primary" href="{{action('DoctorController@showLabReport',['id'=>\Auth::user()->doctor->id,'prescription_id'=>$prescription_id,'appointment_id'=>$labAppointment->id])}}">Show Lab Report</a>
+					@endif
+					</td>
 				</tr>
 				@endforeach
             </table>

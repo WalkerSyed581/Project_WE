@@ -9,9 +9,9 @@ class LabAppointment extends Model
 	protected $fillable = [
         'patient_id', 'helping_staff_id','prescription_id','lab_test_id', 'time','notes','cancelled','approved',
     ];
-    public function user()
+    public function patient()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\patient');
 	}
 	public function helpingStaff()
     {

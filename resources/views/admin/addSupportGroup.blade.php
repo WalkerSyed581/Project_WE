@@ -96,13 +96,7 @@
 							<label for="description" class="col-md-4 col-form-label text-md-right">{{ __('Description:') }}</label>
 
 							<div class="col-md-6">
-								<textarea id="description" col="20" row="5" class="form-control @error('description') is-invalid @enderror" name="description" autocomplete="description">
-									@if($supportGroup)
-										{{$supportGroup->description}}
-									@else
-										{{old('description')}}
-									@endif
-								</textarea>
+								<textarea id="description" col="20" row="5" class="form-control @error('description') is-invalid @enderror" name="description" autocomplete="description">@if($supportGroup){{$supportGroup->description}}@else{{old('description')}}@endif</textarea>
 								@error('description')
 								<div class="alert alert-danger">{{ $message }}</div>
 								@enderror

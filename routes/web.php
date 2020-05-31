@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/','PagesController@home');
 Route::get('/about','PagesController@about');
 
-Route::middleware(['auth','role:p','checkId'])->group(function () {
+Route::middleware(['auth','role:p'])->group(function () {
 	Route::get('/patient','PatientController@index');
 	Route::get('/patient/{id}/appointmentForm','PatientController@showAppointmentForm');
 	Route::post('/patient/addAppointment','DoctorAppointmentController@store');
@@ -41,7 +41,7 @@ Route::middleware(['auth','role:p','checkId'])->group(function () {
 	
 });
 
-Route::middleware(['auth','role:d','checkId'])->group(function () {
+Route::middleware(['auth','role:d'])->group(function () {
 	Route::get('/doctor','DoctorController@index');
 	Route::get('/doctor/{id}/approveAppointment/{appointment_id}','DoctorAppointmentController@approveAppointment');
 
@@ -59,33 +59,29 @@ Route::middleware(['auth','role:d','checkId'])->group(function () {
 	Route::post('/doctor/addLabAppointment','LabAppointmentController@store');
 
 	Route::get('/doctor/{id}/doctorAppointment','DoctorController@addAppointment');
-	Route::get('/doctor/{id}/doctorAppointment/{appointment_id}','DoctorController@showAppointment');
 	Route::post('/doctor/addDoctorAppointment','DoctorAppointmentController@store');
+	Route::get('/doctor/{id}/doctorAppointment/{appointment_id}','DoctorController@showAppointment');
 	Route::post('/doctor/updateDoctorAppointment','DoctorController@updateAppointment');
 
 	Route::get('/doctor/{id}/admitPatient/{patient_id}','DoctorController@showAdmitForm');
 	Route::post('/doctor/admitPatient','AdmissionController@store');
 });
 
-Route::middleware(['auth','role:d','checkId'])->group(function () {
-});
 
-Route::middleware(['auth','role:hs','checkId'])->group(function () {
+Route::middleware(['auth','role:hs'])->group(function () {
 	Route::get('/helpingStaff','HelpingStaffController@index');
-	Route::get('/doctor/{id}/doctorAppointment/{appointment_id}','DoctorController@showAppointment');
-	Route::post('/doctor/updateDoctorAppointment','DoctorController@updateAppointment');
-	Route::post('/helpingStaff/updateDoctorAppointment','DoctorController@updateAppointment');
 
 	Route::get('/helpingStaff/{id}/labReport/{labAppointment_id}','HelpingStaffController@addLabReport');
 	Route::post('/helpingStaff/updateLabReport','HelpingStaffController@updateLabReport');
 	Route::post('/helpingStaff/addLabReport','HelpingStaffController@storeLabReport');
 
+	Route::get('/helpingStaff/{id}/doctorAppointment/{appointment_id}','DoctorController@showAppointment');
+	Route::post('/helpingStaff/updateDoctorAppointment','DoctorController@updateAppointment');
 
 	Route::get('/helpingStaff/{id}/labAppointment/{labAppointment_id}','HelpingStaffController@showLabAppointment');
 	Route::post('/helpingStaff/labAppointment','HelpingStaffController@updateLabAppointment');
 
 	Route::get('/helpingStaff/{id}/updateAdmission/{admission_id}','HelpingStaffController@showAdmitForm');
-	Route::post('/helpingStaff/updateAdmission/{admission_id}','AdmissionController@edit');
 
 	Route::get('/helpingStaff/{id}/addWard','HelpingStaffController@showWardForm');
 	Route::post('/helpingStaff/addWard','HelpingStaffController@storeWard');
@@ -100,12 +96,12 @@ Route::middleware(['auth','role:hs','checkId'])->group(function () {
 
 });
 
-Route::middleware(['auth','role:sgc','checkId'])->group(function () {
+Route::middleware(['auth','role:sgc'])->group(function () {
 	Route::get('/sgc','SupportGroupController@index');
 	Route::get('/sgc/{id}/supportGroup/{supportGroup_id}/members','SupportGroupController@members');
 });
 
-Route::middleware(['auth','role:a','checkId'])->group(function () {
+Route::middleware(['auth','role:a'])->group(function () {
 	Route::get('/admin','AdminController@index');
 	Route::get('/admin/{id}/registerUser','AdminController@showRegisterForm');
 	Route::get('/admin/{id}/registerRole/{user_id}/{role}','AdminController@showRoleForm');
@@ -144,9 +140,8 @@ Route::middleware(['auth','role:a','checkId'])->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-
 	Route::get('/user/{id}/patient/{patient_id}/showProfile','DoctorController@patientInfo');
-
+	Route::post('/helpingStaff/updateAdmission/{id}','AdmissionController@update');
 	Route::get('/user/{id}/showUserProfile','UsersController@showProfile');
 	Route::post('/user/editProfile/{id}','UsersController@update');
 });

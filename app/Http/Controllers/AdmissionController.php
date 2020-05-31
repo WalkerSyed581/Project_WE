@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use App\Admission;
+use App\Bill;
 
 class AdmissionController extends Controller
 {
@@ -93,7 +96,7 @@ class AdmissionController extends Controller
     public function update(Request $request, $id)
     {
 		$rules = [
-			'appointmentTime' => ['date_format:H:i','required'],
+			'appointmentTime' => ['date_format:H:i:s','required'],
 			'appointmentDate' => ['date_format:Y-m-d','required'],
 			'number_of_days' => ['integer','required'],
         ];
@@ -112,7 +115,7 @@ class AdmissionController extends Controller
 		$admission->discharged =  (int) $request->input('discharged');
 		$admission->save();
 		
-		return redirect()->action('HelpingStaff@index');
+		return redirect()->action('HelpingStaffController@index');
     }
 
     /**

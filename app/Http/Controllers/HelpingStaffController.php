@@ -174,26 +174,26 @@ class HelpingStaffController extends Controller
 	}
 	public function storeLabReport(Request $request){
 		$rules = [
-			'labReport' => ['string','integer','required'],
+			'labReport' => ['string','required'],
 		];
 		$this->validate($request, $rules);
 		$labReport = LabReport::create([
-			'lab_appointment_id' => $request->input('labAppointment_id'),
+			'lab_appointment_id' => $request->input('appointment_id'),
 			'report_text' => $request->input('labReport'),
 		]);
 
-		return redirect()->action('HelpingStaf@index');
+		return redirect()->action('HelpingStaffController@index');
 	}
 	public function updateLabReport(Request $request){
 		$rules = [
-			'labReport' => ['string','integer','required'],
+			'labReport' => ['string','required'],
 		];
 		$this->validate($request, $rules);
 		$labReport = LabReport::find($request->input('labReport_id'));
 		$labReport->report_text = $request->input('labReport');
 		$labReport->save();
 
-		return redirect()->action('HelpingStaff@index');
+		return redirect()->action('HelpingStaffController@index');
 	}
 
 	public function showLabAppointment($id,$labAppointment_id){
@@ -206,7 +206,7 @@ class HelpingStaffController extends Controller
 	}
 	public function updateLabAppointment(Request $request){
 		$rules = [
-			'appointmentTime' => ['date_format:H:i'],
+			'appointmentTime' => ['date_format:H:i:s'],
 			'appointmentDate' => ['date_format:Y-m-d'],
 			'notes' => ['string','nullable'],
 			'lab_test_id' => ['required','integer'],
@@ -215,14 +215,14 @@ class HelpingStaffController extends Controller
 		$this->validate($request, $rules);
 
 		$fomratted_start_date = Carbon::parse($request->input('appointmentDate') . $request->input('appointmentTime'));
-
 		$appointment = LabAppointment::find($request->input('appointment_id'));
 		$appointment->time = $fomratted_start_date;
 		$appointment->notes = $request->input('notes');
 		$appointment->lab_test_id = $request->input('lab_test_id');
+		$appointment->approved = (boolean) $request->input('approved');
 		$appointment->save();
 
-		return redirect()->action('HelpingStaff@index');
+		return redirect()->action('HelpingStaffController@index');
 	}
 
 	public function showAdmitForm($id,$admission_id){

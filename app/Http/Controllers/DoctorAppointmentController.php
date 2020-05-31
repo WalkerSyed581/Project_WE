@@ -47,28 +47,20 @@ class DoctorAppointmentController extends Controller
 
 
 		$fomratted_start_date = Carbon::parse($request->input('appointmentDate') . $request->input('appointmentTime'));
-		if($request->input('patient_id')){
-			$patient_id = (int) $request->input('patient_id');
-			$data = [
-				'patient_id' => (int) $request->input('patient_id'),
-				'doctor_id' => \Auth::user()->doctor->id,
-				'cancelled' => 0,
-				'approved' => (int) $request->input('approved'),
-				'time' => $fomratted_start_date->toDateTimeString(),
-				'notes' => $request->input('notes')
-			];
-		} 
-		$patient_id =  \Auth::user()->patient->id;
 		$data = [
-			'patient_id' => \Auth::user()->patient->id,
-			'doctor_id' => (int) $request->input('doctor_id'),
+			'patient_id' => $request->input('patient_id'),
+			'doctor_id' => $request->input('doctor_id'),
 			'cancelled' => 0,
-			'approved' => 0,
 			'time' => $fomratted_start_date->toDateTimeString(),
 			'notes' => $request->input('notes')
 		];
 		
-		
+		if($request->input('approved')){
+			$data['approved'] = $request->input('approved');
+		} else{
+			$data['approved'] = 0;
+		}
+		$patient_id = $request->input('patient_id');
         $appointment = DoctorAppointment::create($data);
 		
 		$bill = Bill::create([
@@ -76,9 +68,9 @@ class DoctorAppointmentController extends Controller
 			'doctor_appointment_id' => $appointment->id,
 		]);
 		
-		if($request->input('patient_id')){
+		if(\Auth::user()->role == 'd'){
 			return redirect()->action('DoctorController@index');
-		} else{
+		} else {
 			return redirect()->action('PatientController@index');
 		}
     }

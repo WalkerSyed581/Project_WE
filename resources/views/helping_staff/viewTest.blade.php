@@ -47,11 +47,7 @@
 									<div class="col-md-8">
 										<textarea id="description" rows="5" cols="20"
 										class="form-control @error('description') is-invalid @enderror" 
-										name="description">
-										@if($test)
-												{{$test->description}}
-										@endif
-										</textarea>
+										name="description">@if($test){{$test->description}}@endif</textarea>
 										@error('description')
 											<div class="alert alert-danger">{{ $message }}</div>
 										@enderror

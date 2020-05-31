@@ -8,11 +8,14 @@ use App\User;
 use App\LabTest;
 use App\Patient;
 use App\DoctorAppointment;
+use App\LabAppointment;
+use App\LabReport;
 use App\Ward;
 use App\Drug;
 use App\HelpingStaff;
 use App\Prescription;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Gate;
 
 class DoctorController extends Controller
 {
@@ -188,6 +191,9 @@ class DoctorController extends Controller
 
 
 	public function viewPrescription($id,$appointment_id){
+		if(!Gate::allows('checkId',$id,\Auth::user()->role)){
+			return redirect()->action('DoctorController@index');
+		}
 		$prescription = Prescription::where('doctor_appointment_id',$appointment_id)->first();
 		$drugs = [];
 		if($prescription){
@@ -249,6 +255,9 @@ class DoctorController extends Controller
 	}
 
 	public function showDrugsForm($id,$prescription_id,$number_of_drugs){
+		if(!Gate::allows('checkId',$id,\Auth::user()->role)){
+			return redirect()->action('DoctorController@index');
+		}
 		return view('doctor.addDrugs',[
 			'doctor_id' => $id,
 			'prescription_id' => $prescription_id,
@@ -276,6 +285,9 @@ class DoctorController extends Controller
 	}
 
 	public function showLabAppointmentForm($id,$appointment_id){
+		if(!Gate::allows('checkId',$id,\Auth::user()->role)){
+			return redirect()->action('DoctorController@index');
+		}
 		$prescription_id = Prescription::where('doctor_appointment_id',$appointment_id)->first()->id;
 		$doctorAppointment = DoctorAppointment::find($appointment_id);
 		$patient_id = $doctorAppointment->patient->id;
@@ -293,6 +305,9 @@ class DoctorController extends Controller
 	}
 
 	public function addAppointment($id){
+		if(!Gate::allows('checkId',$id,\Auth::user()->role)){
+			return back()->withInput();
+		}
 		$patients = Patient::all();
 		$docAppointment = [];
 		return view('doctor.appointment',
@@ -303,6 +318,9 @@ class DoctorController extends Controller
 		);
 	}
 	public function showAppointment($id,$appointment_id){
+		if(!Gate::allows('checkId',$id)){
+			return back()->withInput();
+		}
 		$patients = Patient::all();
 		$appointment = DoctorAppointment::find($appointment_id);
 		return view('doctor.appointment',
@@ -311,6 +329,7 @@ class DoctorController extends Controller
 				'docAppointment' => $appointment,
 			]
 		);
+
 	}
 
 	public function updateAppointment(Request $request){
@@ -333,12 +352,17 @@ class DoctorController extends Controller
 
 
 	public function showAdmitForm($id,$patient_id){
+		if(!Gate::allows('checkId',$id)){
+			return back()->withInput();
+		}
 		$patient = Patient::find($patient_id);
+		$allPatients = Patient::all();
 		$admission = $patient->admissions()->where('discharged','false')->first();
 		$wards = Ward::all();
 		$helpingStaffs = HelpingStaff::where('role','ws')->get();
 		return view('doctor.admission',[
 			'patient' => $patient,
+			'allPatients' => $allPatients,
 			'wards' => $wards,
 			'helpingStaffs'=> $helpingStaffs,
 			'admission' => $admission,
@@ -356,23 +380,29 @@ class DoctorController extends Controller
 		]);
 	}
 	public function showLabReport($id,$prescription_id,$appointment_id){
+		if(!Gate::allows('checkId',$id)){
+			return back()->withInput();
+		}
 		$labAppointment = LabAppointment::find($appointment_id);
 		$labReport = LabReport::where('lab_appointment_id',$appointment_id)->first();
-		$patient = $labAppointment->patient;
 		$prescription = $labAppointment->prescription;
 		$drugs = $prescription->drugs()->get();
 		return view('doctor.labReport',[
 			'labReport' => $labReport,
 			'labAppointment' => $labAppointment,
-			'patient' => $patient,
 			'prescription' => $prescription,
 			'drugs' => $drugs,
 		]);
 	}
 
 	public function showLabAppointments($id,$prescription_id){
+		if(!Gate::allows('checkId',$id)){
+			return back()->withInput();
+		}
 		$labAppointments = LabAppointment::where('prescription_id',$prescription_id)->get();
 		return view('doctor.labAppointments',[
 			'labAppointments' => $labAppointments,
-		]);	}
+			'prescription_id' => $prescription_id,
+		]);	
+	}
 }

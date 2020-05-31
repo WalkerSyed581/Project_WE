@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\LabReport;
 use App\LabAppointment;
+use Carbon\Carbon;
+use App\DoctorAppointment;
+use App\Bill;
+use App\Prescription;
 
 class LabAppointmentController extends Controller
 {
@@ -48,7 +52,7 @@ class LabAppointmentController extends Controller
 
 		$fomratted_start_date = Carbon::parse($request->input('appointmentDate') . $request->input('appointmentTime'));
 		
-        $appointment = DoctorAppointment::create([
+        $appointment = LabAppointment::create([
 			'patient_id' =>(int) $request->input('patient_id'),
 			'prescription_id' =>(int) $request->input('prescription_id'),
 			'helping_staff_id' => (int) $request->input('helping_staff_id'),
@@ -58,13 +62,14 @@ class LabAppointmentController extends Controller
 			'cancelled' => 0,
 			'approved' => 0,
 		]);
+		$prescription = Prescription::find((int) $request->input('prescription_id'));
 		
 		$bill = Bill::create([
 			'patient_id' => (int) $request->input('patient_id'),
 			'lab_appointment_id' => $appointment->id,
 		]);
 		
-		return redirect()->action('DoctorController@viewPrescription',['id'=>(int) $request->input('doctor_id'),'prescription_id'=>(int) $request->input('prescription_id')]);
+		return redirect()->action('DoctorController@viewPrescription',['id'=>(int) $request->input('doctor_id'),'appointment_id'=>$prescription->doctor_appointment_id]);
     }
 
     /**

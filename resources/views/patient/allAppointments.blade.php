@@ -38,14 +38,14 @@
 						<td>
 							<ul>
 							@foreach($docAppointment->prescription->drugs()->get() as $drug)
-								<li>{{$drug->name}}<li>
+								<li>{{$drug->name}}</li>
 							@endforeach
 							</ul>
 						</td>
 						<td>
 							<ul>
 							@foreach($docAppointment->prescription->drugs()->get() as $drug)
-								<li>{{$drug->dose}}<li>
+								<li>{{$drug->dose}}</li>
 							@endforeach
 							</ul>
 						</td>
@@ -77,7 +77,8 @@
                     <td>{{$labAppointment->helpingStaff->user->name}}</td>
                     <td>{{$labAppointment->time}}</td>
                   
-                    <td>						<a class="btn btn-danger" href="{{action('PatientController@showLabReport',['id'=>\Auth::user()->patient->id,'appointment_id'=>$labAppointment->id])}}">Show Lab Report</a>
+                    <td>						
+						<a class="btn btn-danger" href="{{action('PatientController@showLabReport',['id'=>\Auth::user()->patient->id,'labAppointment_id'=>$labAppointment->id])}}">Show Lab Report</a>
 					</td>
                
 				</tr>

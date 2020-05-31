@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Add Lab Appointment') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="/patient/addAppointment">
+                    <form method="POST" action="/doctor/addLabAppointment">
 						@csrf
 						<input id="doctor_id" name="doctor_id" type="hidden" value="{{$doctor_id}}">
 						<input id="patient_id" name="patient_id" type="hidden" value="{{$patient_id}}">
@@ -19,12 +19,7 @@
                             <div class="col-md-6">
                                 <select id="helping_staff_id" type="text" class="form-control @error('helping_staff_id') is-invalid @enderror" name="helping_staff_id">
 									@foreach($helpingStaffs as $helpingStaff)
-										<option value="{{$helpingStaff->id}}">@if($helpingStaff->user->gender=='f')
-												Miss
-												@else
-												Mr.
-												@endif
-											{{$helpingStaff->user->name}}</option>
+										<option value="{{$helpingStaff->id}}">{{$helpingStaff->user->name}}</option>
 									@endforeach
 								</select>
 								@error('helping_staff_id')

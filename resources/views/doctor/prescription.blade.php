@@ -107,6 +107,9 @@
 			<a class="btn btn-danger" href="{{action('DoctorController@showAdmitForm',['id'=> \Auth::user()->doctor->id,'patient_id'=> $patient->id])}}">Admit Patient</a>
 			<a class="btn btn-danger" href="{{action('DoctorController@showLabAppointmentForm',['id'=> \Auth::user()->doctor->id,'appointment_id'=> $prescription->doctor_appointment_id])}}">Add Lab Appointment</a>
 			@endif
+			@if($prescription->labAppointments())
+				<a class="btn btn-danger" href="{{action('DoctorController@showLabAppointments',['id'=> \Auth::user()->doctor->id,'prescription_id'=> $prescription->id])}}">Show Lab Appointments</a>
+			@endif
 			</div>
 		</div>
 		

@@ -11,15 +11,15 @@
             <table class="table">
                 <tr>
                     <th>Name</th>
-                    <td>{{$patient->name}}</td>
+                    <td>{{$labAppointment->patient->user->name}}</td>
                 </tr>
                 <tr>
                     <th>Age</th>
-                    <td>{{$patient->age}}</td>
+                    <td>{{$labAppointment->patient->user->age}}</td>
                 </tr>
                 <tr>
                     <th>Prescription Condition</th>
-                    <td>{{$prescription->conditions}}</td>
+                    <td>{{$prescription->condition}}</td>
                 </tr>
                 <tr>
                     <th>Prescription Notes</th>
@@ -31,7 +31,7 @@
 				</tr>
 				<tr>
                     <th>Test Name </th>
-                    <td>{{$labAppointment->test->name}}</td>
+                    <td>{{$labAppointment->labTest->name}}</td>
 				</tr>
 				@foreach($drugs as $drug)
 					<tr>
@@ -45,7 +45,7 @@
                 <div class="card appointment">
 					<div class="appointment-content">
 						<div class="appointment-text">
-							{{$labReport->}}
+							{{$labReport->report_text}}
 						</div>
 					</div>
 				</div>

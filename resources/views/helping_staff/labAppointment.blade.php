@@ -18,12 +18,14 @@
 
                             <div class="col-md-6">
                                 <select id="lab_test_id" type="text" class="form-control @error('lab_test_id') is-invalid @enderror" name="lab_test_id">
+
 									@foreach($tests as $test)
 										<option value="{{$test->id}}"
-											@if($test->id === $labAppointment->test->id)
+											@if($test->id === $labAppointment->labTest->id)
 												selected
 											@endif
-											>{{$test->name}}</option>
+											>{{$test->name}}
+										</option>
 									@endforeach
 								</select>
 								@error('lab_test_id')
@@ -54,7 +56,7 @@
 							<div class="col-md-6">
 								<input id="appointmentTime" type="time" min="09:00" max="19:00" class="form-control @error('appointmentTime') is-invalid @enderror" name="appointmentTime" autocomplete="appointmentTime"
 								@if($labAppointment)
-									value="{{Carbon\Carbon::parse($docAppointment->time)->toTimeString()}}"
+									value="{{Carbon\Carbon::parse($labAppointment->time)->toTimeString()}}"
 								@endif
 								
 								>
@@ -65,30 +67,12 @@
 						</div>
 
 
-						<div class="form-group row">
-							<label for="notes" class="col-md-4 col-form-label text-md-right">{{ __('Pre Appointment Notes (if any):') }}</label>
-
-							<div class="col-md-6">
-								<textarea id="notes" col="20" row="5" class="form-control @error('notes') is-invalid @enderror" name="notes" autocomplete="appointmentTime">
-									@if($labAppointment)
-										{{$labAppointment->notes}}
-									@endif
-								</textarea>
-								@error('notes')
-								<div class="alert alert-danger">{{ $message }}</div>
-								@enderror
-							</div>
-						</div>
 
 						<div class="form-group row">
 							<label for="notes" class="col-md-4 col-form-label text-md-right">{{ __('Pre Appointment Notes (if any):') }}</label>
 
 							<div class="col-md-6">
-								<textarea id="notes" col="20" row="5" class="form-control @error('notes') is-invalid @enderror" name="notes" autocomplete="appointmentTime">
-									@if($docAppointment)
-										{{$docAppointment->notes}}
-									@endif
-								</textarea>
+								<textarea id="notes" col="20" row="5" class="form-control @error('notes') is-invalid @enderror" name="notes" autocomplete="appointmentTime">@if($labAppointment){{$labAppointment->notes}}@endif</textarea>
 								@error('notes')
 								<div class="alert alert-danger">{{ $message }}</div>
 								@enderror
@@ -100,7 +84,7 @@
 
 							<div class="col-md-6">
 								<input id="approved" type="checkbox" class="form-control @error('approved') is-invalid @enderror" name="approved" autocomplete="approved"
-								@if($docAppointment->approved)
+								@if($labAppointment->approved)
 									checked
 								@endif
 								>

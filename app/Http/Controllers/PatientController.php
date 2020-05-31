@@ -11,6 +11,7 @@ use App\Doctor;
 use App\Prescription;
 use App\SupportGroup;
 use App\DoctorAppointment;
+use App\LabAppointment;
 use Illuminate\Http\Request;
 
 class PatientController extends Controller
@@ -260,16 +261,16 @@ class PatientController extends Controller
 		
 
 		foreach($bills as $bill){
-			if($bill->doctorAppointment->id){
+			if($bill->doctorAppointment){
 				$doctorfee = $doctorfee + $bill->doctorAppointment->doctor->fee;
 			}
-			elseif($bill->labAppointment->id){
+			elseif($bill->labAppointment){
 				$labFee[$testIndex]['name'] = $bill->labAppointment->labTest->name;
 				$labFee[$testIndex]['fee'] = $bill->labAppointment->labTest->fee;
 				$totalLabFee = $totalLabFee + $labFee[$testIndex]['fee'];
 				$testIndex++;
 			}
-			elseif($bill->admission->id){
+			elseif($bill->admission){
 				$wardFee = $wardFee +($bill->admission->ward->capacity * $bill->admission->number_of_days);
 			}
 		}

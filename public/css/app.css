@@ -10907,7 +10907,7 @@ footer p {
 
 @media all and (min-width: 768px) {
   .docHeader {
-    height: 100vw;
+    height: 100vh;
   }
 }
 

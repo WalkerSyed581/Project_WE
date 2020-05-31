@@ -25,6 +25,32 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+		Gate::define('checkId', function($user,$requested_id) {
+			$id = null;
+			$role = $user->role;
+			switch($role){
+				case 'p':
+					$id = \Auth::user()->patient->id;
+				break;
+				case 'd':
+					$id = \Auth::user()->doctor->id;
+				break;
+				case 'sgc':
+					$id = \Auth::user()->supportGroupConductor->id;
+				break;
+				case 'hs':
+					$id = \Auth::user()->helpingStaff->id;
+				break;
+				case 'a':
+					$id = \Auth::id();
+				break;
+			}
+			if($requested_id == $id){
+				return true;
+			} else {
+				return false;
+			}
+
+		});
     }
 }

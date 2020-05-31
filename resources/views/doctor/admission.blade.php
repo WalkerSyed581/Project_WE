@@ -1,12 +1,11 @@
 @extends('layouts.app')
 @section('content')
 
-<h2>Admit Patient</h2>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="card">
-				<div class="card-header">{{ __('Edit/Add Admission') }}</div>
+				<div class="card-header">{{ __('Admit Patient') }}</div>
 				<div class="card-body">
 					<h3>Patient's Name: {{$patient->user->name}}</h3>
 					<div class="appointment-content">
@@ -30,7 +29,7 @@
 										<div class="col-md-6">
 											<select id="helping_staff_id" type="text" class="form-control @error('helping_staff_id') is-invalid @enderror" name="helping_staff_id">
 												@foreach($helpingStaffs as $helpingStaff)
-													<option value="{{$helpingStaff->id}}">Mr. {{$helpingStaff->user->name}}</option>
+													<option value="{{$helpingStaff->id}}">{{$helpingStaff->user->name}}</option>
 												@endforeach
 											</select>
 											@error('helping_staff_id')
@@ -46,12 +45,12 @@
 		
 									<div class="col-md-6">
 										<select id="patient_id" type="text" class="form-control @error('patient_id') is-invalid @enderror" name="patient_id">
-												@foreach($patients as $patient)
-													<option value="{{$patient->id}}"
-														@if($patient->id === $admission->patient->id)
+												@foreach($allPatients as $allPatient)
+													<option value="{{$allPatient->id}}"
+														@if($allPatient->id === $admission->patient->id)
 														selected
 														@endif
-														>Mr. {{$patient->user->name}}</option>
+														>{{$allPatient->user->name}}</option>
 												@endforeach
 										</select>
 										@error('patient_id')
@@ -67,10 +66,10 @@
 										<select id="ward_id" class="form-control @error('ward_id') is-invalid @enderror" name="ward_id">
 											@foreach($wards as $ward)
 												<option value="{{$ward->id}}"
-													@if($admission && $ward->id === $admission->wards->id)
+													@if($admission && $ward->id === $admission->ward->id)
 														selected
 													@endif
-													>Ward Number-{{$ward->id}}, (Capacity: {{$ward->capacity}}</option>
+													>Ward Number-{{$ward->id}}, (Capacity: {{$ward->capacity}})</option>
 											@endforeach
 										</select>
 										@error('ward_id')
@@ -82,8 +81,8 @@
 								<div class="form-group row">
 									<label for="number_of_days" class="col-md-4 col-form-label text-md-right">{{ __('Number Of Days:') }}</label>
 		
-									<div class="col-md-8">
-										<input id="number_of_days" type="text" 
+									<div class="col-md-6">
+										<input id="number_of_days" type="number" min="1"
 										class="form-control @error('number_of_days') is-invalid @enderror" 
 										name="number_of_days"
 											@if($admission)

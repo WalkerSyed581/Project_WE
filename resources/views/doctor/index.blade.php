@@ -26,7 +26,7 @@
                     <td> {{$docAppointment->patient->user->age}}</td>
                     <td>{{$docAppointment->notes}}</td>
                     <td> {{$docAppointment->time}}</td>
-                    <td><a class="btn btn-primary" href="{{action('DoctorController@showAppointment',['id'=>\Auth::user()->doctor->id,'appointment_id'=> $docAppointment->id])}}">
+                    <td><a class="btn btn-primary" href="{{action('DoctorController@showAppointment',['id'=> \Auth::user()->doctor->id,'appointment_id'=> $docAppointment->id])}}">
                         @if($docAppointment->approved)
                             Cancel
                         @else

@@ -15,7 +15,6 @@ class CheckRole
      */
     public function handle($request, Closure $next,$role)
     {
-
 		if (\Auth::user()->role != $role) {
 			switch(\Auth::user()->role){
 				case 'p':
@@ -37,7 +36,8 @@ class CheckRole
 					return redirect()->action('PagesController@home');
 					break;
 			}
-        }
+		}
+
         return $next($request);
     }
 }

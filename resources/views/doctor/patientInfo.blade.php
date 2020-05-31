@@ -62,15 +62,13 @@
 						<td><p>{{$docAppointment->prescription->condition}}</p></td>
 						<td>
 							<ul>
-							@foreach($docAppointment->prescription->drugs()->get() as $drug)
-								<li>{{$drug->name}}<li>
-							@endforeach
+							@foreach($docAppointment->prescription->drugs()->get() as $drug)<li>{{$drug->name}}</li>@endforeach
 							</ul>
 						</td>
 						<td>
 							<ul>
 							@foreach($docAppointment->prescription->drugs()->get() as $drug)
-								<li>{{$drug->dose}}<li>
+								<li>{{$drug->dose}}</li>
 							@endforeach
 							</ul>
 						</td>
